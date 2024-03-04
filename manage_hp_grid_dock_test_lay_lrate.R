@@ -7,7 +7,7 @@ epochs <- seq(30,50,5)
 batch_size <- c(64,128,256)
 units1 <- c(100,150,200,250)
 units2 <- c(50,100,150)
-lrate <- c(.001,.01)
+lrate <- c(.001,.01,)
 
 hps <- expand_grid(epochs=epochs,batch_size=batch_size,units1=units1,units2=units2,lrate=lrate)
 
