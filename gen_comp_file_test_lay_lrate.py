@@ -9,17 +9,25 @@ hostname = subprocess.check_output(["hostname"]).decode("utf-8").strip()
 print("Enter HPs, comma separated")
 values_epochs = input("Enter epoch combinations:")
 values_batch_size = input("Enter batch size combinations:")
+values_layers=input("enter number of hidden layers (1,2,or 3):")
+values_lrate=input("enter learning rate:")
 values_units1 = input("Enter values_units1:")
 values_units2 = input("Enter values_units2:")
+values_units3 = input("Enter values_units3:")
+
 
 # Convert input strings to lists of integers
 epochs_list = [int(epoch) for epoch in values_epochs.split(',')]
 batch_size_list = [int(batch_size) for batch_size in values_batch_size.split(',')]
+layers_list= [int(layers) for layers in values_layers.split(',')]
+lrate_list=[float(lrate) for lrate in values_lrate.split(',')]
 units1_list = [int(units1) for units1 in values_units1.split(',')]
 units2_list = [int(units2) for units2 in values_units2.split(',')]
+units3_list = [int(units3) for units3 in values_units3.split(',')]
+
 
 # Generate all combinations of variables
-combinations = list(itertools.product(epochs_list, batch_size_list, units1_list, units2_list))
+combinations = list(itertools.product(epochs_list, batch_size_list, units1_list, units2_list,units3_list,lrate_list,layers_list))
 print("length of combinations:", len(combinations))
 
 image_name = input("Enter image name:")
