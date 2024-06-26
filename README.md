@@ -23,23 +23,27 @@ This process is intended to leverage multiple large Linux instances to run dozen
         Docker login
    
 #### Create a shared, mounted folder so that all Linux machines:
-All machines need to be able to read the neccessary Python Scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is incldued below, but more information is availbale at https://wiki.samba.org/index.php/Main_Page
+All machines need to be able to read the necessary Python scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is included below, but more information is available at [Samba Wiki](https://wiki.samba.org/index.php/Main_Page).
 
-1. Create a directory on each Linux instance to mount the SMB share, in our case we created this at /srv/samba/hp_tune_grid/
-2. Install the cifs-utils package if it's not already installed. This package is necessary for mounting SMB/CIFS shares. You can install it by running:
+1. Create a directory on each Linux instance to mount the SMB share. In our case, we created this at `/srv/samba/hp_tune_grid/`.
 
-       bash
-       sudo apt update && sudo apt install cifs-utils
-   
-3.  Create a mount point where you'll mount the shared directory:
+2. Install the `cifs-utils` package if it's not already installed. This package is necessary for mounting SMB/CIFS shares. You can install it by running:
 
-       bash
-       mkdir ~/samba-share
-    
-5.	Mount the share using the mount command. You'll need to specify the Samba share's path, the mount point, and your credentials:
+    ```bash
+    sudo apt update && sudo apt install cifs-utils
+    ```
 
-  	    bash
-        sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename ~/samba-share
+3. Create a mount point where you'll mount the shared directory:
+
+    ```bash
+    mkdir ~/samba-share
+    ```
+
+4. Mount the share using the `mount` command. You'll need to specify the Samba share's path, the mount point, and your credentials:
+
+    ```bash
+    sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename ~/samba-share
+    ```
 
 Replace sambausername and sambapassword with your Samba credentials, server-ip with the IP address of your Samba server, and sharename with the name of your share.
 
