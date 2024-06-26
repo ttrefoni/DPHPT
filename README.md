@@ -31,12 +31,12 @@ All machines need to be able to read the neccessary Python Scripts and maintain 
        bash
        sudo apt update && sudo apt install cifs-utils
    
-4.  Create a mount point where you'll mount the shared directory:
+3.  Create a mount point where you'll mount the shared directory:
 
        bash
        mkdir ~/samba-share
     
-6.	Mount the share using the mount command. You'll need to specify the Samba share's path, the mount point, and your credentials:
+4.	Mount the share using the mount command. You'll need to specify the Samba share's path, the mount point, and your credentials:
 
   	    bash
         sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename ~/samba-share
