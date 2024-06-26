@@ -18,9 +18,10 @@ This process is intended to leverage multiple large Linux instances to run dozen
 2. Install Docker in your Linux Enviornment: https://docs.docker.com/desktop/install/linux-install/
 3. Log in to your Docker account 
     
-    Sudo su 
+        Sudo su 
 
-    Docker login
+        Docker login
+   
 #### Create a shared, mounted folder so that all Linux machines:
 All machines need to be able to read the neccessary Python Scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is incldued below, but more information is availbale at https://wiki.samba.org/index.php/Main_Page
 
@@ -45,17 +46,15 @@ Replace sambausername and sambapassword with your Samba credentials, server-ip w
 To have the Samba share automatically mounted at boot, you'll edit the /etc/fstab file:
 1.	Open /etc/fstab in a text editor with root privileges:
 
-    bash
-    sudo nano /etc/fstab
+        bash
+        sudo nano /etc/fstab
   	
 3.	Add a line for the Samba share at the end of the file:
 
-    //server-ip/sharename /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
+        //server-ip/sharename /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
   	
 Replace the placeholders with your actual data. 
 
-
-  
 
 ## Operationalizing Docker Process
 
