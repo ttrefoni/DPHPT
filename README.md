@@ -44,10 +44,14 @@ Replace sambausername and sambapassword with your Samba credentials, server-ip w
 
 To have the Samba share automatically mounted at boot, you'll edit the /etc/fstab file:
 1.	Open /etc/fstab in a text editor with root privileges:
-bash
-sudo nano /etc/fstab
-2.	Add a line for the Samba share at the end of the file:
-//server-ip/sharename /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
+
+    bash
+    sudo nano /etc/fstab
+  	
+3.	Add a line for the Samba share at the end of the file:
+
+    //server-ip/sharename /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
+  	
 Replace the placeholders with your actual data. 
 
 
