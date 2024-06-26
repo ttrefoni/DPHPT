@@ -11,17 +11,43 @@ The purpose of running multiple hyper-parameter (HP) tuning experiments simultan
 
 ## Docker Background
 
-## Set Up Docker in a Linux Envionrment 
-**Steps** 
+## Set Up Linux Envionrment 
+This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
+### Set up Docker
 1. Create a docker account account: https://docs.docker.com/docker-id/
 2. Install Docker in your Linux Enviornment: https://docs.docker.com/desktop/install/linux-install/
 3. Log in to your Docker account 
     
     Sudo su 
 
-    Docker login 
+    Docker login
+#### Create a shared, mounted folder so that all Linux machines:
+All machine need to be able to read the neccessary Python Scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is incldued below, but more information is availbale at https://wiki.samba.org/index.php/Main_Page
 
-## Download Auto Docker Applicaiton 
+    1. Create a directory on each Linux instance to mount the SMB share, in our case we created this at /srv/samba/hp_tune_grid/
+    2. Install the cifs-utils package if it's not already installed. This package is necessary for mounting SMB/CIFS shares. You can install it by running:
+            bash
+            sudo apt update && sudo apt install cifs-utils
+    3.  Create a mount point where you'll mount the shared directory:
+            bash
+            mkdir ~/samba-share
+    4.	Mount the share using the mount command. You'll need to specify the Samba share's path, the mount point, and your credentials:
+            bash
+            sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename ~/samba-share
+
+Replace sambausername and sambapassword with your Samba credentials, server-ip with the IP address of your Samba server, and sharename with the name of your share.
+
+#### Permanent Mount
+To have the Samba share automatically mounted at boot, you'll edit the /etc/fstab file:
+1.	Open /etc/fstab in a text editor with root privileges:
+bash
+sudo nano /etc/fstab
+2.	Add a line for the Samba share at the end of the file:
+//server-ip/sharename /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
+Replace the placeholders with your actual data. 
+
+
+  
 
 ## Operationalizing Docker Process
 
