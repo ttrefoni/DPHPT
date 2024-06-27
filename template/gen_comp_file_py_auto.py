@@ -55,9 +55,14 @@ for directory in output_directories:
 # Dynamic starting port
 dynamic_starting_port = 80
 
+try:
+    os.makedirs({grid_file}/compose_files/{hostname}/, exist_ok=False)
+    print(f"Directory {grid_file}/compose_files/{hostname}/ created.")
+except FileExistsError:
+    print(f"Directory {grid_file}/compose_files/{hostname}/ already exists.")
 
 # create docker file
-with open('/home/ubuntu/LSTM_PY/docker-compose.yml', 'w') as compose_file:
+with open('{grid_file}/compose_files/{hostname}/docker-compose.yml', 'w') as compose_file:
     compose_file.write('version: \'3\'\n\nservices:\n')
 
     for i, combo in enumerate(split_combos, start=1):
