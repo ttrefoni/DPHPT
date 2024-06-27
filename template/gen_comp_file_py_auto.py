@@ -38,8 +38,8 @@ def split_by_indices(a, n):
 split_combos = split_by_indices(combinations, max_con)
 base_output_directory = f'{grid_file}/output_py/TUNING/{hostname}'
 
+#make base directory
 print(base_output_directory)
-comment out base directory creation
 os.makedirs(base_output_directory, exist_ok=False)
 
 # Create individual output directories for each chunk
@@ -56,7 +56,7 @@ for directory in output_directories:
 dynamic_starting_port = 80
 
 #create directory in which to create compose compose file 
-compose_dir="{grid_file}/compose_files/{hostname}/"
+compose_dir=f'{grid_file}/compose_files/{hostname}/'
 try:
     os.makedirs({compose_dir}, exist_ok=False)
     print(f"Directory {compose_dir} created.")
