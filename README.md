@@ -22,10 +22,12 @@ This process is intended to leverage multiple large Linux instances to run dozen
 
         Docker login
    
-#### Create a shared, mounted folder so that all Linux machines:
-All machines need to be able to read the necessary Python scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is included below, but more information is available at [Samba Wiki](https://wiki.samba.org/index.php/Main_Page).
+### Create a shared, mounted folder so that all Linux machines:
+If you have multiple instances where you want to run experiments, all machines need to be able to read the necessary Python scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is included below, but more information is available at [Samba Wiki](https://wiki.samba.org/index.php/Main_Page).
 
-1. Create a directory on each Linux instance to mount the SMB share. In our case, we created this at `/srv/samba/hp_tune_grid/`.
+For each Linux Instance: 
+
+1. Create a directory to mount the SMB share. In our case, we created this at `/srv/samba/hp_tune_grid/`.
 
 2. Install the `cifs-utils` package if it's not already installed. This package is necessary for mounting SMB/CIFS shares. You can install it by running:
 
@@ -52,11 +54,12 @@ To have the Samba share automatically mounted at boot, you'll edit the /etc/fsta
 
    ```bash
     sudo nano /etc/fstab
-    ```
+   ```
   	
 3.	Add a line for the Samba share at the end of the file:
 
-    ```//server-ip/sharename /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
+    ```bash
+    //server-ip/sharename /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
     ```
   	
 Replace the placeholders with your actual data. 
