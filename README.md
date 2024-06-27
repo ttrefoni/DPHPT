@@ -41,7 +41,7 @@ For each Linux Instance:
     mkdir ~/samba-share
     ```
 
-4. Mount the share using the `mount` command. You'll need to specify the Samba share's path, the mount point, and your credentials:
+4. Mount the share using the `mount` command on each client machine. You'll need to specify the Samba share's path, the mount point, and your credentials:
 
     ```bash
     sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename ~/samba-share
@@ -49,12 +49,13 @@ For each Linux Instance:
 
 Replace sambausername and sambapassword with your Samba credentials, server-ip with the IP address of your Samba server, and sharename with the name of your share.
 
-To have the Samba share automatically mounted at boot, you'll edit the /etc/fstab file:
+To have the Samba share automatically mounted at boot, you'll edit the /etc/fstab file, on each client machine:
+
 1.	Open /etc/fstab in a text editor with root privileges:
 
-   ```bash
+  	 ```bash
     sudo nano /etc/fstab
-   ```
+    ```
   	
 3.	Add a line for the Samba share at the end of the file:
 
@@ -62,10 +63,15 @@ To have the Samba share automatically mounted at boot, you'll edit the /etc/fsta
     //server-ip/sharename /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
     ```
   	
-Replace the placeholders with your actual data. 
-
+Replace the placeholders with your actual data. This will allow you to access a shared folder across all instances. 
 
 ## Operationalizing Docker Process
+### Create a template directory in the shared folder.
+1. Navigate to your shared folder
+   ```bash
+   cd /srv/samba/hp_tune_grid
+   ```
+2. 
 
 ### Idenfify or Create Docker Image 
 **If a Docker Image Already Exisits for your purpose**
