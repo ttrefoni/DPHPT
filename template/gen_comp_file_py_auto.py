@@ -38,10 +38,6 @@ def split_by_indices(a, n):
 split_combos = split_by_indices(combinations, max_con)
 base_output_directory = f'{grid_file}/output_py/TUNING/{hostname}'
 
-#make base directory
-print(base_output_directory)
-os.makedirs(base_output_directory, exist_ok=False)
-
 # Create individual output directories for each chunk
 output_directories = [f'{base_output_directory}/hprun_split_container_{i+1}_{len(split_combos)}' for i in range(len(split_combos))]
 
@@ -57,8 +53,9 @@ dynamic_starting_port = 80
 
 #create directory in which to create compose compose file 
 compose_dir=f'{grid_file}/compose_files/{hostname}/'
+
 try:
-    os.makedirs({compose_dir}, exist_ok=False)
+    os.makedirs(compose_dir, exist_ok=False)
     print(f"Directory {compose_dir} created.")
 except FileExistsError:
     print(f"Directory {compose_dir} already exists.")
