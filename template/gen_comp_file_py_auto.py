@@ -38,6 +38,10 @@ def split_by_indices(a, n):
 split_combos = split_by_indices(combinations, max_con)
 base_output_directory = f'{grid_file}/output_py/TUNING/{hostname}'
 
+print(base_output_directory)
+#comment out base directory creation
+#os.makedirs(base_output_directory, exist_ok=False)
+
 # Create individual output directories for each chunk
 output_directories = [f'{base_output_directory}/hprun_split_container_{i+1}_{len(split_combos)}' for i in range(len(split_combos))]
 
@@ -51,17 +55,9 @@ for directory in output_directories:
 # Dynamic starting port
 dynamic_starting_port = 80
 
-#create directory in which to create compose compose file 
-compose_dir=f'{grid_file}/compose_files/{hostname}/'
-
-try:
-    os.makedirs(compose_dir, exist_ok=False)
-    print(f"Directory {compose_dir} created.")
-except FileExistsError:
-    print(f"Directory {compose_dir} already exists.")
 
 # create docker file
-with open('{compose_dir}docker-compose.yml', 'w') as compose_file:
+with open('/home/ubuntu/LSTM_PY/docker-compose.yml', 'w') as compose_file:
     compose_file.write('version: \'3\'\n\nservices:\n')
 
     for i, combo in enumerate(split_combos, start=1):
