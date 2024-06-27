@@ -66,12 +66,20 @@ To have the Samba share automatically mounted at boot, you'll edit the /etc/fsta
 Replace the placeholders with your actual data. This will allow you to access a shared folder across all instances. 
 
 ## Operationalizing Docker Process
-### Create a template directory in the shared folder.
-1. Navigate to your shared folder
+### Create template and RUNS directories in the shared folder.
+1. Download the 'template' directory from this github (link). This directory contains all the scripts neccessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. Having a template folder allows you to make changes to each run while 
+3. Copy the template directory as root user. 
    ```bash
-   cd /srv/samba/hp_tune_grid
+   sudo su
+   cp /path/to/template/ /path/to/mountpoint/template
    ```
-2. 
+4. Create a "RUNS" directory to store individual runs. This allows you to track each hyper-parameter tuning experiment and keep versions seperate, for example if you wish to adjust your model or change the hyperparameter grid. 
+   ```bash
+   sudo su
+   cd /path/to/mountpoint/
+   mkdir RUNS
+   ```bash
+
 
 ### Idenfify or Create Docker Image 
 **If a Docker Image Already Exisits for your purpose**
