@@ -67,18 +67,21 @@ Replace the placeholders with your actual data. This will allow you to access a 
 
 ## Operationalizing Docker Process
 ### Create template and RUNS directories in the shared folder.
+
 1. Download the 'template' directory from this github (link). This directory contains all the scripts neccessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
 3. Copy the template directory as root user. 
    ```bash
    sudo su
    cp -r /path/to/template/ /path/to/mountpoint/template
    ```
+   
 4. Create a "RUNS" directory to store individual runs. This allows you to track each hyper-parameter tuning experiment and keep versions seperate, for example if you wish to adjust your model or change the hyperparameter grid. 
    ```bash
    sudo su
    cd /path/to/mountpoint/
    mkdir RUNS
    ```
+   
 In order to make changes for each run, simply adjust the scripts in the template folder as desired and re-run https://github.com/ttrefoni/pm25_docker/blob/run_on_shared/auto_docker_server_new_wait.sh. 
 
 It is highly reccomended that you maintain a backup version of the template directory that contians the orginal version of the scripts:
@@ -86,6 +89,7 @@ It is highly reccomended that you maintain a backup version of the template dire
    sudo su
    cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
 ```
+
 
 ### Idenfify or Create Docker Image 
 **Example with LSTM**
