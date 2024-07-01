@@ -100,6 +100,7 @@ For example, this is the Docker Hub repository for the LSTM used in the example 
 
 #### Option 2: Create your own Docker image
 
+1. Create a Dockerfile: 
 A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is incldued in the template folder.
 ```bash
     FROM python:3.9
@@ -115,6 +116,16 @@ A Dockerfile contains the instructions for how to build a Docker image, which is
     COPY LSTM_model_fit_ES.py /LSTM_model_fit_ES.py
 ```
 This Dockerfile is quite simple, it first sets the Python image to the default Python 3.9 image from Dockerhub, then sets the enviornment as a noninteractive to avoid addtional messages related to package installation, then it installs the requried pacakges from the "requriments.txt" file using pip. Finally it copies the training data and machine learning scripts from the local machine to the Docker container. 
+
+If you write your own machine leanring script, be sure to place them in the "template" folder and adjust the "COPY" lines of the Dockerfile. 
+
+2. Build the Docker Image
+   ```bash
+   docker build <my-image-name> .
+   ```
+This command builds the Docker image on your local machine.
+
+3. Create a repository on Dockerhub to access for each run:
 
 
 
