@@ -6,7 +6,6 @@
 1. [Project Background](#project-background)
 2. [Table of Contents](#table-of-contents)
 3. [Implementation Guidance](#implementation-guidance)
-    - [Docker Background](#docker-background)
     - [Set Up Linux Environment](#set-up-linux-environment)
         - [Set up Docker](#set-up-docker)
         - [Create a shared, mounted folder](#create-a-shared-mounted-folder)
@@ -18,9 +17,8 @@
         - [Set desired hyper-parameters](#set-desired-hyper-parameters)
         - [Initialize and Execute](#initialize-and-execute)
         - [Wrapping Up](#wrapping-up)
-# **Implementation Guidance**
 
-## Docker Background
+# **Implementation **
 
 ## Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
