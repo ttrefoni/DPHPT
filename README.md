@@ -19,6 +19,8 @@ The purpose of running multiple hyper-parameter (HP) tuning experiments simultan
         - [Initialize and Execute](#initialize-and-execute)
         - [Wrapping Up](#wrapping-up)
 4. [Appendix](#appendix)
+   -[A: List of included Scripts](#section-a-list-of-included-scripts)
+   -[B: intro to tmux](#Section-b-applicaiton-of-Tmux)
      
 
 # Detailed Implementation Guidence
