@@ -165,7 +165,32 @@ units3=[20,50]
 lrate = [0.00001,0.001,0.01]
 layers = [1,2,3]
 ```
-To adjust the hyper-parameters for this model, simply change the range of potential values 
+To adjust the hyper-parameters for this model, simply change the range of potential values. If you are using an alternative model you will need to also adjust the following sections of the other scripts:
+a. [create_hps_grid.py](template/create_hps_grid.py)
+    ```python 
+    #line 24-28
+    # Create a data frame with all combinations of hyperparameters
+    hps = pd.DataFrame(np.array(np.meshgrid(epoch,batch_size, units1, units2, units3, lrate, layers)).T.reshape(-1, 7), columns=['epoch','batch_size', 'units1', 'units2', 'units3','lrate', 'layers'])
+    # Give NA values for layers that don't exist
+    hps.loc[hps['layers'] == 1, ['units3', 'units2']] = np.nan
+    hps.loc[hps['layers'] == 2, 'units3'] = np.nan
+    ```
+b.  [man_hp_grid.py](template/man_hp_grid.py)
+    ```python
+    #line 48
+    #Update available hps--remove any that are already tested from pool
+    hps_available = pd.merge(hps, hps_tested, on=['epoch','batch_size', 'units1', 'units2', 'units3', 'lrate', 'layers'], how='outer', indicator=True).query('_merge == "left_only"').drop('_merge', axis=1)
+    #lines 61-65
+    # Convert NA values to null for reading in JSON
+    hps_to_test['units1'] = hps_to_test['units1'].apply(lambda x: str(x) if not pd.isna(x) else 'null')
+    hps_to_test['units2'] = hps_to_test['units2'].apply(lambda x: str(x) if not pd.isna(x) else 'null')
+    hps_to_test['units3'] = hps_to_test['units3'].apply(lambda x: str(x) if not pd.isna(x) else 'null')
+    ```
+c. [compare_col_w_aval.py](template/compare_col_w_aval.py)
+    ```python
+    #line 21
+    hps_tested=hps_tested[["epoch","batch_size","units1","units2","units3","lrate","layers"]]
+    ```
 
 
 **If you want to create your own Docker Image:**  
