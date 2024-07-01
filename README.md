@@ -3,7 +3,21 @@
 ## Project Background 
 
 ## Table of Contents
-
+1. [Project Background](#project-background)
+2. [Table of Contents](#table-of-contents)
+3. [Implementation Guidance](#implementation-guidance)
+    - [Docker Background](#docker-background)
+    - [Set Up Linux Environment](#set-up-linux-environment)
+        - [Set up Docker](#set-up-docker)
+        - [Create a shared, mounted folder](#create-a-shared-mounted-folder)
+    - [Operationalizing Docker Process](#operationalizing-docker-process)
+        - [Create template and RUNS directories](#create-template-and-runs-directories)
+        - [Identify or Create Docker Image](#identify-or-create-docker-image)
+            - [Use an already existing Docker image](#use-an-already-existing-docker-image)
+            - [Create your own Docker image](#create-your-own-docker-image)
+        - [Set desired hyper-parameters](#set-desired-hyper-parameters)
+        - [Initialize and Execute](#initialize-and-execute)
+        - [Wrapping Up](#wrapping-up)
 # **Implementation Guidance**
 
 ## Docker Background
@@ -91,7 +105,6 @@ It is highly recommended that you maintain a backup version of the template dire
 
 
 ### Identify or Create Docker Image 
-**Example with LSTM**
 
 #### Option 1: Use an already existing Docker image: 
 For example, this is the Docker Hub repository for the LSTM used in the example below, if you pull this image, the included Dockerfile will run properly as is. 
@@ -235,7 +248,7 @@ Enter number (int) of tunes to run at once on each instance:
 
 Sample response:
 ```bash
-lstm_tune_run_v1
+20
 ```
 
 
@@ -259,7 +272,6 @@ The above commands list the active Docker containers and display the logs for th
 4. Once all combinations have been tested, the shell script will run [collate_metrics.py](template/collate_metrics.py) which collects all of the output metrics from each hyper-parameter combination into a single csv file.
 
 As the tuning process can take quite a long time, if the user would like to investigate overall results throughout the tuning process they can run [collate_metrics.py](template/collate_metrics.py to combine all completed tuning results. This can be helpful to review progress. 
-
 
  
 ### Wrapping Up
