@@ -115,18 +115,30 @@ A Dockerfile contains the instructions for how to build a Docker image, which is
     COPY LSTM_model_fit.py /LSTM_model_fit.py
     COPY LSTM_model_fit_ES.py /LSTM_model_fit_ES.py
 ```
-This Dockerfile is quite simple, it first sets the Python image to the default Python 3.9 image from Dockerhub, then sets the enviornment as a noninteractive to avoid addtional messages related to package installation, then it installs the requried pacakges from the "requriments.txt" file using pip. Finally it copies the training data and machine learning scripts from the local machine to the Docker container. 
-
-If you write your own machine leanring script, be sure to place them in the "template" folder and adjust the "COPY" lines of the Dockerfile. 
+This Dockerfile is quite simple, it first sets the Python image to the default Python 3.9 image from Docker Hub, then sets the enviornment as a noninteractive to avoid addtional messages related to package installation, then it installs the requried pacakges from the "requriments.txt" file using pip. Finally it copies the training data and machine learning scripts from the local machine to the Docker container. If you write your own machine leanring script, be sure to place them in the "template" folder and adjust the "COPY" lines of the Dockerfile. 
 
 2. Build the Docker Image
    ```bash
-   docker build <my-image-name> .
+   docker build <my-image-name:tag> .
    ```
 This command builds the Docker image on your local machine.
 
-3. Create a repository on Dockerhub to access for each run:
+3. Create a repository on Docker Hub to access for each run:
+   a. Log in or create an account at https://hub.docker.com
+   b. Create a repository for your project:
+   <img width="921" alt="docker_repos_create" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/2d722ee7-9c43-4d47-92b1-e5411d19424b">
+   c: Push your image to the repository
+   ```bash
+   docker push your-dockerhub-username/my-python-app:latest
+   ```
 
+   eg:
+   ```bash
+  docker push ttrefogmu/pm25_pub:v6
+  ```
+
+
+   
 
 
 #### 2. Ensure you know the Hyper-Parameters Relevent to your model 
