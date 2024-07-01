@@ -101,8 +101,23 @@ For example, this is the Docker Hub repository for the LSTM used in the example 
 #### Option 2: Create your own Docker image
 
 A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is incldued in the template folder.
-```python
+```bash
+    FROM python:3.9
     
+    ENV DEBIAN_FRONTEND=noninteractive
+    
+    #installs requirment packages
+    COPY requirements.txt /requirements.txt
+    RUN pip install --no-cache-dir -r requirements.txt
+    
+    COPY data /data
+    COPY LSTM_model_fit.py /LSTM_model_fit.py
+    COPY LSTM_model_fit_ES.py /LSTM_model_fit_ES.py
+```
+This Dockerfile is quite simple, it first sets the Python image to the default Python 3.9 image from Dockerhub, then sets the enviornment as a noninteractive to avoid addtional messages related to package installation, then it installs the requried pacakges from the "requriments.txt" file using pip. Finally it copies the training data and machine learning scripts from the local machine to the Docker container. 
+
+
+
 #### 2. Ensure you know the Hyper-Parameters Relevent to your model 
    
 This guide provides information an example model, LSTM which uses the following Hyperparameters:
