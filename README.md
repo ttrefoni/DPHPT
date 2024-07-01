@@ -134,16 +134,14 @@ This command builds the Docker image on your local machine.
 
    eg:
    ```bash
-  docker push ttrefogmu/pm25_pub:v6
-  ```
-
-
+   docker push ttrefogmu/pm25_pub:v6
+   ```
+   The docker image is now hosted on the repository and ready to be pulled by the [shell script](auto_docker_server_new_wait.sh)
    
-
-
-#### 2. Ensure you know the Hyper-Parameters Relevent to your model 
    
-This guide provides information an example model, LSTM which uses the following Hyperparameters:
+#### Set desired hyper-parameters:
+   
+The example model, LSTM, uses the following Hyperparameters:
 
 |LSTM /Deep Neural Network|
 | ---- | 
@@ -153,8 +151,21 @@ This guide provides information an example model, LSTM which uses the following 
 |number layers |
 |number of units layer 1|
 |number of units layer 2|
-|          ...          |
-|number of units layer ***n***|
+|number of units layer 3|
+
+The hyper-parameter grid which will be used for the grid search is included in the script [create_hps_grid.py](template/create_hps_grid.py)
+
+```python
+# Define hyperparameters
+epoch=[40]
+batch_size = [32,64,128]
+units1 = [20,50,100,200]
+units2 = [20,50,100]
+units3=[20,50]
+lrate = [0.00001,0.001,0.01]
+layers = [1,2,3]
+```
+To adjust the hyper-parameters for this model, simply change the range of potential values 
 
 
 **If you want to create your own Docker Image:**  
