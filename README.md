@@ -315,4 +315,5 @@ Once all runs are complete, the tuning results will be stored in the shared, mou
 Becuase the hyper-parameter tuning process can take several days, it is highly reccomended to run [autodocker_server_new_wait.sh](autodocker_server_new_wait.sh) in a detached terminal to avoid losing work if the terminal it is being ran on becomes disconnected. It is even better to run this shell script on a dedicated remote machine. One common way to run processes in the background is to use tmux. 
 
 [Documentaion for tmux](https://github.com/tmux/tmux/wiki)
-[Quick Start guide](https://www.redhat.com/sysadmin/introduction-tmux-linux#:~:text=You%20can%20detach%20from%20your,detach%20from%20the%20current%20session.)
+
+[Helpful Quick Start guide](https://www.redhat.com/sysadmin/introduction-tmux-linux#:~:text=You%20can%20detach%20from%20your,detach%20from%20the%20current%20session.)
