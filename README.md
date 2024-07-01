@@ -165,7 +165,8 @@ units3=[20,50]
 lrate = [0.00001,0.001,0.01]
 layers = [1,2,3]
 ```
-To adjust the hyper-parameters for this model, simply change the range of potential values. If you are using an alternative model you will need to also adjust the following sections of the other scripts:
+To adjust the hyper-parameters for an LSTM model, simply change the range of potential values. This method is intended to be used for LSTM models, but if you would like to train an alternative model with different hyper-parameters you will need to also adjust the following sections of the other scripts:
+
 a. [create_hps_grid.py](template/create_hps_grid.py)
     ```python 
     #line 24-28
@@ -175,6 +176,7 @@ a. [create_hps_grid.py](template/create_hps_grid.py)
     hps.loc[hps['layers'] == 1, ['units3', 'units2']] = np.nan
     hps.loc[hps['layers'] == 2, 'units3'] = np.nan
     ```
+
 b.  [man_hp_grid.py](template/man_hp_grid.py)
     ```python
     #line 48
@@ -186,10 +188,68 @@ b.  [man_hp_grid.py](template/man_hp_grid.py)
     hps_to_test['units2'] = hps_to_test['units2'].apply(lambda x: str(x) if not pd.isna(x) else 'null')
     hps_to_test['units3'] = hps_to_test['units3'].apply(lambda x: str(x) if not pd.isna(x) else 'null')
     ```
+
 c. [compare_col_w_aval.py](template/compare_col_w_aval.py)
     ```python
     #line 21
     hps_tested=hps_tested[["epoch","batch_size","units1","units2","units3","lrate","layers"]]
+    ```
+
+d. [LSTM_current.py](template/LSTM_current.py)
+Your machine learning script should accept hyper-parameters from the environment variable. In the included LSTM script this is achieved by the following:
+    ```python
+    #Function to get environment variable or use default value
+    def get_env_var(var_name):
+        val = os.getenv(var_name)
+        if val is None:
+            raise ValueError(f"Environment variable {var_name} not set.")
+        return val
+    
+    # Get the environment variable "combos" or use a default value
+    combos = get_env_var("combos")
+    
+    # Parse the JSON string
+    hps = json.loads(combos)
+    
+    # Function to convert to int unless it is null
+    def convert_to_int(value):
+        if value is not None:
+            try:
+                value = int(value)
+            except ValueError:
+                # Handle the case where value is not convertible to an integer
+                print("Value is not convertible to an integer")
+        return value
+    
+    #  Define the loss threshold and epoch to check at-- this is to exit poor performers quickly 
+    # loss_threshold = 25  # Set your threshold here
+    # epoch_to_check = 10  # Set the specific epoch you want to check
+    
+    # Function to convert to str unless it is null
+    def convert_to_str(value):
+        if value is not None:
+            try:
+                value = str(value)
+                return value
+            except ValueError:
+                # Handle the case where value is not convertible to a string
+                print("Value is not convertible to a string")
+        else:
+            return "NA"
+    
+    # Start for loop for number of combos
+    for i in range(len(hps)):
+        # Pull out hyperparameters from the environment variable
+        epoch = convert_to_int(hps[i][0])  
+        batchsize = convert_to_int(hps[i][1])
+        units1 = convert_to_int(hps[i][2])
+        units2 = convert_to_int(hps[i][3])
+        units3 = convert_to_int(hps[i][4])
+        lrate = hps[i][5]
+        layers = convert_to_int(hps[i][6])
+    
+        # Perform operations using hyperparameters
+        print(epoch, batchsize, units1, units2, units3, lrate, layers)
     ```
 
 
