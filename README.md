@@ -1,12 +1,12 @@
 # A Docker Approach to Parallel Hyper-Parameter Tuning 
 
 ## Project Background 
-This method of parallelzing hyper-parameter tuning was originally designed to train LSTM models to calibrate Purple Air sensors for measuring PM2.5 concentraions. However, with a few tweaks a similar approach can be taken for other machine learning tasks and models. 
+The purpose of running multiple hyper-parameter (HP) tuning experiments simultaneously is to decrease the time required to find the optimal combination of hyperparameters for a specified model and training data set. As some of these models can take hours to train and users may want to consider hundreds of combinations of hyperparameters, training multiple sets of hyperparameters simultaneously can save hundreds of hours of computation time. Utilizing Docker, Python, and shell script this process solicits user input of hyperparameters, trains a model for each combination of hyperparameters and calculates metrics and predicted values for each model. Finally, it conducts an early stopping test to determine the optimal number of epochs for the best combination of hyper-parameters. This method was originally developed to tune long short-term memory models using Tensorflow for the purpose of calibrating purple air PM2.5 stations. However, with a few tweaks a similar approach can be taken for other machine learning tasks and models. 
 
 ## Table of Contents
 1. [Project Background](#project-background)
 2. [Table of Contents](#table-of-contents)
-3. [Detailed Implementation Guidance](#implementation-guidance)
+3. [Detailed Implementation Guidance](https://github.com/ttrefoni/pm25_docker/edit/run_on_shared/README.md#detailed-implementation-guidence)
     - [Set Up Linux Environment](#set-up-linux-environment)
         - [Set up Docker](#set-up-docker)
         - [Create a shared, mounted folder](#create-a-shared-mounted-folder)
@@ -18,11 +18,10 @@ This method of parallelzing hyper-parameter tuning was originally designed to tr
         - [Set desired hyper-parameters](#set-desired-hyper-parameters)
         - [Initialize and Execute](#initialize-and-execute)
         - [Wrapping Up](#wrapping-up)
-4. [Appendix](#Appendix)
-    -[A: List of included scripts](Section-A)
+4. [Appendix](#appendix)
      
 
-#  Implementation Guidence
+# Detailed Implementation Guidence
 
 ## Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
@@ -285,13 +284,17 @@ Once all runs are complete, the tuning results will be stored in the shared, mou
 
 # Appendix 
 ## Section A, list of included scripts
+
 1: [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) 
     This script is used to initilaize the overall hyper-parameter tuning process. It accepts user input over the Docker Image to use, the output location, and the number of tunes to run simultaneously. Next it runs the tuning process, monitors progress, and collects the output metrics. 
+    
 2: [man_hp_grid.py](template/man_hp_grid.py)
     This script is used to track which hyper-parameters have already been tested in order to ensure that a combinaiton of hyper-parameters is not tested more than once. [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) will call this script throughout the tuning process to manage the .csv files which track which hyperparameters have already been tested and which are still available. 
+    
 3. [gen_comp_file_py_auto.py](template/gen_comp_file_py_auto.py)
-    This script creates the compose file (a .yml) which details the parameters for each Docker container. This includes the hyper-parameters, which port to be run, and the machine learning script to be run. It also creates the directories in which each container's output is stored. As the tuning process is run by [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh), this script is run once for each set of combinations. 
-4. [gen_comp_file_ES.py](template/gen_comp_file_ES.py)
-    This script fulfills a 
+    This script creates the compose file (a .yml) which details the parameters for each Docker container. This includes the hyper-parameters, which port to be run, and the machine learning script to be run. It also creates the directories in which each container's output is stored. As the tuning process is run by [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh), this script is run once for each set of combinations.
+    
+5. [gen_comp_file_ES.py](template/gen_comp_file_ES.py)
+    This script fulfills the same role as [gen_comp_file_py_auto.py](template/gen_comp_file_py_auto.py), but is designed to set up the .yml compose file for the early stopping portion of training. 
 
     
