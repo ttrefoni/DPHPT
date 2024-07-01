@@ -88,10 +88,16 @@ It is highly reccomended that you maintain a backup version of the template dire
 ```
 
 ### Idenfify or Create Docker Image 
-**If a Docker Image Already Exisits for your purpose**
-#### 1. Locate the Repository and Version Name 
-    
-    ![Caption: Sample Docker Repository](images/docker_hum_image)
+**Example with LSTM**
+
+#### Option 1: Use an already exisiting Docker image: 
+For example, this is the Docker Hub repository for the LSTM used in the example below, if you pull this image, the included Dockerfile will run properly as is. 
+<img width="1014" alt="docker_hub_sc" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/0f034105-a20c-45e4-a146-ec8eeb837564">
+
+#### Option 2: Create your own Docker image
+
+A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is incldued in the template folder.
+```python
     
 #### 2. Ensure you know the Hyper-Parameters Relevent to your model 
    
