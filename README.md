@@ -6,7 +6,7 @@ The purpose of running multiple hyper-parameter (HP) tuning experiments simultan
 ## Table of Contents
 1. [Project Background](#project-background)
 2. [Table of Contents](#table-of-contents)
-3. [Detailed Implementation Guidance](https://github.com/ttrefoni/pm25_docker/edit/run_on_shared/README.md#detailed-implementation-guidence)
+3. [Detailed Implementation Guidance](#detailed-implementation-guidence)
     - [Set Up Linux Environment](#set-up-linux-environment)
         - [Set up Docker](#set-up-docker)
         - [Create a shared, mounted folder](#create-a-shared-mounted-folder)
