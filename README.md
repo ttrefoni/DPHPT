@@ -67,28 +67,45 @@ Replace the placeholders with your actual data. This will allow you to access a 
 
 ## Operationalizing Docker Process
 ### Create template and RUNS directories in the shared folder.
-1. Download the 'template' directory from this github (link). This directory contains all the scripts neccessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. Having a template folder allows you to make changes to each run while 
+
+1. Download the 'template' directory from this github (link). This directory contains all the scripts neccessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
 3. Copy the template directory as root user. 
    ```bash
    sudo su
-   cp /path/to/template/ /path/to/mountpoint/template
+   cp -r /path/to/template/ /path/to/mountpoint/template
    ```
+   
 4. Create a "RUNS" directory to store individual runs. This allows you to track each hyper-parameter tuning experiment and keep versions seperate, for example if you wish to adjust your model or change the hyperparameter grid. 
    ```bash
    sudo su
    cd /path/to/mountpoint/
    mkdir RUNS
-   ```bash
+   ```
+   
+In order to make changes for each run, simply adjust the scripts in the template folder as desired and re-run https://github.com/ttrefoni/pm25_docker/blob/run_on_shared/auto_docker_server_new_wait.sh. 
+
+It is highly reccomended that you maintain a backup version of the template directory that contians the orginal version of the scripts:
+```bash
+   sudo su
+   cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
+```
 
 
 ### Idenfify or Create Docker Image 
-**If a Docker Image Already Exisits for your purpose**
-#### 1. Locate the Repository and Version Name 
+**Example with LSTM**
+
+#### Option 1: Use an already exisiting Docker image: 
+For example, this is the Docker Hub repository for the LSTM used in the example below, if you pull this image, the included Dockerfile will run properly as is. 
+<img width="1014" alt="docker_hub_sc" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/0f034105-a20c-45e4-a146-ec8eeb837564">
+
+#### Option 2: Create your own Docker image
+
+A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is incldued in the template folder.
+```python
     
-    ![Caption: Sample Docker Repository](images/docker_hum_image)
 #### 2. Ensure you know the Hyper-Parameters Relevent to your model 
    
-This guide provides information an example modelm LSTM which uses the following Hyperparameters:
+This guide provides information an example model, LSTM which uses the following Hyperparameters:
 
 |LSTM /Deep Neural Network|
 | ---- | 
