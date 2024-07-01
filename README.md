@@ -7,15 +7,15 @@ The purpose of running multiple hyper-parameter (HP) tuning experiments simultan
 
 ## (table of Contents)
 
-# **Implementation Guidence**
+# **Implementation Guidance**
 
 ## Docker Background
 
-## Set Up Linux Envionrment 
+## Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
 ### Set up Docker
 1. Create a docker account account: https://docs.docker.com/docker-id/
-2. Install Docker in your Linux Enviornment: https://docs.docker.com/desktop/install/linux-install/
+2. Install Docker in your Linux Environment: https://docs.docker.com/desktop/install/linux-install/
 3. Log in to your Docker account 
     
         Sudo su 
