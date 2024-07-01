@@ -18,7 +18,7 @@
         - [Initialize and Execute](#initialize-and-execute)
         - [Wrapping Up](#wrapping-up)
 
-# **Implementation **
+# Implementation 
 
 ## Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
@@ -80,6 +80,7 @@ Replace the placeholders with your actual data. This will allow you to access a 
 ### Create template and RUNS directories in the shared folder.
 
 1. Download the 'template' directory from this GitHub (link). This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
+
 2. Copy the template directory as the root user. 
    ```bash
    sudo su
@@ -96,10 +97,10 @@ Replace the placeholders with your actual data. This will allow you to access a 
 To make changes for each run, simply adjust the scripts in the template folder as desired and re-run https://github.com/ttrefoni/pm25_docker/blob/run_on_shared/auto_docker_server_new_wait.sh. 
 
 It is highly recommended that you maintain a backup version of the template directory that contains the original version of the scripts:
-```bash
-   sudo su
-   cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
-```
+    ```bash
+    sudo su
+    cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
+    ```
 
 
 ### Identify or Create Docker Image 
@@ -179,34 +180,37 @@ layers = [1, 2, 3]
 To adjust the hyper-parameters for an LSTM model, simply change the range of potential values. This method is intended to be used for LSTM models, but if you would like to train an alternative model with different hyper-parameters you will need to also adjust the following sections of the other scripts:
 
 a. [create_hps_grid.py](template/create_hps_grid.py)
-    ```python 
-    # line 24-28
-    # Create a data frame with all combinations of hyperparameters
-    hps = pd.DataFrame(np.array(np.meshgrid(epoch, batch_size, units1, units2, units3, lrate, layers)).T.reshape(-1, 7), columns=['epoch', 'batch_size', 'units1', 'units2', 'units3', 'lrate', 'layers'])
-    # Give NA values for layers that don't exist
-    hps.loc[hps['layers'] == 1, ['units3', 'units2']] = np.nan
-    hps.loc[hps['layers'] == 2, 'units3'] = np.nan
-    ```
+```python 
+# line 24-28
+# Create a data frame with all combinations of hyperparameters
+hps = pd.DataFrame(np.array(np.meshgrid(epoch, batch_size, units1, units2, units3, lrate, layers)).T.reshape(-1, 7), columns=['epoch', 'batch_size', 'units1', 'units2', 'units3', 'lrate', 'layers'])
+# Give NA values for layers that don't exist
+hps.loc[hps['layers'] == 1, ['units3', 'units2']] = np.nan
+hps.loc[hps['layers'] == 2, 'units3'] = np.nan
+```
 
-b.  [man_hp_grid.py](template/man_hp_grid.py)
-    ```python
-    # line 48
-    # Update available hps--remove any that are already tested from pool
-    hps_available = pd.merge(hps, hps_tested, on=['epoch', 'batch_size', 'units1', 'units2', 'units3', 'lrate', 'layers'], how='outer', indicator=True).query('_merge == "left_only"').drop('_merge', 1)
-    ```
+b.  [man_hp_grid.py](template/man_hp_grid.py)    
+```python
+# line 48
+# Update available hps--remove any that are already tested from pool
+hps_available = pd.merge(hps, hps_tested, on=['epoch', 'batch_size', 'units1', 'units2', 'units3', 'lrate', 'layers'], how='outer', indicator=True).query('_merge == "left_only"').drop('_merge', 1)
+```
 
 c.  The LSTM training scripts:
-    * [LSTM_model_fit_ES.py](template/LSTM_model_fit_ES.py)
-    * [LSTM_model_fit.py](template/LSTM_model_fit.py)
+    
+    a. [LSTM_model_fit_ES.py](template/LSTM_model_fit_ES.py)
+   
+    b. [LSTM_model_fit.py](template/LSTM_model_fit.py)
 
 The above changes will enable you to train any ML model you desire. The Docker image includes everything you need to execute the code and grid search.
 
 ### Initialize and Execute
-1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. 
-   ```bash
-   sudo su
-   /path/to/mountpoint/template/auto_docker_server_new_wait.sh
-   ```
+1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script.
+```bash
+sudo su
+/path/to/mountpoint/template/auto_docker_server_new_wait.sh
+```
+
 2. The script will prompt you for several pieces of information:
 
 Prompt 1: Asks for the publisher name this is equivalent to your Docker username or the Docker username of the owner of the repository you wish to use. 
@@ -259,11 +263,11 @@ Results from each hyper-parameter set are stored in directories with the followi
 ```
 
 3. Throughout the tuning process you can monitor the progress of each run using Docker logs:
-   ```bash
-   sudo su
-   docker ps
-   docker logs <container_id>
-   ```
+```bash
+sudo su
+docker ps
+docker logs <container_id>
+```
    
 The above commands list the active Docker containers and display the logs for the specified container, allowing you to track the progress of the hyper-parameter tuning process.
 
