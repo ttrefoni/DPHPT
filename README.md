@@ -118,6 +118,8 @@ For example, this is the Docker Hub repository for the LSTM used in the example 
 <img width="1014" alt="docker_hub_sc" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/0f034105-a20c-45e4-a146-ec8eeb837564">
 
 #### Option 2: Create your own Docker image
+If you are testing a different model, or would like to adjust the design of the LSTM model included in this example, you will need to build your own Docker image. 
+
 
 1. Create a Dockerfile: 
 A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is included in the template folder.
@@ -134,7 +136,12 @@ A Dockerfile contains the instructions for how to build a Docker image, which is
     COPY LSTM_model_fit.py /LSTM_model_fit.py
     COPY LSTM_model_fit_ES.py /LSTM_model_fit_ES.py
 ```
-This Dockerfile is quite simple. It first sets the Python image to the default Python 3.9 image from Docker Hub, then sets the environment as non-interactive to avoid additional messages related to package installation. It then installs the required packages from the "requirements.txt" file using pip. Finally, it copies the training data and machine learning scripts from the local machine to the Docker container. If you write your own machine learning script, be sure to place them in the "template" folder and adjust the "COPY" lines of the Dockerfile. 
+This Dockerfile is quite simple and carries out the folloiwng: 
+* Sets the Python image to the default Python 3.9 image from Docker Hub, then sets the environment as non-interactive to avoid additional messages related to package installation.
+* Installs the required packages from the "requirements.txt" file using pip.
+* Copies the training data and machine learning scripts from the local machine to the Docker container.
+  
+If you write your own machine learning script, be sure to place them in the "template" folder and adjust the "COPY" lines of the Dockerfile. 
 
 2. Build the Docker Image
    ```bash
