@@ -4,28 +4,30 @@
 The purpose of running multiple hyper-parameter (HP) tuning experiments simultaneously is to decrease the time required to find the optimal combination of hyperparameters for a specified model and training data set. As some of these models can take hours to train and users may want to consider hundreds of combinations of hyperparameters, training multiple sets of hyperparameters simultaneously can save hundreds of hours of computation time. Utilizing Docker, Python, and shell script this process solicits user input of hyperparameters, trains a model for each combination of hyperparameters and calculates metrics and predicted values for each model. Finally, it conducts an early stopping test to determine the optimal number of epochs for the best combination of hyper-parameters. This method was originally developed to tune long short-term memory models using Tensorflow for the purpose of calibrating purple air PM2.5 stations. However, with a few tweaks a similar approach can be taken for other machine learning tasks and models. 
 
 ## Table of Contents
-1. [Project Background](#project-background)
-2. [Table of Contents](#table-of-contents)
-3. [Detailed Implementation Guidance](#detailed-implementation-guidence)
-    - [Set Up Linux Environment](#set-up-linux-environment)
-        - [Set up Docker](#set-up-docker)
-        - [Create a shared, mounted folder](#create-a-shared-mounted-folder)
-    - [Operationalizing Docker Process](#operationalizing-docker-process)
-        - [Create template and RUNS directories](#create-template-and-runs-directories)
-        - [Identify or Create Docker Image](#identify-or-create-docker-image)
-            - [Use an already existing Docker image](#use-an-already-existing-docker-image)
-            - [Create your own Docker image](#create-your-own-docker-image)
-        - [Set desired hyper-parameters](#set-desired-hyper-parameters)
-        - [Initialize and Execute](#initialize-and-execute)
-        - [Wrapping Up](#wrapping-up)
+1. [A Docker Approach to Parallel Hyper-Parameter Tuning](#a-docker-approach-to-parallel-hyper-parameter-tuning)
+2. [Project Background](#project-background)
+3. [Detailed Implementation Guidance](#detailed-implementation-guidance)
+    - [Set Up](#set-up)
+        - [Set Up Linux Environment](#set-up-linux-environment)
+            - [Create a shared, mounted folder so that all Linux machines](#create-a-shared-mounted-folder-so-that-all-linux-machines)
+            - [Create template and RUNS directories in the shared folder](#create-template-and-runs-directories-in-the-shared-folder)
+        - [Set Up Docker](#set-up-docker)
+            - [Create Docker Account](#create-docker-account)
+            - [Identify or Create Docker Image](#identify-or-create-docker-image)
+                - [Option 1: Use an already existing Docker image](#option-1-use-an-already-existing-docker-image)
+                - [Option 2: Create your own Docker image](#option-2-create-your-own-docker-image)
+    - [Set desired hyper-parameters](#set-desired-hyper-parameters)
+    - [Initialize and Execute Using Shell Script](#initialize-and-execute)
+    - [Wrapping Up](#wrapping-up)
 4. [Appendix](#appendix)
-   - [A: List of included Scripts](#section-a-list-of-included-scripts)
-   - [B: intro to tmux](#Section-b-application-of-Tmux)
+    - [Section A, list of included scripts](#section-a-list-of-included-scripts)
+    - [Section B, application of Tmux](#section-b-application-of-tmux)
+
      
 
 # Detailed Implementation Guidance
 
-## Operationalizing Docker Process
+## Set Up
 
 ### Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
@@ -73,7 +75,7 @@ To have the Samba share automatically mounted at boot, you'll edit the `/etc/fst
   	
 Replace the placeholders with your actual data. This will allow you to access a shared folder across all instances. 
 
-### Create template and RUNS directories in the shared folder.
+#### Create template and RUNS directories in the shared folder.
 
 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
 
@@ -156,7 +158,7 @@ This command builds the Docker image on your local machine.
    The Docker image is now hosted on the repository and ready to be pulled by the [shell script](auto_docker_server_new_wait.sh).
    
    
-### Set desired hyper-parameters:
+## Set desired hyper-parameters:
    
 The example model, LSTM, uses the following hyper-parameters:
 
@@ -210,7 +212,7 @@ c.  The LSTM training scripts:
 
 The above changes will enable you to train any ML model you desire. The Docker image includes everything you need to execute the code and grid search.
 
-### Initialize and Execute
+## Initialize and Execute
 1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. This should be done on a local machine or on a seperate remote machine from the large instances in which the models will be trained. 
 ```bash
 sudo su
@@ -283,7 +285,7 @@ The above commands list the active Docker containers and display the logs for th
 As the tuning process can take quite a long time, if the user would like to investigate overall results throughout the tuning process they can run [collate_metrics.py](template/collate_metrics.py to combine all completed tuning results. This can be helpful to review progress. 
 
  
-### Wrapping Up
+## Wrapping Up
 Once all runs are complete, the tuning results will be stored in the shared, mounted folder, at /srv/samba/hp_tune_grid/RUNS/<tune_name>/COLLATE/<tune_name>_col.csv
 
 # Appendix 
