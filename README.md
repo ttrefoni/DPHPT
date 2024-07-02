@@ -319,13 +319,13 @@ Once all runs are complete, the tuning results will be stored in the shared, mou
 # Appendix 
 ## Section A, list of included scripts
 
-1: [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) 
+1. [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) 
 This script is used to initialize the overall hyper-parameter tuning process. It accepts user input over the Docker Image to use, the output location, and the number of tunes to run simultaneously. Next it runs the tuning process, monitors progress, and collects the output metrics. 
     
-2: [create_hps_grid.py](template/create_hps_grid.py)
+2. [create_hps_grid.py](template/create_hps_grid.py)
 This script creates the original hps grid for grid search. By updating the hps set in this script you can adjust the overall hps which will be tested. 
 
-3: [man_hp_grid.py](template/man_hp_grid.py)
+3. [man_hp_grid.py](template/man_hp_grid.py)
 This script is used to track which hyper-parameters have already been tested in order to ensure that a combination of hyper-parameters is not tested more than once. [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) will call this script throughout the tuning process to manage the .csv files which track which hyperparameters have already been tested and which are still available. 
     
 4. [compare_col_w_aval.py](template/compare_col_w_aval.py)
