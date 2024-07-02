@@ -155,7 +155,7 @@ This command builds the Docker image on your local machine.
    The Docker image is now hosted on the repository and ready to be pulled by the [shell script](auto_docker_server_new_wait.sh).
    
    
-#### Set desired hyper-parameters:
+### Set desired hyper-parameters:
    
 The example model, LSTM, uses the following hyper-parameters:
 
