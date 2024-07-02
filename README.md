@@ -155,7 +155,7 @@ This Dockerfile is quite simple and carries out the folloiwng:
   
 If you write your own machine learning script, be sure to place them in the "template" folder and adjust the "COPY" lines of the Dockerfile. 
 
-Note--Ensure that your training data is in the same directory as your Dockerfile. Adjust the file path to your training and testing data to match that in the machine learning script. 
+Note--Ensure that your training data is in the same directory as your Dockerfile under a directory named 'data.' Adjust the file path to your training and testing data to match that in the machine learning script. 
 
 For example: 
 [LSTM_current.py](template/LSTM_current.py)
@@ -235,9 +235,8 @@ b.  [man_hp_grid.py](template/man_hp_grid.py)
 # Update available hps--remove any that are already tested from pool
 hps_available = pd.merge(hps, hps_tested, on=['epoch', 'batch_size', 'units1', 'units2', 'units3', 'lrate', 'layers'], how='outer', indicator=True).query('_merge == "left_only"').drop('_merge', 1)
 ```
-
-# How to Change ML model 
-To change the model you are using, replace the LSTM training scripts with your machine learning logic. 
+c. Model Training Scripts: 
+Adjust these scripts to train your desired model and hyper-parameters. 
 - The base script, used for tuning all hyperparameters other than epoch:
     - [LSTM_model_fit.py](template/LSTM_model_fit.py)
 - The Early Stopping (ES) script, used to determine the ideal number of hyperparameters:
