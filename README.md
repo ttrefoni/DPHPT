@@ -241,32 +241,32 @@ ttrefogmu
 
 Prompt 2: Equivalent to the Docker "tag" 
 ```bash
-Enter the version number:
+>> Enter the version number:
 ```
 
 Sample response:
 ```bash
-v6
+>> v6
 ```
 
 Prompt 3: The output directory, which will be located at "/srv/samba/hp_tune_grid/RUNS/<tune_name>"
 ```bash
-Enter tune name (output directory)
+>> Enter tune name (output directory)
 ```
 
 Sample response:
 ```bash
-lstm_tune_run_v1
+>> lstm_tune_run_v1
 ```
 
 Prompt 4: The number of containers to run at once on each instance. The optimal number of tunes will be determined by the computing power available on your instance, the complexity of your model, and the size of your training dataset
 ```bash
-Enter number (int) of tunes to run at once on each instance:
+>> Enter number (int) of tunes to run at once on each instance:
 ```
 
 Sample response:
 ```bash
-20
+>> 20
 ```
 
 
