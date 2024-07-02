@@ -202,9 +202,10 @@ hps_available = pd.merge(hps, hps_tested, on=['epoch', 'batch_size', 'units1', '
 ```
 
 c.  The LSTM training scripts:
-    - [LSTM_model_fit_ES.py](template/LSTM_model_fit_ES.py)
+   
+- [LSTM_model_fit_ES.py](template/LSTM_model_fit_ES.py)
     
-    - [LSTM_model_fit.py](template/LSTM_model_fit.py)
+- [LSTM_model_fit.py](template/LSTM_model_fit.py)
 
 The above changes will enable you to train any ML model you desire. The Docker image includes everything you need to execute the code and grid search.
 
