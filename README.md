@@ -32,6 +32,12 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
 
 # Detailed Implementation Guidance
 
+## Prerequisites
+
+1. One or more Linux instances that can be accessed through an SSH command using a .pem file.
+2. A local machine capable of running shell scirpt. Mac and Linux machines can natively run shell script but Windows users will need to install a Windows Subsystem for Linux. [See appendix B](#sample-training-data)
+3. A relevent training dataset designed for use with an appropriate machine learning model. This repository includes some sample training data for use with an LSTM model. 
+
 ## Set Up
 
 ### Set Up Linux Environment 
