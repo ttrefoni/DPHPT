@@ -158,7 +158,15 @@ If you write your own machine learning script, be sure to place them in the "tem
 Note--Ensure that your training data is in the same directory as your Dockerfile. Adjust the file path to your training and testing data to match that in the machine learning script. 
 
 For example: 
-[LSTM
+[LSTM_current.py](template/LSTM_current.py)
+```bash
+# Read in training data
+X_train = np.load("data/updt_seq_npy_arrays_80_20/x_train.npy")
+X_test = np.load("data/updt_seq_npy_arrays_80_20/x_test.npy")
+y_train = np.load("data/updt_seq_npy_arrays_80_20/y_train.npy")
+y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
+```
+
 
 2. Build the Docker Image
    ```bash
