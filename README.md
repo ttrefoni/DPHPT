@@ -338,3 +338,7 @@ Becuase the hyper-parameter tuning process can take several days, it is highly r
 [Documentation for tmux](https://github.com/tmux/tmux/wiki)
 
 [Helpful Quick Start guide](https://www.redhat.com/sysadmin/introduction-tmux-linux#:~:text=You%20can%20detach%20from%20your,detach%20from%20the%20current%20session.)
+
+## Section C, FAQs
+1. Is it possible to run this proces in Windows or Mac computing enviornments?
+This process was designed to be run on networked linux machines. You may need to adjust certain aspects of the process such as mounting a shared folder using Samba to run tuning on Windows or Mac. It is possible to run the included shell script which manages the training process on Windows or Mac. On a Windows machine you will likely need to isntall a [Windows Subsystem for Linux (WSL)](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://learn.microsoft.com/en-us/windows/wsl/install&ved=2ahUKEwjBh8CF4IiHAxUpGVkFHQgZCSYQFnoECBgQAQ&usg=AOvVaw3NDNYJVUKnKqnP9DjgAR3M) to successfully run shell scripts. 
