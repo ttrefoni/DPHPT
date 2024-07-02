@@ -33,7 +33,7 @@ The purpose of running multiple hyper-parameter (HP) tuning experiments simultan
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
 
 #### Create a shared, mounted folder so that all Linux machines:
-If you have multiple instances where you want to run experiments, all machines need to be able to read the necessary Python scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is included below, but more information is available at [Samba Wiki](https://wiki.samba.org/index.php/Main_Page).
+If you have multiple instances where you want to run experiments, all machines need to be able to read the necessary Python scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is included below, but more information is available at [Samba Wiki](https://wiki.samba.org/index.php/Main_Page). If you plan to only use one machine, this step is not neccessary. 
 
 For each Linux instance: 
 
@@ -79,7 +79,7 @@ Replace the placeholders with your actual data. This will allow you to access a 
 
 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
 
-2. Copy the template directory as the root user. 
+2. If you are using mulitple machines, copy the template directory as the root user to the shared directory created in the previous step. If you are not using multiple machines, simply copy to your working directory. 
    ```bash
    sudo su
    cp -r /path/to/template/ /path/to/mountpoint/template
