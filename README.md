@@ -220,6 +220,16 @@ c.  The LSTM training scripts:
 The above changes will enable you to train any ML model you desire. The Docker image includes everything you need to execute the code and grid search.
 
 ## Initialize and Execute
+### Set up Shell script 
+Adjust the following lines in the included shell script [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) to reflect your .pem file to access those servers and the ip adress of your servers. 
+
+```bash
+# Define the list of Linux instances
+INSTANCES=("user@IP_Address1" "user@IP_Address2" "user@IP_Address3"...)
+# Define pem location
+pem="/path/to/.pem"
+```
+
 1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. This should be done on a local machine or on a seperate remote machine from the large instances in which the models will be trained. 
 ```bash
 sudo su
