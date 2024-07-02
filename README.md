@@ -210,10 +210,11 @@ c.  The LSTM training scripts:
 The above changes will enable you to train any ML model you desire. The Docker image includes everything you need to execute the code and grid search.
 
 ### Initialize and Execute
-1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script.
+1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. This should be done on a local machine or on a seperate remote machine from the large instances in which the models will be trained. 
 ```bash
 sudo su
-/path/to/mountpoint/template/auto_docker_server_new_wait.sh
+chmod +x /path/to/auto_docker_server_new_wait.sh
+/path/to/auto_docker_server_new_wait.sh
 ```
 
 2. The script will prompt you for several pieces of information:
@@ -225,7 +226,7 @@ Enter the publisher name:
 
 Sample response: 
 ```bash
-ttregogmu
+ttrefogmu
 ```
 
 Prompt 2: Equivalent to the Docker "tag" 
