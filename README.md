@@ -20,9 +20,11 @@ The purpose of running multiple hyper-parameter (HP) tuning experiments simultan
     - [Initialize and Execute Using Shell Script](#initialize-and-execute)
     - [Wrapping Up](#wrapping-up)
 4. [Appendix](#appendix)
-    - [Section A, list of included scripts](#section-a-list-of-included-scripts)
-    - [Section B, application of Tmux](#section-b-application-of-tmux)
-    - [Section C, FAQs](#Section-C-FAQs)
+    - [Section A, List of included scripts](#section-a-list-of-included-scripts)
+    - [Section B, Sample Trainin Data](#sample-training-data)
+    - [Section C, Application of Tmux](#section-b-application-of-tmux)
+    - [Section D, FAQs](#Section-C-FAQs)
+    -
 
      
 
@@ -333,14 +335,19 @@ Once all runs are complete, the tuning results will be stored in the shared, mou
 8. [LSTM_current_ES.py](template/LSTM_current_ES.py)
    This script trains the LSTM with the best combination of hyper-parameters (by RSquared) using an early stopping method to determine the optimal number of epochs. 
     
-## Section B, application of Tmux
+## Section B, Application of Tmux
 Becuase the hyper-parameter tuning process can take several days, it is highly recommended to run [autodocker_server_new_wait.sh](autodocker_server_new_wait.sh) in a detached terminal to avoid losing work if the terminal it is being ran on becomes disconnected. It is even better to run this shell script on a dedicated remote machine. One common way to run processes in the background is to use tmux. 
 
 [Documentation for tmux](https://github.com/tmux/tmux/wiki)
 
 [Helpful Quick Start guide](https://www.redhat.com/sysadmin/introduction-tmux-linux#:~:text=You%20can%20detach%20from%20your,detach%20from%20the%20current%20session.)
 
-## Section C, FAQs
+## Section C, Sample Training Data
+Included on this repo is a folder with sample training data for the base LSTM model. This data is incldued so the user can test and explore the application of this Docker based Hyper-parameter tuning tool. 
+
+This training data is intended to calibrate Purple Air sensors to regulatory performance. The covariates include Purple Air readings, relative humidty,and temperature. For the LSTM they are organized into numpy arrays with the shape [n,24,3] for input data and [n] for predicted data, where 3 is the number of covariates and 24 is the number of hours included in each sequence. No further pre-processing is needed to use this data for hyper-parameter tuning. 
+
+## Section D, FAQs
 1. Is it possible to run this proces in Windows or Mac computing enviornments?
    
 This process was designed to be run on networked linux machines. You may need to adjust certain aspects of the process such as mounting a shared folder using Samba to run tuning on Windows or Mac. It is possible to run the included shell script which manages the training process on Windows or Mac. On a Windows machine you will likely need to isntall a [Windows Subsystem for Linux (WSL)](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://learn.microsoft.com/en-us/windows/wsl/install&ved=2ahUKEwjBh8CF4IiHAxUpGVkFHQgZCSYQFnoECBgQAQ&usg=AOvVaw3NDNYJVUKnKqnP9DjgAR3M) to successfully run shell scripts. 
