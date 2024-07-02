@@ -25,20 +25,12 @@ The purpose of running multiple hyper-parameter (HP) tuning experiments simultan
 
 # Detailed Implementation Guidance
 
-## Set Up Linux Environment 
+## Operationalizing Docker Process
+
+### Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
 
-### Set up Docker
-1. Create a Docker account: https://docs.docker.com/docker-id/
-2. Install Docker in your Linux environment: https://docs.docker.com/desktop/install/linux-install/
-3. Log in to your Docker account 
-    
-    ```bash
-    sudo su 
-    docker login
-    ```
-
-### Create a shared, mounted folder so that all Linux machines:
+#### Create a shared, mounted folder so that all Linux machines:
 If you have multiple instances where you want to run experiments, all machines need to be able to read the necessary Python scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is included below, but more information is available at [Samba Wiki](https://wiki.samba.org/index.php/Main_Page).
 
 For each Linux instance: 
@@ -81,7 +73,6 @@ To have the Samba share automatically mounted at boot, you'll edit the `/etc/fst
   	
 Replace the placeholders with your actual data. This will allow you to access a shared folder across all instances. 
 
-## Operationalizing Docker Process
 ### Create template and RUNS directories in the shared folder.
 
 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
@@ -107,7 +98,17 @@ It is highly recommended that you maintain a backup version of the template dire
     cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
     ```
 
+## Set up Docker
 
+### Create Docker Account 
+1. Create a Docker account: https://docs.docker.com/docker-id/
+2. Install Docker in your Linux environment: https://docs.docker.com/desktop/install/linux-install/
+3. Log in to your Docker account 
+    
+    ```bash
+    sudo su 
+    docker login
+    ```
 ### Identify or Create Docker Image 
 
 #### Option 1: Use an already existing Docker image: 
