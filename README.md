@@ -20,10 +20,10 @@ The purpose of running multiple hyper-parameter (HP) tuning experiments simultan
         - [Wrapping Up](#wrapping-up)
 4. [Appendix](#appendix)
    - [A: List of included Scripts](#section-a-list-of-included-scripts)
-   - [B: intro to tmux](#Section-b-applicaiton-of-Tmux)
+   - [B: intro to tmux](#Section-b-application-of-Tmux)
      
 
-# Detailed Implementation Guidence
+# Detailed Implementation Guidance
 
 ## Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
@@ -288,13 +288,13 @@ Once all runs are complete, the tuning results will be stored in the shared, mou
 ## Section A, list of included scripts
 
 1: [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) 
-    This script is used to initilaize the overall hyper-parameter tuning process. It accepts user input over the Docker Image to use, the output location, and the number of tunes to run simultaneously. Next it runs the tuning process, monitors progress, and collects the output metrics. 
+    This script is used to initialize the overall hyper-parameter tuning process. It accepts user input over the Docker Image to use, the output location, and the number of tunes to run simultaneously. Next it runs the tuning process, monitors progress, and collects the output metrics. 
 
 2: [create_hps_grid.py](template/create_hps_grid.py)
     This script creates the original hps grid for grid search. By updating the hps set in this script you can adjust the overall hps which will be tested. 
     
 2: [man_hp_grid.py](template/man_hp_grid.py)
-    This script is used to track which hyper-parameters have already been tested in order to ensure that a combinaiton of hyper-parameters is not tested more than once. [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) will call this script throughout the tuning process to manage the .csv files which track which hyperparameters have already been tested and which are still available. 
+    This script is used to track which hyper-parameters have already been tested in order to ensure that a combination of hyper-parameters is not tested more than once. [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) will call this script throughout the tuning process to manage the .csv files which track which hyperparameters have already been tested and which are still available. 
 
 3. [compare_col_w_aval.py](template/compare_col_w_aval.py)
     This script is used in [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) to check the hps_tested against those that are output in from [collate_metrics.py](template/collate_metrics.py). This helps to resolve issues that would come up if the tuning process gets interrupted. This script compares the potential hyperparameter combinations with those that have already been completed.
@@ -311,9 +311,9 @@ Once all runs are complete, the tuning results will be stored in the shared, mou
 8. [LSTM_current_ES.py](template/LSTM_current_ES.py)
    This script trains the LSTM with the best combination of hyper-parameters (by RSquared) using an early stopping method to determine the optimal number of epochs. 
     
-## Section B, applicaiton of Tmux
-Becuase the hyper-parameter tuning process can take several days, it is highly reccomended to run [autodocker_server_new_wait.sh](autodocker_server_new_wait.sh) in a detached terminal to avoid losing work if the terminal it is being ran on becomes disconnected. It is even better to run this shell script on a dedicated remote machine. One common way to run processes in the background is to use tmux. 
+## Section B, application of Tmux
+Becuase the hyper-parameter tuning process can take several days, it is highly recommended to run [autodocker_server_new_wait.sh](autodocker_server_new_wait.sh) in a detached terminal to avoid losing work if the terminal it is being ran on becomes disconnected. It is even better to run this shell script on a dedicated remote machine. One common way to run processes in the background is to use tmux. 
 
-[Documentaion for tmux](https://github.com/tmux/tmux/wiki)
+[Documentation for tmux](https://github.com/tmux/tmux/wiki)
 
 [Helpful Quick Start guide](https://www.redhat.com/sysadmin/introduction-tmux-linux#:~:text=You%20can%20detach%20from%20your,detach%20from%20the%20current%20session.)
