@@ -53,8 +53,10 @@ os.makedirs(output_directories[0], exist_ok=True)
 # Dynamic starting port
 dynamic_starting_port = 110
 
-# create docker file
-with open('/home/ubuntu/LSTM_PY/docker-compose.yml', 'w') as compose_file:
+compose_dir=f'{grid_file}/compose_files/{hostname}/'
+
+# create docker file for es 
+with open('{compose_dir}docker-compose.yml', 'w') as compose_file:
     compose_file.write('version: \'3\'\n\nservices:\n')
 
     service_name = f'{tune_name}'  # Use the custom container name provided by the user

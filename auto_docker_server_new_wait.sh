@@ -121,14 +121,16 @@ while [ $hp_aval_ct -gt 1 ]; do
   done
 
   for INSTANCE in "${INSTANCES[@]}"; do
-    commands="
-      export DOCKER_NAME=\"$docker_name\";
-      cd /home/ubuntu/LSTM_PY/; 
-      sudo docker pull \$DOCKER_NAME; 
-      sudo docker compose up --remove-orphans --detach; 
-    "
-    echo "Activating Docker on $INSTANCE..."
-    ssh -i $pem "$INSTANCE" "$commands"
+      commands="
+        export DOCKER_NAME=\"$docker_name\";
+        hostname=\$(hostname);
+        echo \$hostname;
+        cd $directory/compose_files/\$hostname; 
+        sudo docker pull \$DOCKER_NAME; 
+        sudo docker compose up --remove-orphans --detach; 
+      "
+      echo "Activating Docker on $INSTANCE..."
+      ssh -i $pem "$INSTANCE" "$commands"
   done
   
   check_containers
