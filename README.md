@@ -84,7 +84,7 @@ Replace the placeholders with your actual data. This will allow you to access a 
 ## Operationalizing Docker Process
 ### Create template and RUNS directories in the shared folder.
 
-1. Download the 'template' directory from this GitHub (link). This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
+1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
 
 2. Copy the template directory as the root user. 
    ```bash
