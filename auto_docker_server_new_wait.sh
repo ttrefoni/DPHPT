@@ -19,9 +19,9 @@ echo "Enter number (int) of tunes to run at once on each instance:"
 read num_tunes
 
 # Define the list of Linux instances
-INSTANCES=("ubuntu@10.192.20.214" "ubuntu@10.192.20.246" "ubuntu@10.192.20.217")
-# Define pem 
-pem="/home/cisc/TheoT10.pem"
+INSTANCES=("user@IP_Address1" "user@IP_Address2" "user@IP_Address3"...)
+# Define pem location
+pem="/path/to/.pem"
 
 # Create working directory for hps
 directory="/srv/samba/hp_tune_grid/RUNS/$tune_name"
@@ -34,7 +34,7 @@ if ssh -i "$pem" "${INSTANCES[0]}" "[ ! -d \"$directory\" ]"; then
     chmod -R 0777 $directory 
     echo 'Creating new working directory'
   "
-  ssh -i "$pem" "ubuntu@10.192.20.214" "$commands" || { echo "Failed to create directory"; exit 1; }
+  ssh -i "$pem" "${INSTANCES[0]}" "$commands" || { echo "Failed to create directory"; exit 1; }
 fi
 
 # Define your Python scripts and Docker container
