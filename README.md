@@ -315,13 +315,53 @@ Results from each hyper-parameter set are stored in directories with the followi
 ```
 
 3. Throughout the tuning process you can monitor the progress of each run using Docker logs:
+
+First connect to the Linux instance or instances in which the containers are hosted. 
+
+Then check which docker containers are currently running:
 ```bash
 sudo su
 docker ps
-docker logs <container_id>
 ```
-   
-The above commands list the active Docker containers and display the logs for the specified container, allowing you to track the progress of the hyper-parameter tuning process.
+
+The output should look something like:
+```bash
+root@lstm-pm25:/home/ubuntu# docker ps 
+CONTAINER ID   IMAGE                   COMMAND                  CREATED        STATUS        PORTS                                     NAMES
+0ba2c26f412e   ttrefogmu/pm25_pub:v6   "python3 /LSTM_model…"   26 hours ago   Up 26 hours   0.0.0.0:100->8787/tcp, :::100->8787/tcp   lstm_py-lstm-pm25_v5_try_container20-1
+a7fc44911240   ttrefogmu/pm25_pub:v6   "python3 /LSTM_model…"   26 hours ago   Up 26 hours   0.0.0.0:97->8787/tcp, :::97->8787/tcp     lstm_py-lstm-pm25_v5_try_container17-1
+97d50804d2e7   ttrefogmu/pm25_pub:v6   "python3 /LSTM_model…"   26 hours ago   Up 26 hours   0.0.0.0:89->8787/tcp, :::89->8787/tcp     lstm_py-lstm-pm25_v5_try_container9-1
+bc6b8232fec6   ttrefogmu/pm25_pub:v6   "python3 /LSTM_model…"   26 hours ago   Up 26 hours   0.0.0.0:82->8787/tcp, :::82->8787/tcp     lstm_py-lstm-pm25_v5_try_container2-1
+9d445259985d   ttrefogmu/pm25_pub:v6   "python3 /LSTM_model…"   26 hours ago   Up 26 hours   0.0.0.0:90->8787/tcp, :::90->8787/tcp     lstm_py-lstm-pm25_v5_try_container10-1
+```
+
+Finally, check the logs of a container to monitor its progress. 
+```bash
+docker logs <container id> -t
+```
+
+The output should look something like: 
+```bash
+root@lstm-pm25:/home/ubuntu# docker logs 97d50804d2e7 -t
+2024-07-02T13:49:41.054948450Z 40 128 200 None None 1e-05 1
+2024-07-02T13:49:41.054987347Z Fold 1/3
+2024-07-02T13:49:41.054991827Z Epoch 1/40
+3185/3185 [==============================] - 848s 265ms/step - loss: 122.9707 - root_mean_squared_error: 11.0892 - val_loss: 85.8038 - val_root_mean_squared_error: 9.2630 - lr: 1.0000e-05
+2024-07-02T14:03:49.348781263Z Epoch 2/40
+3185/3185 [==============================] - 831s 261ms/step - loss: 77.3939 - root_mean_squared_error: 8.7974 - val_loss: 73.1080 - val_root_mean_squared_error: 8.5503 - lr: 1.0000e-05
+2024-07-02T14:17:40.333591727Z Epoch 3/40
+3185/3185 [==============================] - 844s 265ms/step - loss: 66.7594 - root_mean_squared_error: 8.1706 - val_loss: 64.8411 - val_root_mean_squared_error: 8.0524 - lr: 1.0000e-05
+```
+
+You can also view all of the containers' logs, provided you are in the directory containing the docker-compose.yml 
+
+```bash
+cd /srv/samba/hp_tune_grid/RUNS/<run_name>/compose_files/<hostname>
+docker compose logs -t
+```
+
+This can be somewhat difficult to read as resutls from many contianers will be printed. 
+
 
 4. Once all combinations have been tested, the shell script will run [collate_metrics.py](template/collate_metrics.py) which collects all of the output metrics from each hyper-parameter combination into a single csv file.
 
