@@ -20,6 +20,7 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
                 - [Option 2: Create your own Docker image](#option-2-create-your-own-docker-image)
     - [Set desired hyper-parameters](#set-desired-hyper-parameters)
     - [Initialize and Execute Using Shell Script](#initialize-and-execute)
+    - [Check Progress using Docker Logs](#Check-Progress-of-tuning-using-docker-logs)
     - [Wrapping Up](#wrapping-up)
 4. [Appendix](#appendix)
     - [Section A, List of included scripts](#section-a-list-of-included-scripts)
@@ -314,7 +315,7 @@ Results from each hyper-parameter set are stored in directories with the followi
 /srv/samba/hp_tune_grid/RUNS/<tune_name>/output_py/TUNING/<host_short_name>/hprun_split_container_<containerID>_<num_tunes>
 ```
 
-3. Throughout the tuning process you can monitor the progress of each run using Docker logs:
+### Check Progress of Tuning using Docker Logs 
 
 First connect to the Linux instance or instances in which the containers are hosted. 
 
