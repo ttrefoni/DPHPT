@@ -191,7 +191,7 @@ This command builds the Docker image on your local machine.
    The Docker image is now hosted on the repository and ready to be pulled by the [shell script](auto_docker_server_new_wait.sh).
    
    
-## Set desired hyper-parameters:
+## Part Two: Set desired hyper-parameters
    
 The example model, LSTM, uses the following hyper-parameters:
 
@@ -246,7 +246,7 @@ Adjust these scripts to train your desired model and hyper-parameters.
 
 
 
-## Initialize and Execute
+## Part 3: Initialize and Execute
 ### Set up Shell script 
 Adjust the following lines in the included shell script [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) to reflect your .pem file to access those servers and the ip adress of your servers. 
 
@@ -325,7 +325,7 @@ Results from each hyper-parameter set are stored in directories with the followi
 /srv/samba/hp_tune_grid/RUNS/<tune_name>/output_py/TUNING/<host_short_name>/hprun_split_container_<containerID>_<num_tunes>
 ```
 
-### Check Progress of Tuning using Docker Logs 
+### Part 4: Check Progress of Tuning using Docker Logs 
 To check the progress of your tuning process, you can use the Docker logs command. 
 
 First connect to the Linux instance or instances in which the containers are hosted. 
@@ -375,7 +375,7 @@ docker compose logs -t
 This can be somewhat difficult to read as resutls from many contianers will be printed. 
 
  
-## Wrapping Up
+## Part 5: Wrapping Up
 
 Once all combinations have been tested, the shell script will run [collate_metrics.py](template/collate_metrics.py) which collects all of the output metrics from each hyper-parameter combination into a single csv file. The tuning results will be stored in the shared, mounted folder, at /srv/samba/hp_tune_grid/RUNS/<tune_name>/COLLATE/<tune_name>_col.csv
 
