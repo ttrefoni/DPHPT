@@ -20,6 +20,8 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
                 - [Option 2: Create your own Docker image](#option-2-create-your-own-docker-image)
     - [Part 2: Set Desired Hyper-Parameters](#part-2-set-desired-hyper-parameters)
     - [Part 3: Initialize and Execute Using Shell Script](#part-3-initialize-and-execute-using-shell-script)
+        - [A. Set Up Shell Script](A-set-up-shell-script)
+        - [B. Run Shell Script](B-run-shell-script)
     - [Part 4: Check Progress Using Docker Logs](#part-4-check-progress-using-docker-logs)
     - [Part 5: Wrapping Up](#part-5-wrapping-up)
 4. [Appendix](#appendix)
@@ -244,7 +246,7 @@ Adjust these scripts to train your desired model and hyper-parameters.
 
 
 ## Part 3: Initialize and Execute
-### Set up Shell script 
+### A: Set up Shell script 
 Adjust the following lines in the included shell script [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) to reflect your .pem file to access those servers and the ip adress of your servers. 
 
 ```bash
@@ -253,6 +255,8 @@ INSTANCES=("user@IP_Address1" "user@IP_Address2" "user@IP_Address3"...)
 # Define pem location
 pem="/path/to/.pem"
 ```
+
+### B: Run  Shell script 
 
 1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. This should be done on a local machine or on a seperate remote machine from the large instances in which the models will be trained. 
 ```bash
