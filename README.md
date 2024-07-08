@@ -8,12 +8,13 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
 ## Table of Contents
 1. [A Docker Approach to Parallel Hyper-Parameter Tuning](#a-docker-approach-to-parallel-hyper-parameter-tuning)
 2. [Project Background](#project-background)
-3. [Detailed Implementation Guidance](#detailed-implementation-guidance)
+3. [Implementation Guidance](#detailed-implementation-guidance)
     - [Part 1: Set Up](#part-1-set-up)
-        - [A. Set Up Linux Environment](#a-set-up-linux-environment)
+        - [A. Prerequisites](#A-Prerequisites)
+        - [B. Set Up Linux Environment](#b-set-up-linux-environment)
             - [i. Create a shared, mounted folder so that all Linux machines](#i-create-a-shared-mounted-folder-so-that-all-linux-machines)
             - [ii. Create template and RUNS directories in the shared folder](#ii-create-template-and-runs-directories-in-the-shared-folder)
-        - [B. Set Up Docker](#b-set-up-docker)
+        - [C. Set Up Docker](#c-set-up-docker)
             - [i. Create Docker Account](#i-create-docker-account)
             - [ii. Identify or Create Docker Image](#ii-identify-or-create-docker-image)
                 - [Option 1: Use an already existing Docker image](#option-1-use-an-already-existing-docker-image)
@@ -30,7 +31,7 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
     - [Section C: Application of Tmux](#section-c-application-of-tmux)
     - [Section D: FAQs](#section-d-faqs)     
 
-# Detailed Implementation Guidance
+# Implementation Guidance
 
 ## Prerequisites
 
