@@ -116,10 +116,12 @@ It is highly recommended that you maintain a backup version of the template dire
 
 ## 1.B Set up Docker
 
+In order to run the hyper-parameter tuning procecess you will need to first create a docker account, then log into Docker on each instance, and either create a custom Docker image or use the default repository provided. 
+
 ### 1.B.i Create Docker Account 
 1. Create a Docker account: https://docs.docker.com/docker-id/
 2. Install Docker in your Linux environment: https://docs.docker.com/desktop/install/linux-install/
-3. Log in to your Docker account 
+3. Log in to your Docker account on each instnace you intend to use. 
     
     ```bash
     sudo su 
