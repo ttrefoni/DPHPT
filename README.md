@@ -9,19 +9,19 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
 1. [A Docker Approach to Parallel Hyper-Parameter Tuning](#a-docker-approach-to-parallel-hyper-parameter-tuning)
 2. [Project Background](#project-background)
 3. [Detailed Implementation Guidance](#detailed-implementation-guidance)
-    - [Set Up](#set-up)
-        - [Set Up Linux Environment](#set-up-linux-environment)
-            - [Create a shared, mounted folder so that all Linux machines](#create-a-shared-mounted-folder-so-that-all-linux-machines)
-            - [Create template and RUNS directories in the shared folder](#create-template-and-runs-directories-in-the-shared-folder)
-        - [Set Up Docker](#set-up-docker)
-            - [Create Docker Account](#create-docker-account)
-            - [Identify or Create Docker Image](#identify-or-create-docker-image)
+    - [Part 1: Set Up](#set-up)
+        - [A. Set Up Linux Environment](#set-up-linux-environment)
+            - [i. Create a shared, mounted folder so that all Linux machines](#create-a-shared-mounted-folder-so-that-all-linux-machines)
+            - [ii. Create template and RUNS directories in the shared folder](#create-template-and-runs-directories-in-the-shared-folder)
+        - [B. Set Up Docker](#set-up-docker)
+            - [i. Create Docker Account](#create-docker-account)
+            - [ii. Identify or Create Docker Image](#identify-or-create-docker-image)
                 - [Option 1: Use an already existing Docker image](#option-1-use-an-already-existing-docker-image)
                 - [Option 2: Create your own Docker image](#option-2-create-your-own-docker-image)
-    - [Set desired hyper-parameters](#set-desired-hyper-parameters)
-    - [Initialize and Execute Using Shell Script](#initialize-and-execute)
-    - [Check Progress using Docker Logs](#Check-Progress-of-tuning-using-docker-logs)
-    - [Wrapping Up](#wrapping-up)
+    - [Part 2: Set desired hyper-parameters](#set-desired-hyper-parameters)
+    - [Part 3: Initialize and Execute Using Shell Script](#initialize-and-execute)
+    - [Part 4: Check Progress using Docker Logs](#Check-Progress-of-tuning-using-docker-logs)
+    - [Part 5: Wrapping Up](#wrapping-up)
 4. [Appendix](#appendix)
     - [Section A, List of included scripts](#section-a-list-of-included-scripts)
     - [Section B, Sample Trainin Data](#sample-training-data)
@@ -40,12 +40,12 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
 3. A relevent training dataset designed for use with an appropriate machine learning model. This repository includes some sample training data for use with an LSTM model.
 4. Basic knowledge of how to train and test deep learning models. 
 
-## Set Up
+## Part One: Set Up
 
-### Set Up Linux Environment 
+### 1.A: Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
 
-#### Create a shared, mounted folder so that all Linux machines:
+#### 1.A.i: Create a shared, mounted folder so that all Linux machines:
 If you have multiple instances where you want to run experiments, all machines need to be able to read the necessary Python scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is included below, but more information is available at [Samba Wiki](https://wiki.samba.org/index.php/Main_Page). If you plan to only use one machine, this step is not neccessary. 
 
 For each Linux instance: 
@@ -88,7 +88,7 @@ To have the Samba share automatically mounted at boot, you'll edit the `/etc/fst
   	
 Replace the placeholders with your actual data. This will allow you to access a shared folder across all instances. 
 
-#### Create template and RUNS directories in the shared folder.
+#### 1.A.ii Create template and RUNS directories in the shared folder.
 
 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
 
@@ -113,9 +113,9 @@ It is highly recommended that you maintain a backup version of the template dire
     cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
     ```
 
-## Set up Docker
+## 1.B Set up Docker
 
-### Create Docker Account 
+### 1.B.i Create Docker Account 
 1. Create a Docker account: https://docs.docker.com/docker-id/
 2. Install Docker in your Linux environment: https://docs.docker.com/desktop/install/linux-install/
 3. Log in to your Docker account 
@@ -124,7 +124,7 @@ It is highly recommended that you maintain a backup version of the template dire
     sudo su 
     docker login
     ```
-### Identify or Create Docker Image 
+### 1.B.ii Identify or Create Docker Image 
 
 #### Option 1: Use an already existing Docker image: 
 For example, this is the Docker Hub repository for the LSTM used in the example below, if you pull the below image (, the included Dockerfile will run properly as is. 
