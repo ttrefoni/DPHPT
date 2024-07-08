@@ -127,7 +127,7 @@ It is highly recommended that you maintain a backup version of the template dire
 ### Identify or Create Docker Image 
 
 #### Option 1: Use an already existing Docker image: 
-For example, this is the Docker Hub repository for the LSTM used in the example below, if you pull this image, the included Dockerfile will run properly as is. 
+For example, this is the Docker Hub repository for the LSTM used in the example below, if you pull the below image (, the included Dockerfile will run properly as is. 
 <img width="1014" alt="docker_hub_sc" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/0f034105-a20c-45e4-a146-ec8eeb837564">
 
 #### Option 2: Create your own Docker image
@@ -266,7 +266,7 @@ chmod +x /path/to/auto_docker_server_new_wait.sh
 
 2. The script will prompt you for several pieces of information:
 
-Prompt 1: Asks for the publisher name this is equivalent to your Docker username or the Docker username of the owner of the repository you wish to use. 
+Prompt 1: The publisher name, this is equivalent to your Docker username or the Docker username of the owner of the repository you wish to use. 
 ```bash
 Enter the publisher name:
 ```
@@ -276,7 +276,17 @@ Sample response:
 ttrefogmu
 ```
 
-Prompt 2: Equivalent to the Docker "tag" 
+Prompt 2: The docker repository name,  the repository you have either selected or created, to use the example repository enter the following. 
+```bash
+>>Enter the repository name:
+```
+
+Sample Response:
+```bash
+pm25_pub
+```
+
+Prompt 3: The version number, equivalent to the Docker "tag" 
 ```bash
 >> Enter the version number:
 ```
@@ -286,7 +296,7 @@ Sample response:
 >> v6
 ```
 
-Prompt 3: The output directory, which will be located at "/srv/samba/hp_tune_grid/RUNS/<tune_name>"
+Prompt 4: The output directory, which will be located at "/srv/samba/hp_tune_grid/RUNS/<tune_name>"
 ```bash
 >> Enter tune name (output directory)
 ```
