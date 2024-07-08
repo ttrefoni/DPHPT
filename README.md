@@ -267,7 +267,7 @@ chmod +x /path/to/auto_docker_server_new_wait.sh
 /path/to/auto_docker_server_new_wait.sh
 ```
 
-2. The script will prompt you for several pieces of information:
+2. The script will prompt you for several pieces of information. The sample responses provided link to an image to run the example LSTM model. 
 
 Prompt 1: The publisher name, this is equivalent to your Docker username or the Docker username of the owner of the repository you wish to use. 
 ```bash
