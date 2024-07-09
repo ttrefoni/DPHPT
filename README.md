@@ -91,15 +91,17 @@ Replace the placeholders with your actual data. This will allow you to access a 
 
 #### 1.A.ii Create template and RUNS directories in the shared folder.
 
-1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. Running the included shell script will copy this directory into a new folder for each run that you initialize. 
+1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid.
 
-2. If you are using mulitple machines, copy the template directory as the root user to the shared directory created in the previous step. If you are not using multiple machines, simply copy to your working directory. 
+Github does not provide a native method to downloading directories, however user [fregante](https://stackoverflow.com/users/288906/fregante) has provided a convient solution. To download the [template](template) direcotyr, simply paste its url into the following link: [https://download-directory.github.io/]. 
+
+4. If you are using mulitple machines, copy the template directory as the root user to the shared directory created in the previous step. If you are not using multiple machines, simply copy to your working directory. 
    ```bash
    sudo su
    cp -r /path/to/template/ /path/to/mountpoint/template
    ```
    
-3. Create a "RUNS" directory to store individual runs. This allows you to track each hyper-parameter tuning experiment and keep versions separate, for example, if you wish to adjust your model or change the hyperparameter grid. 
+5. Create a "RUNS" directory to store individual runs. This allows you to track each hyper-parameter tuning experiment and keep versions separate, for example, if you wish to adjust your model or change the hyperparameter grid. 
    ```bash
    sudo su
    cd /path/to/mountpoint/
