@@ -46,7 +46,7 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
 ### 1.A: Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
 
-#### 1.A.i: Create a shared, mounted folder so that all Linux machines:
+#### 1.A.i: Create a shared, mounted folder to coordinate across Linux instances:
 If you have multiple instances where you want to run experiments, all machines need to be able to read the necessary Python scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is included below, but more information is available at [Samba Wiki](https://wiki.samba.org/index.php/Main_Page). If you plan to only use one machine, this step is not neccessary. 
 
 For each Linux instance: 
@@ -98,13 +98,26 @@ Github does not provide a native method to downloading directories. However, use
 Click the following link to download the [template data](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fttrefoni%2Fpm25_docker%2Ftree%2Fmain%2Ftemplate)
 
 
-2. If you are using mulitple machines, copy the template directory as the root user to the shared directory created in the previous step. If you are not using multiple machines, simply copy to your working directory. 
+2. Copy template folder to working direcory.
+
+If using mulitple machines:
+
+Copy the template directory to the shared directory created in the previous step. Replace ip address with your server's ip address, "/path/to/template/" with the path of the downloaded folder on your local machine, and "/path/to/mountpoint/template" with the path to the mounted folder created in 1.A.i. 
+
    ```bash
    sudo su
-   cp -r /path/to/template/ /path/to/mountpoint/template
+   scp -r -i /path/to/.pem/ <user>@<ipaddress>/path/to/template/ /path/to/mountpoint/template
+   ```
+
+If you are not using multiple machines, simply copy to your working directory. 
+ 
+   ```bash
+   sudo su
+   scp -r -i /path/to/.pem/ <user>@<ipaddress>/path/to/template/ /path/to/working_dir/template
    ```
    
-3. Create a "RUNS" directory to store individual runs. This allows you to track each hyper-parameter tuning experiment and keep versions separate, for example, if you wish to adjust your model or change the hyperparameter grid. 
+3. Create a "RUNS" directory in your working directory/mountpoint to store individual runs. This allows you to track each hyper-parameter tuning experiment and keep versions separate.
+
    ```bash
    sudo su
    cd /path/to/mountpoint/
@@ -114,6 +127,7 @@ Click the following link to download the [template data](https://download-direct
 To make changes for each run, simply adjust the scripts in the template folder as desired and re-run https://github.com/ttrefoni/pm25_docker/blob/run_on_shared/auto_docker_server_new_wait.sh. 
 
 It is highly recommended that you maintain a backup version of the template directory that contains the original version of the scripts:
+
     ```bash
     sudo su
     cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
