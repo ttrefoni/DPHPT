@@ -176,7 +176,7 @@ This Dockerfile is quite simple and carries out the folloiwng:
   
 If you write your own machine learning script, be sure to place them in the "template" folder and adjust the "COPY" lines of the Dockerfile. 
 
-Note--Ensure that your training data is in the same directory as your Dockerfile and that you update the dockerfile to copy your data. The default dockerfile will copy the sample_data directory includes for the example LSTM model. 
+By default the Dockerfile will copy the sample_data directory included for the example LSTM model. Ensure that your training data is in the same directory as your Dockerfile and that you update the Dockerfile to copy your data.
 
 Also, adjust the file path to your training and testing data to match that in the machine learning script. 
 
