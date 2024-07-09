@@ -130,7 +130,7 @@ In order to run the hyper-parameter tuning procecess you will need to first crea
 ### 1.B.ii Identify or Create Docker Image 
 
 #### Option 1: Use an already existing Docker image: 
-For example, this is the Docker Hub repository for the LSTM used in the example below, if you pull the below image in [Part 3B. Run Shell Script](#b-run-shell-script), the included Dockerfile will run properly as is. 
+For example, this is the Docker Hub repository for the LSTM example. If you pull the below image in [Part 3B. Run Shell Script](#b-run-shell-script) the included Dockerfile will run properly as is. 
 <img width="1014" alt="docker_hub_sc" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/0f034105-a20c-45e4-a146-ec8eeb837564">
 
 #### Option 2: Create your own Docker image
