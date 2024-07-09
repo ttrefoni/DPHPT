@@ -196,6 +196,7 @@ y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
 
 2. Build the Docker Image
    ```bash
+   sudo su
    docker build -t my-image-name:tag .
    ```
 This command builds the Docker image on your local machine.
