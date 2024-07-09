@@ -24,16 +24,17 @@ INSTANCES=("user@IP_Address1" "user@IP_Address2" "user@IP_Address3"...)
 pem="/path/to/.pem"
 
 #adjust for user to supply 
-template="/srv/samba/hp_tune_grid/template"
+mounted_folder="/srv/samba/hp_tune_grid/"
+
 # Create working directory
-directory="/srv/samba/hp_tune_grid/RUNS/$tune_name"
+directory="$mounted_folder/RUNS/$tune_name"
 
 # Check if directory exists and create if not
 if ssh -i "$pem" "${INSTANCES[0]}" "[ ! -d \"$directory\" ]"; then
   commands="
     mkdir -p $directory
     #change to copy "template" at the location supplied by varible 
-    cp -r $template. $directory 
+    cp -r $mounted_folder/template. $directory 
     chmod -R 0777 $directory 
     echo 'Creating new working directory'
   "
