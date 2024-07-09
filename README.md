@@ -191,23 +191,40 @@ y_train = np.load("data/updt_seq_npy_arrays_80_20/y_train.npy")
 y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
 ```
 
+1.Log in or create a Docker account at https://hub.docker.com
 
-2. Build the Docker Image
-   ```bash
-   sudo su
-   docker build -t my-image-name:tag .
-   ```
-This command builds the Docker image on your local machine.
-
-3. Create a repository on Docker Hub to access for each run:
-   a. Log in or create an account at https://hub.docker.com
-   b. Create a repository for your project:
+2. Create a repository on Docker Hub to access for each run:
+   
    <img width="921" alt="docker_repos_create" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/2d722ee7-9c43-4d47-92b1-e5411d19424b">
-   c: Push your image to the repository
+
+3.Log in to Docker on your local machine as sudo. 
+
+    ```bash
+    sudo su
+    docker login
+    ```
+
+    The terminal will prompt you for your username and password, enter the Docker credentials you created in step 1.  
+
+4. Build the Docker image
+   ```bash
+   docker build -t my-image-name .
+   ```
+This command builds the Docker image on your local machine. Replace "my-image-name" with resonable image name that describes your specific model. 
+
+5. Tag your Docker image with your repository name and the version number.
+
+```bash
+docker tag my-image-name username/repository_name:version_number
+```
+
+replace "my-image-name" with the image name you specified in step 4, "username" with your docker username, "repository_name" with the repository name you created in step 2, and "version_number" with a resonable version naming convention. 
+
+6. Push your image to the repository
+
    ```bash
    docker push your-dockerhub-username/my-python-app:latest
    ```
-
    e.g.:
    ```bash
    docker push ttrefogmu/pm25_pub:v6
