@@ -95,7 +95,7 @@ Replace the placeholders with your actual data. This will allow you to access a 
 
 Github does not provide a native method to downloading directories. However, user [fregante](https://stackoverflow.com/users/288906/fregante) has provided a convient solution: [download directory github](https://download-directory.github.io/).
 
-You can download the template directory from [download directory github](https://download-directory.github.io/) using the following link: [download template directory](
+You can download the template directory from [download directory github](https://download-directory.github.io/) using the following link: [download template directory](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fttrefoni%2Fpm25_docker%2Ftree%2Fmain%2Ftemplate)
 
 2. Copy template folder to working direcory.
 
