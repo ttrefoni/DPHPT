@@ -93,9 +93,10 @@ Replace the placeholders with your actual data. This will allow you to access a 
 
 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid.
 
-Github does not provide a native method to downloading directories, however user [fregante](https://stackoverflow.com/users/288906/fregante) has provided a convient solution. To download the [template](template) directory, paste its url into the following link: (https://download-directory.github.io/). 
+Github does not provide a native method to downloading directories, however user [fregante](https://stackoverflow.com/users/288906/fregante) has provided a convient solution,[download directory github](https://download-directory.github.io/).
 
-Alternatively, click the following link to download the [template data](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fttrefoni%2Fpm25_docker%2Ftree%2Fmain%2Ftemplate)
+Click the following link to download the [template data](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fttrefoni%2Fpm25_docker%2Ftree%2Fmain%2Ftemplate)
+
 
 2. If you are using mulitple machines, copy the template directory as the root user to the shared directory created in the previous step. If you are not using multiple machines, simply copy to your working directory. 
    ```bash
@@ -163,7 +164,10 @@ This Dockerfile is quite simple and carries out the folloiwng:
   
 If you write your own machine learning script, be sure to place them in the "template" folder and adjust the "COPY" lines of the Dockerfile. 
 
-Note--Ensure that your training data is in the same directory as your Dockerfile under a directory named 'data.' Adjust the file path to your training and testing data to match that in the machine learning script. 
+Note--Ensure that your training data is in the same directory as your Dockerfile under a directory named 'data.'
+To download the sample data provided for the LSTM example, following this link: 
+
+Adjust the file path to your training and testing data to match that in the machine learning script. 
 
 For example: 
 [LSTM_current.py](template/LSTM_current.py)
