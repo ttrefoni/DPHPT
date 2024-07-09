@@ -95,7 +95,7 @@ Replace the placeholders with your actual data. This will allow you to access a 
 
 Github does not provide a native method to downloading directories, however user [fregante](https://stackoverflow.com/users/288906/fregante) has provided a convient solution. To download the [template](template) directory, paste its url into the following link: (https://download-directory.github.io/). 
 
-Alternatively, click the following link to download the (template data)[https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fttrefoni%2Fpm25_docker%2Ftree%2Fmain%2Ftemplate] 
+Alternatively, click the following link to download the [template data](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fttrefoni%2Fpm25_docker%2Ftree%2Fmain%2Ftemplate)
 
 2. If you are using mulitple machines, copy the template directory as the root user to the shared directory created in the previous step. If you are not using multiple machines, simply copy to your working directory. 
    ```bash
