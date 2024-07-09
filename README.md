@@ -51,7 +51,11 @@ If you have multiple instances where you want to run experiments, all machines n
 
 For each Linux instance: 
 
-1. Create a directory to mount the SMB share. In our case, we created this at `/srv/samba/hp_tune_grid/`.
+1. Create a directory to mount the SMB share. For example:
+
+    ```bash
+        mkdir /srv/samba/hp_tune_grid/
+    ```
 
 2. Install the `cifs-utils` package if it's not already installed. This package is necessary for mounting SMB/CIFS shares. You can install it by running:
 
