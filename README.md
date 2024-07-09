@@ -91,12 +91,9 @@ Replace the placeholders with your actual data. This will allow you to access a 
 
 #### 1.A.ii Create template and RUNS directories in the shared folder.
 
-1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid.
+1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. It also includes a set of sample training and testing data for the example LSTM model.
 
 Github does not provide a native method to downloading directories. However, user [fregante](https://stackoverflow.com/users/288906/fregante) has provided a convient solution: [download directory github](https://download-directory.github.io/).
-
-Click the following link to download the [template data](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fttrefoni%2Fpm25_docker%2Ftree%2Fmain%2Ftemplate)
-
 
 2. Copy template folder to working direcory.
 
@@ -167,7 +164,7 @@ A Dockerfile contains the instructions for how to build a Docker image, which is
     COPY requirements.txt /requirements.txt
     RUN pip install --no-cache-dir -r requirements.txt
     
-    COPY data /data
+    COPY sample_data /data
     COPY LSTM_model_fit.py /LSTM_model_fit.py
     COPY LSTM_model_fit_ES.py /LSTM_model_fit_ES.py
 ```
@@ -178,10 +175,9 @@ This Dockerfile is quite simple and carries out the folloiwng:
   
 If you write your own machine learning script, be sure to place them in the "template" folder and adjust the "COPY" lines of the Dockerfile. 
 
-Note--Ensure that your training data is in the same directory as your Dockerfile under a directory named 'data.'
-To download the sample data provided for the LSTM example using (https://download-directory.github.io), following this link: [sample data](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fttrefoni%2Fpm25_docker%2Ftree%2Fmain%2Fsample_updt_seq_npy_arrays).
+Note--Ensure that your training data is in the same directory as your Dockerfile and that you update the dockerfile to copy your data. The default dockerfile will copy the sample_data directory includes for the example LSTM model. 
 
-Adjust the file path to your training and testing data to match that in the machine learning script. 
+Also, adjust the file path to your training and testing data to match that in the machine learning script. 
 
 For example: 
 [LSTM_current.py](template/LSTM_current.py)
