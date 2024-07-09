@@ -6,6 +6,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 COPY requirements.txt /requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY data /data
+COPY sample_data /data
 COPY LSTM_model_fit.py /LSTM_model_fit.py
 COPY LSTM_model_fit_ES.py /LSTM_model_fit_ES.py
