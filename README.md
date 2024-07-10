@@ -74,7 +74,7 @@ C. Add the served directory as a share in the Samba configuration file:
 sudo vim /etc/samba/smb.conf
 ```
 
-Add the following lines to the bottom of the file. Adjust the parameters to your specifications. If you set `guest ok` to “no” you will need to set or create SMB users in the following step. We suggest that you name this share `[hp_tune_share]`.
+Add the following lines to the bottom of the file. Adjust the parameters to your specifications. If you set `guest ok` to “no” you will need to set or create SMB users in the following step. We suggest that you name this share `[shared_hp_tune]`.
 
 ```bash
 [shared_hp_tune]
@@ -145,8 +145,10 @@ sudo vim /etc/fstab
 Add a line for the Samba share at the end of the file:
 
 ```bash
-//server-ip/hp_tune_share /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
+//server-ip/shared_hp_tune /hp_tune_auto cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
 ```
+Once you have completed these steps you should be able to access the shared folder at /hp_tune_auto on all client machines.
+
 
 If you chose a different share name than “hp_tune_share” in step 2.C, be sure to update it in the above line. Replace `username` and `password` with your credentials created in step 2.D, `server-ip` with the server’s IP address, and `path/to/mountpoint` with the directory you created in step 3.B.
 #### 1.A.ii Create template and RUNS directories in the shared folder.
