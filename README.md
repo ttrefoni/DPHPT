@@ -266,10 +266,11 @@ y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
    
    <img width="921" alt="docker_repos_create" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/2d722ee7-9c43-4d47-92b1-e5411d19424b">
 
-3.Log in to Docker on a Linux instance as sudo. If you are using mulitple machines, navigate to the shared folder. If you are using a single machine, build the image in your working folder. 
+3.Log in to Docker on a Linux instance as sudo. If you are using mulitple machines, navigate to the shared folder. If you are using a single machine, build the image in your working folder. Then enter the 'template' directory. 
 
     ```bash
     sudo su
+    cd /path/to/workingfolder/template
     docker login
     ```
 
@@ -279,8 +280,7 @@ y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
    ```bash
    docker build -t my-image-name .
    ```
-#make this section more clear 
-This command builds the Docker image on whichever instance you are wokring in. Replace "my-image-name" with resonable image name that describes your specific model. 
+This command builds the Docker image on whichever instance you are wokring in. Replace "my-image-name" with resonable image name of your choice. 
 
 5. Tag your Docker image with your repository name and the version number.
 
