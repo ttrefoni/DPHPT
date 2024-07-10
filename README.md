@@ -46,7 +46,7 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
 ### 1.A: Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
 
-#### 1.A.i: Create a shared, mounted folder to coordinate across Linux instances:
+#### 1.A.i: Create a shared, mounted folder across Linux instances:
 
 ##### Step 1:
 Choose an instance to act as the server. This is where the shared directory will be located. Each of the other machines will access this folder through Samba share. In order to reduce the number of machines necessary, you can use the server machine as both the server and a client.
