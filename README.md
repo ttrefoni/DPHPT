@@ -502,7 +502,7 @@ docker compose logs -t
 This can be somewhat difficult to read as resutls from many contianers will be printed. 
 
  
-## Part 5: Wrapping Up
+## Part Five: Wrapping Up
 
 Once all combinations have been tested, the shell script will run [collate_metrics.py](template/collate_metrics.py) which collects all of the output metrics from each hyper-parameter combination into a single csv file. The tuning results will be stored in the shared, mounted folder, at /srv/samba/hp_tune_grid/RUNS/<tune_name>/COLLATE/<tune_name>_col.csv
 
