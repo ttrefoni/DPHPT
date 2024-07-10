@@ -20,7 +20,7 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
                 - [Option 1: Use an already existing Docker image](#option-1-use-an-already-existing-docker-image)
                 - [Option 2: Create your own Docker image](#option-2-create-your-own-docker-image)
     - [Part 2: Set Desired Hyper-Parameters](#part-two-set-desired-hyper-parameters)
-    - [Part 3: Initialize and Execute](#Part-3:-Initialize-and-Execute)
+    - [Part 3: Initialize and Execute](#Part-Three-Initialize-and-Execute)
         - [A. Set Up Shell Script](#a-set-up-shell-script)
         - [B. Run Shell Script](#b-run-shell-script)
     - [Part 4: Check Progress Using Docker Logs](#part-four-check-progress-using-docker-logs)
@@ -371,7 +371,7 @@ Adjust these scripts to train your desired model and hyper-parameters.
 
 
 
-## Part 3: Initialize and Execute
+## Part Three: Initialize and Execute
 ### A: Set up Shell script 
 Adjust the following lines in the included shell script [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) to reflect your .pem file to access those servers and the ip adress of your servers. 
 
