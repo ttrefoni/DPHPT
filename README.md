@@ -60,12 +60,14 @@ sudo apt update
 sudo apt install samba
 ```
 
+
 B. Create a directory for the server instance to share:
 A suggested convention is to create a directory on the host machine at `/srv/samba/shared_hp_tune`. Make sure to create the directory as the user that will be acccessing the shared directory. 
 
 ```bash
 sudo mkdir /srv/samba/shared_hp_tune
 ```
+
 
 C. Add the served directory as a share in the Samba configuration file:
 
@@ -86,6 +88,7 @@ Add the following lines to the bottom of the file. Adjust the parameters to your
     guest ok = no
 ```
 
+
 D. Set or add SMB passwords for system users:
 In order to protect system passwords, SMB users must have separate passwords from their system passwords. However, all SMB users should be system users as well. Creating and managing new system users is beyond the scope of this guide.
 
@@ -98,6 +101,7 @@ sudo smbpasswd -e username
 ```
 
 Be sure to remember your password as you will need to enter it on each client machine to create a permanent mount.
+
 
 E. Restart the Samba service to allow the share to take effect:
 
@@ -115,18 +119,21 @@ This package is necessary for mounting SMB/CIFS shares. You can install it by ru
 sudo apt update && sudo apt install cifs-utils
 ```
 
+
 B. Create a directory where you will be mounting the shared folder (mountpoint):
 A suggested convention is to create the mountpoint at `/hp_tune_auto` on each client machine.
 
 ```bash
 sudo mkdir /hp_tune_auto
 ```
+
 C. Change ownership of the mountpoint to your user
 
 ```bash
 sudo chown ubuntu:ubuntu /hp_tune_auto
 ```
 This allows you to make changes in this file as your user rather than root.
+
 
 D. Mount the share using the mount command:
 
@@ -139,6 +146,7 @@ sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/
 Replace `sambausername` and `sambapassword` with the credentials specified in step 2.4, `server-ip` with the IP address of your Samba server, and `shared_hp_tune` with the name of your share. Note that "//server-ip/shared_hp_tune" should be the **name of the share** not the path to the served directory. 
 
 If you chose a different convention for your mountpoint, repalce "/hp_tune_auto" with the path to your mountpoint. 
+
 
 E. Create a permanent mount:
 
@@ -159,6 +167,7 @@ Once you have completed these steps you should be able to access the shared fold
 
 
 If you chose a different share name than “hp_tune_share” in step 2.C, be sure to update it in the above line. Replace `username` and `password` with your credentials created in step 2.D, `server-ip` with the server’s IP address, and `path/to/mountpoint` with the directory you created in step 3.B.
+
 #### 1.A.ii Create template and RUNS directories in the shared folder.
 
 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. It also includes a set of sample training and testing data for the example LSTM model.
@@ -173,34 +182,34 @@ If using mulitple machines:
 
 Copy the template directory to the shared directory created in the previous step. Replace ip address with your server's ip address, "/path/to/template/" with the path of the downloaded folder on your local machine, and "/path/to/mountpoint/template" with the path to the mounted folder created in 1.A.i. 
 
-   ```bash
-   sudo su
-   scp -r -i /path/to/.pem/ <user>@<ipaddress>/path/to/template/ /path/to/mountpoint/template
-   ```
+```bash
+sudo su
+scp -r -i /path/to/.pem/ <user>@<ipaddress>/path/to/template/ /path/to/mountpoint/template
+```
 
 If you are not using multiple machines, simply copy to your working directory. 
  
-   ```bash
-   sudo su
-   scp -r -i /path/to/.pem/ <user>@<ipaddress>/path/to/template/ /path/to/working_dir/template
-   ```
+```bash
+sudo su
+scp -r -i /path/to/.pem/ <user>@<ipaddress>/path/to/template/ /path/to/working_dir/template
+```
    
 3. Create a "RUNS" directory in your working directory/mountpoint to store individual runs. This allows you to track each hyper-parameter tuning experiment and keep versions separate.
 
-   ```bash
-   sudo su
-   cd /path/to/mountpoint/
-   mkdir RUNS
-   ```
+```bash
+sudo su
+cd /path/to/mountpoint/
+mkdir RUNS
+```
    
 To make changes for each run, simply adjust the scripts in the template folder as desired and re-run https://github.com/ttrefoni/pm25_docker/blob/run_on_shared/auto_docker_server_new_wait.sh. 
 
 It is highly recommended that you maintain a backup version of the template directory that contains the original version of the scripts:
 
-    ```bash
-    sudo su
-    cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
-    ```
+```bash
+sudo su
+cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
+```
 
 ## 1.B Set up Docker
 
@@ -211,10 +220,10 @@ In order to run the hyper-parameter tuning procecess you will need to first crea
 2. Install Docker in your Linux environment: https://docs.docker.com/desktop/install/linux-install/
 3. Log in to your Docker account on each instnace you intend to use. 
     
-    ```bash
-    sudo su 
-    docker login
-    ```
+```bash
+sudo su 
+docker login
+```
 ### 1.B.ii Identify or Create Docker Image 
 
 #### Option 1: Use an already existing Docker image: 
@@ -227,18 +236,20 @@ If you are testing a different model, or would like to adjust the design of the 
 
 1. Create a Dockerfile: 
 A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is included in the template folder.
+
 ```bash
-    FROM python:3.9
-    
-    ENV DEBIAN_FRONTEND=noninteractive
+FROM python:3.9
 
-    COPY requirements.txt /requirements.txt
-    RUN pip install --no-cache-dir -r requirements.txt
+ENV DEBIAN_FRONTEND=noninteractive
 
-    COPY sample_data /data
-    COPY LSTM_model_fit.py /LSTM_model_fit.py
-    COPY LSTM_model_fit_ES.py /LSTM_model_fit_ES.py
+COPY requirements.txt /requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY sample_data /data
+COPY LSTM_model_fit.py /LSTM_model_fit.py
+COPY LSTM_model_fit_ES.py /LSTM_model_fit_ES.py
 ```
+
 This Dockerfile is quite simple and carries out the folloiwng: 
 * Sets the Python image to the default Python 3.9 image from Docker Hub, then sets the environment as non-interactive to avoid additional messages related to package installation.
 * Installs the required packages from the "requirements.txt" file using pip.
@@ -252,6 +263,7 @@ Also, adjust the file path to your training and testing data to match that in th
 
 For example: 
 [LSTM_current.py](template/LSTM_current.py)
+
 ```bash
 # Read in training data
 X_train = np.load("data/updt_seq_npy_arrays_80_20/x_train.npy")
@@ -268,18 +280,20 @@ y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
 
 3. Log in to Docker on a Linux instance as sudo. If you are using mulitple machines, navigate to the shared folder. If you are using a single machine, build the image in your working folder. Then enter the 'template' directory. 
 
-   ```bash
-   sudo su
-   cd /path/to/workingfolder/template
-   docker login
-   ```
+```bash
+sudo su
+cd /path/to/workingfolder/template
+docker login
+```
 
     The terminal will prompt you for your username and password, enter the Docker credentials you created in step 1.  
 
 4. Build the Docker image
-   ```bash
-   docker build -t my-image-name .
-   ```
+5. 
+```bash
+docker build -t my-image-name .
+```
+
 This command builds the Docker image on whichever instance you are wokring in. Replace "my-image-name" with resonable image name of your choice. 
 
 5. Tag your Docker image with your repository name and the version number.
@@ -292,13 +306,13 @@ replace "my-image-name" with the image name you specified in step 4, "username" 
 
 6. Push your image to the repository
 
-   ```bash
-   docker push your-dockerhub-username/my-python-app:latest
-   ```
-   e.g.:
-   ```bash
-   docker push ttrefogmu/pm25_pub:v6
-   ```
+```bash
+docker push your-dockerhub-username/my-python-app:latest
+```
+e.g.:
+```bash
+docker push ttrefogmu/pm25_pub:v6
+```
    The Docker image is now hosted on the repository and ready to be pulled by the [shell script](auto_docker_server_new_wait.sh).
    
    
