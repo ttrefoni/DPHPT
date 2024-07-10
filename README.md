@@ -452,7 +452,7 @@ Results from each hyper-parameter set are stored in directories with the followi
 /srv/samba/hp_tune_grid/RUNS/<tune_name>/output_py/TUNING/<host_short_name>/hprun_split_container_<containerID>_<num_tunes>
 ```
 
-### Part 4: Check Progress of Tuning using Docker Logs 
+### Part 4: Check Progress using Docker Logs 
 To check the progress of your tuning process, you can use the Docker logs command. 
 
 First connect to the Linux instance or instances in which the containers are hosted. 
