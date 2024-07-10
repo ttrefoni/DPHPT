@@ -12,7 +12,7 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
     - [Part 1: Set Up](#part-one-set-up)
         - [A. Prerequisites](#1a-set-up-linux-environment)
         - [B. Set Up Linux Environment](#1a-set-up-linux-environment)
-            - [i. Create a shared, mounted folder so that all Linux machines](#1ai-create-a-shared-mounted-folder-so-that-all-linux-machines)
+            - [i. Create a shared, mounted folder across Linux machines](#1ai-create-a-shared-mounted-folder-so-that-all-linux-machines)
             - [ii. Create template and RUNS directories in the shared folder](#1aii-create-template-and-runs-directories-in-the-shared-folder)
         - [C. Set Up Docker](#1b-set-up-docker)
             - [i. Create Docker Account](#1bi-create-docker-account)
