@@ -27,8 +27,8 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
     - [Part 5: Wrapping Up](#part-five-wrapping-up)
 4. [Appendix](#appendix)
     - [Section A: List of Included Scripts](#section-a-list-of-included-scripts)
-    - [Section B: Sample Training Data](#section-b-sample-training-data)
-    - [Section C: Application of Tmux](#section-c-application-of-tmux)
+    - [Section D: Application of Tmux](#section-b-application-of-tmux)
+    - [Section C: Sample Training Data](#section-c-sample-training-data)
     - [Section D: FAQs](#section-d-faqs)
     
 
