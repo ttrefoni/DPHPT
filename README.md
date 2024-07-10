@@ -61,7 +61,7 @@ sudo apt install samba
 ```
 
 B. Create a directory for the server instance to share:
-A suggested convention is to create a directory on the host machine at `/srv/samba/shared_hp_tune`.
+A suggested convention is to create a directory on the host machine at `/srv/samba/shared_hp_tune`. Make sure to create the directory as the user that will be acccessing the shared directory. 
 
 ```bash
 sudo mkdir /srv/samba/shared_hp_tune
@@ -78,12 +78,12 @@ Add the following lines to the bottom of the file. Adjust the parameters to your
 
 ```bash
 [hp_tune_share]
-comment = share hp across ubuntu instances
-path = /srv/samba/shared_hp_tune
-read only = no
-writable = yes
-browsable = yes
-guest ok = no
+    comment = share hp across ubuntu instances
+    path = /srv/samba/shared_hp_tune
+    read only = no
+    writable = yes
+    browsable = yes
+    guest ok = no
 ```
 
 D. Set or add SMB passwords for system users:
@@ -127,7 +127,7 @@ C. Mount the share using the mount command:
 You'll need to specify the Samba share's path, the mount point, and your credentials:
 
 ```bash
-sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename /hp_tune_auto
+sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/srv/samba/shared_hp_tune /hp_tune_auto
 ```
 
 Replace `sambausername` and `sambapassword` with the credentials specified in step 2.4, `server-ip` with the IP address of your Samba server, and `sharename` with the name of your share. If you chose a different convention for your mountpoint, repalce "/hp_tune_auto" with the path to your mountpoint. 
