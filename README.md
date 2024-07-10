@@ -47,54 +47,108 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. 
 
 #### 1.A.i: Create a shared, mounted folder to coordinate across Linux instances:
-If you have multiple instances where you want to run experiments, all machines need to be able to read the necessary Python scripts and maintain a database of tuning results. There are multiple ways to do this, but one popular solution is to use Samba. A basic tutorial is included below, but more information is available at [Samba Wiki](https://wiki.samba.org/index.php/Main_Page). If you plan to only use one machine, this step is not neccessary. 
 
-The first step is to choose one linux instance to act as the server which will host the shared files. The others will act as clients 
+##### Step 1:
+Choose an instance to act as the server. This is where the shared directory will be located. Each of the other machines will access this folder through Samba share. In order to reduce the number of machines necessary, you can use the server machine as both the server and a client.
 
-For each Linux instance: 
+##### Step 2:
+Set up Samba on your server instance.
 
-1. Create a directory to mount the SMB share. For example:
+A. Install Samba:
+```bash
+sudo apt update
+sudo apt install samba
+```
 
-    ```bash
-        mkdir /srv/samba/hp_tune_grid/
-    ```
+B. Create a directory for the server instance to share:
+A suggested convention is to create a directory on the host machine at `/srv/samba/shared_hp_tune`.
 
-2. Install the `cifs-utils` package if it's not already installed. This package is necessary for mounting SMB/CIFS shares. You can install it by running:
+```bash
+mkdir /srv/samba/shared_hp_tune
+```
 
-    ```bash
-    sudo apt update && sudo apt install cifs-utils
-    ```
+C. Add the served directory as a share in the Samba configuration file:
 
-3. Create a mount point where you'll mount the shared directory:
+```bash
+# open the Samba configuration file 
+sudo vim /etc/samba/smb.conf
+```
 
-    ```bash
-    mkdir ~/samba-share
-    ```
+Add the following lines to the bottom of the file. Adjust the parameters to your specifications. If you set `guest ok` to “no” you will need to set or create SMB users in the following step. We suggest that you name this share `[hp_tune_share]`.
 
-4. Mount the share using the `mount` command on each client machine. You'll need to specify the Samba share's path, the mount point, and your credentials:
+```bash
+[hp_tune_share]
+comment = share hp across ubuntu instances
+path = /srv/samba/shared_hp_tune
+read only = no
+writable = yes
+browsable = yes
+guest ok = no
+```
 
-    ```bash
-    sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename ~/samba-share
-    ```
+D. Set or add SMB passwords for system users:
+In order to protect system passwords, SMB users must have separate passwords from their system passwords. However, all SMB users should be system users as well. Creating and managing new system users is beyond the scope of this guide.
 
-Replace `sambausername` and `sambapassword` with your Samba credentials, `server-ip` with the IP address of your Samba server, and `sharename` with the name of your share.
+```bash
+# add an SMB password to your user, you will be prompted to enter a password
+# “username” should be an already existing user on your system
+sudo smbpasswd -a username
+# enable the user in Samba 
+sudo smbpasswd -e username
+```
 
-To have the Samba share automatically mounted at boot, you'll edit the `/etc/fstab` file on each client machine:
+Be sure to remember your password as you will need to enter it on each client machine to create a permanent mount.
 
-1. Open `/etc/fstab` in a text editor with root privileges:
+E. Restart the Samba service to allow the share to take effect:
 
-    ```bash
-    sudo nano /etc/fstab
-    ```
-  	
-2. Add a line for the Samba share at the end of the file:
+```bash
+sudo service smbd restart
+```
 
-    ```bash
-    //server-ip/sharename /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
-    ```
-  	
-Replace the placeholders with your actual data. This will allow you to access a shared folder across all instances. 
+##### Step 3: Mount share on client machines
+Carry out the following steps for each client machine you wish to use. Note: if you want to utilize the server machine to carry out hyper-parameter tuning, you will need to execute the following steps for that machine as well to set it up as a client to itself.
 
+A. Install the cifs-utils package if it's not already installed:
+This package is necessary for mounting SMB/CIFS shares. You can install it by running:
+
+```bash
+sudo apt update && sudo apt install cifs-utils
+```
+
+B. Create a directory where you will be mounting the shared folder (mountpoint):
+A suggested convention is to create the mountpoint at `/hp_tune_auto` on each client machine.
+
+```bash
+sudo mkdir /hp_tune_auto
+```
+
+C. Mount the share using the mount command:
+
+You'll need to specify the Samba share's path, the mount point, and your credentials:
+
+```bash
+sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename ~/samba-share
+```
+
+Replace `sambausername` and `sambapassword` with the credentials specified in step 2.4, `server-ip` with the IP address of your Samba server, and `sharename` with the name of your share.
+
+D. Create a permanent mount:
+
+To have the Samba share automatically mounted at boot, you'll edit the `/etc/fstab` file:
+
+Open `/etc/fstab` in a text editor with root privileges:
+
+```bash
+sudo vim /etc/fstab
+```
+
+Add a line for the Samba share at the end of the file:
+
+```bash
+//server-ip/hp_tune_share /path/to/mountpoint cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
+```
+
+If you chose a different share name than “hp_tune_share” in step 2.C, be sure to update it in the above line. Replace `username` and `password` with your credentials created in step 2.D, `server-ip` with the server’s IP address, and `path/to/mountpoint` with the directory you created in step 3.B.
 #### 1.A.ii Create template and RUNS directories in the shared folder.
 
 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. It also includes a set of sample training and testing data for the example LSTM model.
