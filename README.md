@@ -121,8 +121,14 @@ A suggested convention is to create the mountpoint at `/hp_tune_auto` on each cl
 ```bash
 sudo mkdir /hp_tune_auto
 ```
+C. Change ownership of the mountpoint to your user
 
-C. Mount the share using the mount command:
+```bash
+sudo chown ubuntu:ubuntu /hp_tune_auto
+```
+This allows you to make changes in this file as your user rather than root.
+
+D. Mount the share using the mount command:
 
 You'll need to specify the Samba share's path, the mount point, and your credentials:
 
@@ -134,7 +140,7 @@ Replace `sambausername` and `sambapassword` with the credentials specified in st
 
 If you chose a different convention for your mountpoint, repalce "/hp_tune_auto" with the path to your mountpoint. 
 
-D. Create a permanent mount:
+E. Create a permanent mount:
 
 To have the Samba share automatically mounted at boot, you'll edit the `/etc/fstab` file:
 
