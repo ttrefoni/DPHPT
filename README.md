@@ -130,7 +130,9 @@ You'll need to specify the Samba share's path, the mount point, and your credent
 sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/shared_hp_tune /hp_tune_auto
 ```
 
-Replace `sambausername` and `sambapassword` with the credentials specified in step 2.4, `server-ip` with the IP address of your Samba server, and `shared_hp_tune` with the name of your share. If you chose a different convention for your mountpoint, repalce "/hp_tune_auto" with the path to your mountpoint. 
+Replace `sambausername` and `sambapassword` with the credentials specified in step 2.4, `server-ip` with the IP address of your Samba server, and `shared_hp_tune` with the name of your share. Note that "//server-ip/shared_hp_tune" should be the **name of the share** not the path to the served directory. 
+
+If you chose a different convention for your mountpoint, repalce "/hp_tune_auto" with the path to your mountpoint. 
 
 D. Create a permanent mount:
 
