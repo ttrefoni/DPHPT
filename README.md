@@ -64,7 +64,7 @@ B. Create a directory for the server instance to share:
 A suggested convention is to create a directory on the host machine at `/srv/samba/shared_hp_tune`.
 
 ```bash
-mkdir /srv/samba/shared_hp_tune
+sudo mkdir /srv/samba/shared_hp_tune
 ```
 
 C. Add the served directory as a share in the Samba configuration file:
@@ -127,10 +127,10 @@ C. Mount the share using the mount command:
 You'll need to specify the Samba share's path, the mount point, and your credentials:
 
 ```bash
-sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename ~/samba-share
+sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/sharename /hp_tune_auto
 ```
 
-Replace `sambausername` and `sambapassword` with the credentials specified in step 2.4, `server-ip` with the IP address of your Samba server, and `sharename` with the name of your share.
+Replace `sambausername` and `sambapassword` with the credentials specified in step 2.4, `server-ip` with the IP address of your Samba server, and `sharename` with the name of your share. If you chose a different convention for your mountpoint, repalce "/hp_tune_auto" with the path to your mountpoint. 
 
 D. Create a permanent mount:
 
