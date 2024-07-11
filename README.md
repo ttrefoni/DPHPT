@@ -276,13 +276,13 @@ y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
    
    <img width="921" alt="docker_repos_create" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/2d722ee7-9c43-4d47-92b1-e5411d19424b">
 
-3. Log in to Docker on a Linux instance as sudo. If you are using mulitple machines, navigate to the shared folder. If you are using a single machine, build the image in your working folder. Then enter the 'template' directory. 
+3. Log in to Docker on a Linux instance as sudo then navigate to the tempplate directory in the shared folder.
 
 ```bash
 #first connect to your remote machine
 ssh -i /path/to/.pem/ <user>@<ipaddress>
 sudo su
-cd /path/to/workingfolder/template
+cd /hp_tune_shared/template
 docker login
 ```
 
