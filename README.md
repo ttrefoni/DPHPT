@@ -386,9 +386,10 @@ pem="/path/to/.pem"
 
 1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. This should be done on a local machine or on a seperate remote machine from the large instances in which the models will be trained. 
 ```bash
-sudo su
-chmod +x /path/to/auto_docker_server_new_wait.sh
-/path/to/auto_docker_server_new_wait.sh
+#make script executable  
+sudo chmod +x /path/to/auto_docker_server_new_wait.sh
+#run the script 
+./path/to/auto_docker_server_new_wait.sh
 ```
 
 2. The script will prompt you for several pieces of information. The sample responses provided link to an image to run the example LSTM model. 
