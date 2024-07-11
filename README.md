@@ -92,6 +92,8 @@ Add the following lines to the bottom of the file. Adjust the parameters to your
 D. Set or add SMB passwords for system users:
 In order to protect system passwords, SMB users must have separate passwords from their system passwords. However, all SMB users should be system users as well. Creating and managing new system users is beyond the scope of this guide.
 
+To add the SMB password to an exisiting account execute the following. Change "username" to your Linux system username. 
+
 ```bash
 # add an SMB password to your user, you will be prompted to enter a password
 # “username” should be an already existing user on your system
