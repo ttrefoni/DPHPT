@@ -32,6 +32,8 @@ directory="$mounted_folder/RUNS/$tune_name"
 # Check if directory exists and create if not
 if ssh -i "$pem" "${INSTANCES[0]}" "[ ! -d \"$directory\" ]"; then
   commands="
+    #make RUNS folder 
+    mkdir $mounted_folder/RUNS/
     mkdir -p $directory
     #change to copy "template" at the location supplied by varible 
     cp -r $mounted_folder/template. $directory 
