@@ -192,7 +192,7 @@ Copy the template directory to the shared directory created in the previous step
 
 ```bash
 sudo su
-scp -r -i /path/to/.pem/ /path/of/local/template <user>@<ipaddress>:/hp_tune_auto/template
+scp -r -i /path/to/.pem/ /path/of/local/template <user>@<ipaddress>:/hp_tune_auto
 ```
    
 To make changes for each run, simply adjust the scripts in the template folder as desired and re-run https://github.com/ttrefoni/pm25_docker/blob/run_on_shared/auto_docker_server_new_wait.sh. 
