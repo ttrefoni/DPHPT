@@ -13,7 +13,7 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
     - [Part 1: Set Up](#part-one-set-up)
         - [A. Set Up Linux Environment](#1a-set-up-linux-environment)
             - [i. Create a shared, mounted folder across Linux instances](#1ai-create-a-shared-mounted-folder-across-linux-instances)
-            - [ii. Copy Template to the Shared Folder](#1aiiCopy-Template-to-the-Shared-Folder)
+            - [ii. Copy Template to the Shared Folder](#1aii-Copy-Template-to-the-Shared-Folder)
         - [B. Set Up Docker](#1b-set-up-docker)
             - [i. Create Docker Account](#1bi-create-docker-account)
             - [ii. Identify or Create Docker Image](#1bii-identify-or-create-docker-image)
