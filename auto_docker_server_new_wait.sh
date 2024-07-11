@@ -23,8 +23,8 @@ INSTANCES=("user@IP_Address1" "user@IP_Address2" "user@IP_Address3"...)
 # Define pem location
 pem="/path/to/.pem"
 
-#adjust for user to supply 
-mounted_folder="/srv/samba/hp_tune_grid/"
+#path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
+mounted_folder="/hp_tune_auto"
 
 # Create working directory
 directory="$mounted_folder/RUNS/$tune_name"
