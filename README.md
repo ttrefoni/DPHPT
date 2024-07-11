@@ -88,6 +88,14 @@ Add the following lines to the bottom of the file. Adjust the parameters to your
     guest ok = no
 ```
 
+Exit the .conf file 
+
+```bash
+esc
+:wq
+enter
+```
+
 
 D. Set or add SMB passwords for system users:
 In order to protect system passwords, SMB users must have separate passwords from their system passwords. However, all SMB users should be system users as well. Creating and managing new system users is beyond the scope of this guide.
