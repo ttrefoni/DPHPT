@@ -168,7 +168,7 @@ Once you have completed these steps you should be able to access the shared fold
 
 If you chose a different share name than “hp_tune_share” in step 2.C, be sure to update it in the above line. Replace `username` and `password` with your credentials created in step 2.D, `server-ip` with the server’s IP address. If you chose a different convention for the mountepoint than `/hp_tune_auto` adjust that value to the directory you created in step 3.B.
 
-#### 1.A.ii Copy Template to the Shared Folder
+#### 1.A Copy Template to the Shared Folder
 
 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. It also includes a set of sample training and testing data for the example LSTM model.
 
