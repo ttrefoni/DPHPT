@@ -200,6 +200,8 @@ To make changes for each run, simply adjust the scripts in the template folder a
 It is highly recommended that you maintain a backup version of the template directory that contains the original version of the scripts. Again, if you changed the path to your mountpoint from the suggested convention (/hp_tune_auto), adjust the following to reflect that path. 
 
 ```bash
+#first connect to your remote machine
+ssh -i /path/to/.pem/ <user>@<ipaddress>
 sudo su
 cp -r /hp_tune_auto/template /hp_tune_auto/template_backup
 ```
@@ -214,6 +216,9 @@ In order to run the hyper-parameter tuning procecess you will need to first crea
 3. Log in to your Docker account on each instnace you intend to use. 
     
 ```bash
+#first connect to your remote machine
+ssh -i /path/to/.pem/ <user>@<ipaddress>
+#log in to docker 
 sudo su 
 docker login
 ```
@@ -228,7 +233,7 @@ If you are testing a different model, or would like to adjust the design of the 
 
 
 1. Create a Dockerfile: 
-A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is included in the template folder.
+A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is included in the template folder. 
 
 ```bash
 FROM python:3.9
@@ -274,6 +279,8 @@ y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
 3. Log in to Docker on a Linux instance as sudo. If you are using mulitple machines, navigate to the shared folder. If you are using a single machine, build the image in your working folder. Then enter the 'template' directory. 
 
 ```bash
+#first connect to your remote machine
+ssh -i /path/to/.pem/ <user>@<ipaddress>
 sudo su
 cd /path/to/workingfolder/template
 docker login
