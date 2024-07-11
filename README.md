@@ -91,7 +91,7 @@ Add the following lines to the bottom of the file. Adjust the parameters to your
 Exit the .conf file 
 
 ```bash
-esc
+[escape]
 :wq
 enter
 ```
