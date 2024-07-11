@@ -19,9 +19,9 @@ echo "Enter number (int) of tunes to run at once on each instance:"
 read num_tunes
 
 # Define the list of Linux instances
-INSTANCES=("user@IP_Address1" "user@IP_Address2" "user@IP_Address3"...)
+INSTANCES=("ubuntu@10.192.20.201")
 # Define pem location
-pem="/path/to/.pem"
+pem="/Users/theodoretrefonides/Downloads/shyra.pem"
 
 #path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
 mounted_folder="/hp_tune_auto"
@@ -36,7 +36,7 @@ if ssh -i "$pem" "${INSTANCES[0]}" "[ ! -d \"$directory\" ]"; then
     mkdir $mounted_folder/RUNS/
     mkdir -p $directory
     #change to copy "template" at the location supplied by varible 
-    cp -r $mounted_folder/template. $directory 
+    cp -r $mounted_folder/template/. $directory 
     chmod -R 0777 $directory 
     echo 'Creating new working directory'
   "
@@ -48,6 +48,10 @@ gen_comp="$directory/gen_comp_file_py_auto.py"
 man_grid="$directory/man_hp_grid.py"
 create_grid="$directory/create_hps_grid.py"
 
+#install neccessary packages on first instance 
+ssh -i $pem "${INSTANCES[0]}" sudo apt-get update
+ssh -i $pem "${INSTANCES[0]}" "sudo apt-get update && sudo apt-get install -y python3-pip"
+ssh -i $pem "${INSTANCES[0]}" "pip install --no-cache-dir -r $directory/requirements.txt"
 # Dry run manage script to ensure that hps available .csv exists 
 ssh -i $pem "${INSTANCES[0]}" python3 $create_grid $directory
 
@@ -64,6 +68,7 @@ echo "collating metrics"
 collate_metrics="$directory/collate_metrics.py"
 commands="
   export TUNE_NAME=\"$tune_name\";
+  #install required packages 
   sudo python3 $collate_metrics $tune_name $directory;
 "
 echo "Collating metrics on ${INSTANCES[0]}..."
@@ -119,6 +124,11 @@ while [ $hp_aval_ct -gt 1 ]; do
       export TUNE_NAME=\"$tune_name\";
       export num_tunes=\"$num_tunes\";
       export img_name=\"$docker_name\";
+      #install pip if neccessary 
+      sudo apt-get update
+      sudo apt-get install -y python3-pip
+      #install required packages 
+      pip install --no-cache-dir -r $directory/requirements.txt
       python3 $man_grid \"$num_tunes\" \"$directory\";
       python3 $gen_comp $num_tunes $tune_name $docker_name $directory;
     "
@@ -132,6 +142,7 @@ while [ $hp_aval_ct -gt 1 ]; do
         hostname=\$(hostname);
         echo \$hostname;
         cd $directory/compose_files/\$hostname; 
+        sudo docker login;
         sudo docker pull \$DOCKER_NAME; 
         sudo docker compose up --remove-orphans --detach; 
       "
@@ -170,6 +181,7 @@ commands="
   python3 $gen_comp $tune_name $directory $docker_name;
   cd /home/ubuntu/LSTM_PY/;
   echo $docker_name
+  sudo docker login;
   sudo docker pull \$docker_name; 
   sudo docker compose up --remove-orphans;
 "
