@@ -3,3 +3,9 @@ keras==2.13.1
 pandas
 tensorflow==2.13.1
 scikit-learn
+os
+fnmatch
+subprocess
+json
+random
+sys
