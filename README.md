@@ -127,7 +127,7 @@ A suggested convention is to create the mountpoint at `/hp_tune_auto` on each cl
 sudo mkdir /hp_tune_auto
 ```
 
-C. Change ownership of the mountpoint to your user
+C. Change ownership of the mountpoint to your user. (Replace "ubuntu" with your username)
 
 ```bash
 sudo chown ubuntu:ubuntu /hp_tune_auto
@@ -166,9 +166,9 @@ Add a line for the Samba share at the end of the file:
 Once you have completed these steps you should be able to access the shared folder at /hp_tune_auto on all client machines.
 
 
-If you chose a different share name than “hp_tune_share” in step 2.C, be sure to update it in the above line. Replace `username` and `password` with your credentials created in step 2.D, `server-ip` with the server’s IP address, and `path/to/mountpoint` with the directory you created in step 3.B.
+If you chose a different share name than “hp_tune_share” in step 2.C, be sure to update it in the above line. Replace `username` and `password` with your credentials created in step 2.D, `server-ip` with the server’s IP address. If you chose a different convention for the mountepoint than `/hp_tune_auto` adjust that value to the directory you created in step 3.B.
 
-#### 1.A.ii Create template and RUNS directories in the shared folder.
+#### 1.A.ii Copy Template to the Shared Folder.
 
 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. It also includes a set of sample training and testing data for the example LSTM model.
 
@@ -178,37 +178,20 @@ You can download the template directory from [download directory github](https:/
 
 2. Copy template folder to working direcory.
 
-If using mulitple machines:
-
-Copy the template directory to the shared directory created in the previous step. Replace ip address with your server's ip address, "/path/to/template/" with the path of the downloaded folder on your local machine, and "/path/to/mountpoint/template" with the path to the mounted folder created in 1.A.i. 
+Copy the template directory to the shared directory created in the previous step. Replace ip address with your server's ip address, "/path/to/template/" with the path of the downloaded folder on your local machine, and "/hp_tune_auto/template" with the path to the mounted folder created in 1.A.i. 
 
 ```bash
 sudo su
-scp -r -i /path/to/.pem/ <user>@<ipaddress>/path/to/template/ /path/to/mountpoint/template
-```
-
-If you are not using multiple machines, simply copy to your working directory. 
- 
-```bash
-sudo su
-scp -r -i /path/to/.pem/ <user>@<ipaddress>/path/to/template/ /path/to/working_dir/template
-```
-   
-3. Create a "RUNS" directory in your working directory/mountpoint to store individual runs. This allows you to track each hyper-parameter tuning experiment and keep versions separate.
-
-```bash
-sudo su
-cd /path/to/mountpoint/
-mkdir RUNS
+scp -r -i /path/to/.pem/ <user>@<ipaddress>/path/to/template/ /hp_tune_auto/template
 ```
    
 To make changes for each run, simply adjust the scripts in the template folder as desired and re-run https://github.com/ttrefoni/pm25_docker/blob/run_on_shared/auto_docker_server_new_wait.sh. 
 
-It is highly recommended that you maintain a backup version of the template directory that contains the original version of the scripts:
+It is highly recommended that you maintain a backup version of the template directory that contains the original version of the scripts. Again, if you changed the path to your mountpoint from the suggested convention (/hp_tune_auto), adjust the following to reflect that path. 
 
 ```bash
 sudo su
-cp -r /path/to/mountpoint/template /path/to/mountpoint/template_backup
+cp -r /hp_tune_auto/template /hp_tune_auto/template_backup
 ```
 
 ## 1.B Set up Docker
