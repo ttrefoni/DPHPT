@@ -273,10 +273,12 @@ y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
 1.Log in or create a Docker account at https://hub.docker.com
 
 2. Create a repository on Docker Hub to access for each run:
-   
+
+Ensure that you set the repository to "public" so that you can pull it later. 
+
    <img width="921" alt="docker_repos_create" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/2d722ee7-9c43-4d47-92b1-e5411d19424b">
 
-3. Log in to Docker on a Linux instance as sudo then navigate to the tempplate directory in the shared folder.
+2. Log in to Docker on a Linux instance as sudo then navigate to the tempplate directory in the shared folder.
 
 ```bash
 #first connect to your remote machine
