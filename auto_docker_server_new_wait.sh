@@ -49,9 +49,9 @@ man_grid="$directory/man_hp_grid.py"
 create_grid="$directory/create_hps_grid.py"
 
 #install neccessary packages on first instance 
-ssh -i $pem "${INSTANCES[0]}" sudo apt-get update
-ssh -i $pem "${INSTANCES[0]}" "sudo apt-get update && sudo apt-get install -y python3-pip"
-ssh -i $pem "${INSTANCES[0]}" "pip install --no-cache-dir -r $directory/requirements.txt"
+#ssh -i $pem "${INSTANCES[0]}" sudo apt-get update
+#ssh -i $pem "${INSTANCES[0]}" "sudo apt-get update && sudo apt-get install -y python3-pip"
+#ssh -i $pem "${INSTANCES[0]}" "pip install --no-cache-dir -r $directory/requirements.txt"
 # Dry run manage script to ensure that hps available .csv exists 
 ssh -i $pem "${INSTANCES[0]}" python3 $create_grid $directory
 
