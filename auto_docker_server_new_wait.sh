@@ -1,3 +1,14 @@
+#!/bin/bash
+
+# Function to handle errors
+handle_error() {
+    echo "Error on line $1: $2"
+    exit 1
+}
+
+# Trap errors and call handle_error with the line number and error message
+trap 'handle_error $LINENO "$BASH_COMMAND"' ERR
+
 # Accept user input for publisher name
 echo "Enter the publisher name:"
 read pub
@@ -23,7 +34,7 @@ INSTANCES=("ubuntu@10.192.20.201")
 # Define pem location
 pem="/Users/theodoretrefonides/Downloads/shyra.pem"
 
-#path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
+# Path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
 mounted_folder="/hp_tune_auto"
 
 # Create working directory
@@ -32,10 +43,9 @@ directory="$mounted_folder/RUNS/$tune_name"
 # Check if directory exists and create if not
 if ssh -i "$pem" "${INSTANCES[0]}" "[ ! -d \"$directory\" ]"; then
   commands="
-    #make RUNS folder 
-    mkdir $mounted_folder/RUNS/
+    # Make RUNS folder 
     mkdir -p $directory
-    #change to copy "template" at the location supplied by varible 
+    # Change to copy template at the location supplied by variable 
     cp -r $mounted_folder/template/. $directory 
     chmod -R 0777 $directory 
     echo 'Creating new working directory'
@@ -48,10 +58,6 @@ gen_comp="$directory/gen_comp_file_py_auto.py"
 man_grid="$directory/man_hp_grid.py"
 create_grid="$directory/create_hps_grid.py"
 
-#install neccessary packages on first instance 
-#ssh -i $pem "${INSTANCES[0]}" sudo apt-get update
-#ssh -i $pem "${INSTANCES[0]}" "sudo apt-get update && sudo apt-get install -y python3-pip"
-#ssh -i $pem "${INSTANCES[0]}" "pip install --no-cache-dir -r $directory/requirements.txt"
 # Dry run manage script to ensure that hps available .csv exists 
 ssh -i $pem "${INSTANCES[0]}" python3 $create_grid $directory
 
@@ -62,21 +68,20 @@ else
   hp_aval_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/hps_original_grid.csv\"")
 fi
 
-echo updating hps_tested.csv to hps from collate
+echo "Updating hps_tested.csv to hps from collate"
 # Collate metrics--if there are results
-echo "collating metrics"
+echo "Collating metrics"
 collate_metrics="$directory/collate_metrics.py"
 commands="
   export TUNE_NAME=\"$tune_name\";
-  #install required packages 
   sudo python3 $collate_metrics $tune_name $directory;
 "
 echo "Collating metrics on ${INSTANCES[0]}..."
 ssh -i $pem "${INSTANCES[0]}" "$commands"
-echo "collated"
+echo "Collated"
 
-#compare hps available and collated output 
-echo "ccomparing collate with aval"
+# Compare hps available and collated output 
+echo "Comparing collate with available"
 comp_col_aval="$directory/compare_col_w_aval.py"
 commands="
   export TUNE_NAME=\"$tune_name\";
@@ -87,10 +92,9 @@ ssh -i $pem "${INSTANCES[0]}" "$commands"
 og_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/hps_original_grid.csv\"")
 hps_tested_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/output_py/COLLATE/v5_try_col.csv\"")
 hp_aval_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/hps_available.csv\"")
-echo original hp count = $og_ct
-echo hps_tested count = $hps_tested_ct
-echo hps aval now = $hp_aval_ct 
-
+echo "Original hp count = $og_ct"
+echo "hps_tested count = $hps_tested_ct"
+echo "hps available now = $hp_aval_ct"
 
 q=1
 docker_name="${pub}/${repository_name}:${version_number}"
@@ -124,10 +128,8 @@ while [ $hp_aval_ct -gt 1 ]; do
       export TUNE_NAME=\"$tune_name\";
       export num_tunes=\"$num_tunes\";
       export img_name=\"$docker_name\";
-      #install pip if neccessary 
       sudo apt-get update
       sudo apt-get install -y python3-pip
-      #install required packages 
       pip install --no-cache-dir -r $directory/requirements.txt
       python3 $man_grid \"$num_tunes\" \"$directory\";
       python3 $gen_comp $num_tunes $tune_name $docker_name $directory;
@@ -153,15 +155,15 @@ while [ $hp_aval_ct -gt 1 ]; do
   check_containers
 
   hp_count=$(ssh -i $pem "${INSTANCES[0]}" "cat $directory/hps_available.csv | wc -l")
-  echo "after training hp count=" $hp_count
-  echo "completed hp tune $q of $(( hp_count / (${#INSTANCES[@]} * num_tunes) ))"
+  echo "After training hp count=" $hp_count
+  echo "Completed hp tune $q of $(( hp_count / (${#INSTANCES[@]} * num_tunes) ))"
   q=$((q + 1))
 done
 
-echo "all original hps calculated"
+echo "All original hps calculated"
 
 # Collate metrics
-echo "collating metrics"
+echo "Collating metrics"
 collate_metrics="$directory/collate_metrics.py"
 commands="
   export TUNE_NAME=\"$tune_name\";
@@ -170,7 +172,7 @@ commands="
 "
 echo "Collating metrics on ${INSTANCES[0]}..."
 ssh -i $pem "${INSTANCES[0]}" "$commands"
-echo "collated"
+echo "Collated"
 
 gen_comp="$directory/gen_comp_file_ES.py"
 # Run early stopping
