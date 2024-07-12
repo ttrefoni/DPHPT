@@ -211,6 +211,7 @@ Install the required packages on each instance you are working in using the foll
 
 ```bash
 #if pip is not installed, install pip
+sudo apt-get update
 sudo apt-get update && sudo apt-get install -y python3-pip
 #install required packages
 pip install --no-cache-dir -r requirements_shell_script.txt
