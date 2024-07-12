@@ -104,15 +104,32 @@ echo $docker_name
 check_containers() {
   for INSTANCE in "${INSTANCES[@]}"; do
     while true; do
+      # Check if there are any running containers
       running_containers=$(ssh -i "$pem" "$INSTANCE" "sudo docker ps -q | wc -l")
+      
+      # If no containers are running, check their exit statuses
       if [ "$running_containers" -eq 0 ]; then
+        exited_containers=$(ssh -i "$pem" "$INSTANCE" "sudo docker ps -a --filter 'status=exited' --format '{{.ID}} {{.Status}}'")
+        
+        # If there are exited containers, check their exit codes
+        if [ -n "$exited_containers" ]; then
+          while read -r container_id status; do
+            exit_code=$(ssh -i "$pem" "$INSTANCE" "sudo docker inspect $container_id --format '{{.State.ExitCode}}'")
+            if [ "$exit_code" -ne 0 ]; then
+              echo "Container $container_id on $INSTANCE exited with code $exit_code"
+              exit 1
+            fi
+          done <<< "$exited_containers"
+        fi
         break
       fi
+
       echo "Waiting for containers to finish on $INSTANCE..."
       sleep 30  # Adjust the sleep time as necessary
     done
   done
 }
+
 
 # Main loop to run hps
 while [ $hp_aval_ct -gt 1 ]; do
