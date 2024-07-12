@@ -194,7 +194,6 @@ echo "Collating metrics"
 collate_metrics="$directory/collate_metrics.py"
 commands="
   export TUNE_NAME=\"$tune_name\";
-  cd /srv/samba/hp_tune_grid/PY;
   sudo python3 $collate_metrics $tune_name $directory;
 "
 echo "Collating metrics on ${INSTANCES[0]}..."
