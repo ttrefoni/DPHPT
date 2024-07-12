@@ -61,7 +61,7 @@ except FileExistsError:
     print(f"Directory {compose_dir} already exists.")
 
 # create docker file
-with open('{compose_dir}docker-compose.yml', 'w') as compose_file:
+with open(f'{compose_dir}/docker-compose.yml', 'w') as compose_file:
     compose_file.write('version: \'3\'\n\nservices:\n')
 
     for i, combo in enumerate(split_combos, start=1):
