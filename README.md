@@ -206,6 +206,16 @@ sudo su
 cp -r /hp_tune_auto/template /hp_tune_auto/template_backup
 ```
 
+#### 1.A.iii Install required packages on each Linux instance 
+Install the required packages on each instance you are working in using the following 
+
+```bash
+#if pip is not installed, install pip
+sudo apt-get update && sudo apt-get install -y python3-pip
+#install required packages
+pip install --no-cache-dir -r requirements_shell_script.txt
+```
+
 ## 1.B Set up Docker
 
 In order to run the hyper-parameter tuning procecess you will need to first create a docker account, then log into Docker on each instance, and either create a custom Docker image or use the default repository provided. 
