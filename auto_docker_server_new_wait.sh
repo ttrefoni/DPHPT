@@ -90,12 +90,21 @@ commands="
 ssh -i $pem "${INSTANCES[0]}" "$commands"
 
 og_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/hps_original_grid.csv\"")
-hps_tested_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/output_py/COLLATE/v5_try_col.csv\"")
+
+# Check if the file exists and count the lines, otherwise set to 0
+if ssh -i "$pem" "${INSTANCES[0]}" "[ -f \"$directory/output_py/COLLATE/v5_try_col.csv\" ]"; then
+  hps_tested_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/output_py/COLLATE/v5_try_col.csv\"")
+else
+  hps_tested_ct=0
+fi
+
 hp_aval_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/hps_available.csv\"")
+
 echo "Original hp count = $og_ct"
 echo "hps_tested count = $hps_tested_ct"
 echo "hps available now = $hp_aval_ct"
 
+#counter for calculating how many tune runs to complete 
 q=1
 docker_name="${pub}/${repository_name}:${version_number}"
 echo $docker_name
@@ -104,6 +113,8 @@ echo $docker_name
 check_containers() {
   for INSTANCE in "${INSTANCES[@]}"; do
     while true; do
+    #wait ten seconds to allow containers to initialize
+      sleep 10
       # Check if there are any running containers
       running_containers=$(ssh -i "$pem" "$INSTANCE" "sudo docker ps -q | wc -l")
       
@@ -129,7 +140,6 @@ check_containers() {
     done
   done
 }
-
 
 # Main loop to run hps
 while [ $hp_aval_ct -gt 1 ]; do
