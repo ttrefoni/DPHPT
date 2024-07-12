@@ -54,10 +54,10 @@ layers=convert_to_int(hps[6])
 # Perform operatins using hyperparameters
 
 #read in numpy arrays
-X_train=np.load("data/updt_seq_npy_arrays_80_20/x_train.npy")
-X_test=np.load("data/updt_seq_npy_arrays_80_20/x_test.npy")
-y_train=np.load("data/updt_seq_npy_arrays_80_20/y_train.npy")
-y_test=np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
+X_train=np.load("data/x_train_samp.npy")
+X_test=np.load("data/x_test_samp.npy")
+y_train=np.load("data/y_train_samp.npy)
+y_test=np.load("data/y_test_samp.npy")
 
 #use early stopping to determine epoch number for best combination of hps
 #define callbacks for early stopping 
