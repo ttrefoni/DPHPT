@@ -35,23 +35,34 @@ INSTANCES=("ubuntu@10.192.20.201")
 pem="/Users/theodoretrefonides/Downloads/shyra.pem"
 
 # Path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
-mounted_folder="/hp_tune_auto"
-
-# Create working directory
-directory="$mounted_folder/RUNS/$tune_name"
-
+mounted_folder="/srv/samba/hp_tune_grid"
+#create working directory 
+directory="$mounted_folder/timer/RUNS_timer/$tune_name"
+#create working directory and 
 # Check if directory exists and create if not
 if ssh -i "$pem" "${INSTANCES[0]}" "[ ! -d \"$directory\" ]"; then
   commands="
     # Make RUNS folder 
     mkdir -p $directory
     # Change to copy template at the location supplied by variable 
-    cp -r $mounted_folder/template/. $directory 
+    cp -r $mounted_folder/timer/template_timer/. $directory 
     chmod -R 0777 $directory 
     echo 'Creating new working directory'
   "
   ssh -i "$pem" "${INSTANCES[0]}" "$commands" || { echo "Failed to create directory"; exit 1; }
 fi
+
+#install required packages on linux instances 
+for INSTANCE in "${INSTANCES[@]}"; do
+  #install required packages in each instance 
+  commands="
+    sudo apt-get update
+    sudo apt-get install -y python3-pip
+    pip install --no-cache-dir -r $directory/requirements.txt
+    "
+  echo "installing required packages on  $INSTANCE..."
+  ssh -i $pem "$INSTANCE" "$commands"
+done
 
 # Define your Python scripts and Docker container
 gen_comp="$directory/gen_comp_file_py_auto.py"
@@ -160,9 +171,6 @@ while [ $hp_aval_ct -gt 1 ]; do
       export TUNE_NAME=\"$tune_name\";
       export num_tunes=\"$num_tunes\";
       export img_name=\"$docker_name\";
-      sudo apt-get update
-      sudo apt-get install -y python3-pip
-      pip install --no-cache-dir -r $directory/requirements.txt
       python3 $man_grid \"$num_tunes\" \"$directory\";
       python3 $gen_comp $num_tunes $tune_name $docker_name $directory;
     "
