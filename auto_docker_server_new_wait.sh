@@ -70,6 +70,7 @@ fi
 
 echo "Updating hps_tested.csv to hps from collate"
 
+# Collate metrics--if there are results--sets available tunes 
 echo "Collating metrics"
 for INSTANCE in "${INSTANCES[@]}"; do
     collate_metrics="$directory/collate_metrics_fixed.py"
@@ -77,7 +78,7 @@ for INSTANCE in "${INSTANCES[@]}"; do
       export TUNE_NAME=\"$tune_name\";
       hostname_var=\$(hostname);
       echo \$hostname_var;
-      sudo python3 $collate_metrics $tune_name $directory \$hostname_var;
+      python3 $collate_metrics $tune_name $directory \$hostname_var;
     "
     echo "Collating metrics on ${INSTANCE}..."
     ssh -i $pem "$INSTANCE" "$commands"
@@ -193,14 +194,15 @@ done
 
 echo "All original hps calculated"
 
-#collate metrics to one file 
+# Collate metrics--if there are results--sets available tunes 
 echo "Collating metrics"
 for INSTANCE in "${INSTANCES[@]}"; do
-    collate_metrics="$directory/collate_metrics.py"
+    collate_metrics="$directory/collate_metrics_fixed.py"
     commands="
       export TUNE_NAME=\"$tune_name\";
-      hostname_var=$(hostname)
-      sudo python3 $collate_metrics $tune_name $directory $hostname_var;
+      hostname_var=\$(hostname);
+      echo \$hostname_var;
+      python3 $collate_metrics $tune_name $directory \$hostname_var;
     "
     echo "Collating metrics on ${INSTANCE}..."
     ssh -i $pem "$INSTANCE" "$commands"
