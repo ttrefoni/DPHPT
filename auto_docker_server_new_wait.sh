@@ -69,15 +69,20 @@ else
 fi
 
 echo "Updating hps_tested.csv to hps from collate"
-# Collate metrics--if there are results
+
+# Collate metrics--if there are results--sets available tunes 
 echo "Collating metrics"
-collate_metrics="$directory/collate_metrics.py"
-commands="
-  export TUNE_NAME=\"$tune_name\";
-  sudo python3 $collate_metrics $tune_name $directory;
-"
-echo "Collating metrics on ${INSTANCES[0]}..."
-ssh -i $pem "${INSTANCES[0]}" "$commands"
+for INSTANCE in "${INSTANCES[@]}"; do
+    collate_metrics="$directory/collate_metrics_fixed.py"
+    commands="
+      export TUNE_NAME=\"$tune_name\";
+      hostname_var=\$(hostname);
+      echo \$hostname_var;
+      python3 $collate_metrics $tune_name $directory \$hostname_var;
+    "
+    echo "Collating metrics on ${INSTANCE}..."
+    ssh -i $pem "$INSTANCE" "$commands"
+done
 echo "Collated"
 
 # Compare hps available and collated output 
@@ -92,7 +97,7 @@ ssh -i $pem "${INSTANCES[0]}" "$commands"
 og_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/hps_original_grid.csv\"")
 
 # Check if the file exists and count the lines, otherwise set to 0
-if ssh -i "$pem" "${INSTANCES[0]}" "[ -f \"$directory/output_py/COLLATE/v5_try_col.csv\" ]"; then
+if ssh -i "$pem" "${INSTANCES[0]}" "[ -f \"$directory/output_py/COLLATE/{$tune_name_col}.csv\" ]"; then
   hps_tested_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/output_py/COLLATE/v5_try_col.csv\"")
 else
   hps_tested_ct=0
@@ -118,7 +123,7 @@ check_containers() {
       # Check if there are any running containers
       running_containers=$(ssh -i "$pem" "$INSTANCE" "sudo docker ps -q | wc -l")
       
-      # If no containers are running, check their exit statuses
+      # If no containers are running, check their exit status
       if [ "$running_containers" -eq 0 ]; then
         exited_containers=$(ssh -i "$pem" "$INSTANCE" "sudo docker ps -a --filter 'status=exited' --format '{{.ID}} {{.Status}}'")
         
@@ -189,15 +194,19 @@ done
 
 echo "All original hps calculated"
 
-# Collate metrics
+# Collate metrics--if there are results--sets available tunes 
 echo "Collating metrics"
-collate_metrics="$directory/collate_metrics.py"
-commands="
-  export TUNE_NAME=\"$tune_name\";
-  sudo python3 $collate_metrics $tune_name $directory;
-"
-echo "Collating metrics on ${INSTANCES[0]}..."
-ssh -i $pem "${INSTANCES[0]}" "$commands"
+for INSTANCE in "${INSTANCES[@]}"; do
+    collate_metrics="$directory/collate_metrics_fixed.py"
+    commands="
+      export TUNE_NAME=\"$tune_name\";
+      hostname_var=\$(hostname);
+      echo \$hostname_var;
+      python3 $collate_metrics $tune_name $directory \$hostname_var;
+    "
+    echo "Collating metrics on ${INSTANCE}..."
+    ssh -i $pem "$INSTANCE" "$commands"
+done
 echo "Collated"
 
 gen_comp="$directory/gen_comp_file_ES.py"
