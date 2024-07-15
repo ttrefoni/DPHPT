@@ -73,7 +73,7 @@ echo "Updating hps_tested.csv to hps from collate"
 # Collate metrics--if there are results--sets available tunes 
 echo "Collating metrics"
 for INSTANCE in "${INSTANCES[@]}"; do
-    collate_metrics="$directory/collate_metrics_fixed.py"
+    collate_metrics="$directory/collate_metrics.py"
     commands="
       export TUNE_NAME=\"$tune_name\";
       hostname_var=\$(hostname);
@@ -98,7 +98,7 @@ og_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/hps_original_grid.
 
 # Check if the file exists and count the lines, otherwise set to 0
 if ssh -i "$pem" "${INSTANCES[0]}" "[ -f \"$directory/output_py/COLLATE/{$tune_name_col}.csv\" ]"; then
-  hps_tested_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/output_py/COLLATE/v5_try_col.csv\"")
+  hps_tested_ct=$(ssh -i "$pem" "${INSTANCES[0]}" "wc -l < \"$directory/output_py/COLLATE/{$tune_name_col}.csv\"")
 else
   hps_tested_ct=0
 fi
@@ -197,7 +197,7 @@ echo "All original hps calculated"
 # Collate metrics--if there are results--sets available tunes 
 echo "Collating metrics"
 for INSTANCE in "${INSTANCES[@]}"; do
-    collate_metrics="$directory/collate_metrics_fixed.py"
+    collate_metrics="$directory/collate_metrics.py"
     commands="
       export TUNE_NAME=\"$tune_name\";
       hostname_var=\$(hostname);
