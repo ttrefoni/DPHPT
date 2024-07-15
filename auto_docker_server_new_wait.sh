@@ -224,7 +224,6 @@ commands="
   export tune_name=\"$tune_name\";
   export docker_name=\"$docker_name\"
   python3 $gen_comp $tune_name $directory $docker_name;
-  cd /home/ubuntu/LSTM_PY/;
   echo $docker_name
   sudo docker login;
   sudo docker pull \$docker_name; 
