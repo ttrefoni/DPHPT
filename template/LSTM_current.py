@@ -279,8 +279,7 @@ for i in range(len(hps)):
             'rmse': [rmse_mean],
             'r2': [r2_mean],
             'time_train': [time_tr_mean],
-            'time_test': [time_tst_mean],
-            'LT':[LT[0]]}
+            'time_test': [time_tst_mean]}
 
     df = pd.DataFrame(data)
 
