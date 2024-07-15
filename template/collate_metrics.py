@@ -11,13 +11,13 @@ def find_csv_files(root_directory, pattern='metrics_*.csv'):
                 csv_files.append(os.path.join(dirpath, filename))
     return csv_files
 
-# Set the directory of the instances
-instances = ["theottest-1", "theottest-2", "lstm-pm25"]
+# create empty df for all metrics data 
 all_data = pd.DataFrame()
 
 # Read in tune name from system argument
 tune_name=str(sys.argv[1])
 grid_file=str(sys.argv[2])
+#read in instance from shell script 
 inst=str(sys.argv[3])
 # Write the combined data frame to a new CSV file
 base_output_file = f'{grid_file}/output_py/COLLATE'
@@ -54,4 +54,3 @@ if csv_files:
     print("Collated metrics saved to:", output_file)
 else:
     print(f"No CSV files starting with 'metrics' found in {root_directory}.")
-
