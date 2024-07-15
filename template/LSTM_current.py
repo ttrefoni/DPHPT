@@ -270,7 +270,7 @@ for i in range(len(hps)):
     # Record model parameters and metrics
     # Save metrics
     data = {'epoch': epoch, 
-            'batch': batchsize,
+            'batch_size': batchsize,
             'units1': units1,
             'units2': units2,
             'units3': units3,
