@@ -20,7 +20,7 @@ col_met=pd.read_csv(hps_dir)
 col_met=col_met.sort_values(by=['r2'],ascending=False)
 print(col_met)
 
-batchsize = col_met['batch'][0] if 'batch' in col_met else None
+batchsize = col_met['batch_size'][0] if 'batch_size' in col_met else None
 units1 = col_met['units1'][0] if 'units1' in col_met else None
 units2 = col_met['units2'][0] if 'units2' in col_met else None
 units3 = col_met['units3'][0] if 'units3' in col_met else None
