@@ -30,9 +30,9 @@ echo "Enter number (int) of tunes to run at once on each instance:"
 read num_tunes
 
 # Define the list of Linux instances
-INSTANCES=("ubuntu@10.192.20.201")
+INSTANCES=("user@ipaddress")
 # Define pem location
-pem="/Users/theodoretrefonides/Downloads/shyra.pem"
+pem="/path/to/.pem"
 
 # Path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
 mounted_folder="/hp_tune_auto
