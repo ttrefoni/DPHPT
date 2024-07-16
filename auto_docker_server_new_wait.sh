@@ -35,7 +35,7 @@ INSTANCES=("user@ipaddress")
 pem="/path/to/.pem"
 
 # Path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
-mounted_folder="/hp_tune_auto
+mounted_folder="/hp_tune_auto"
 #create working directory 
 directory="$mounted_folder/timer/RUNS_timer/$tune_name"
 #create working directory and 
