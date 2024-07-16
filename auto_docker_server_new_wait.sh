@@ -87,9 +87,9 @@ for INSTANCE in "${INSTANCES[@]}"; do
     collate_metrics="$directory/collate_metrics.py"
     commands="
       export TUNE_NAME=\"$tune_name\";
-      hostname_var=$(hostname);
-      echo $hostname_var;
-      python3 $collate_metrics $tune_name $directory $hostname_var;
+      hostname_var=\$(hostname);
+      echo \$hostname_var;
+      python3 \$collate_metrics \$TUNE_NAME \$directory \$hostname_var;
     "
     echo "Collating metrics on ${INSTANCE}..."
     ssh -i $pem "$INSTANCE" "$commands"
