@@ -35,7 +35,7 @@ INSTANCES=("ubuntu@10.192.20.201")
 pem="/Users/theodoretrefonides/Downloads/shyra.pem"
 
 # Path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
-mounted_folder="/srv/samba/hp_tune_grid"
+mounted_folder="/hp_tune_auto
 #create working directory 
 directory="$mounted_folder/timer/RUNS_timer/$tune_name"
 #create working directory and 
