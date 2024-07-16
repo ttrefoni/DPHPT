@@ -37,7 +37,7 @@ pem="/path/to/.pem"
 # Path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
 mounted_folder="/hp_tune_auto"
 #create working directory 
-directory="$mounted_folder/timer/RUNS_timer/$tune_name"
+directory="$mounted_folder/RUNS/$tune_name"
 #create working directory and 
 # Check if directory exists and create if not
 if ssh -i "$pem" "${INSTANCES[0]}" "[ ! -d \"$directory\" ]"; then
@@ -45,7 +45,7 @@ if ssh -i "$pem" "${INSTANCES[0]}" "[ ! -d \"$directory\" ]"; then
     # Make RUNS folder 
     mkdir -p $directory
     # Change to copy template at the location supplied by variable 
-    cp -r $mounted_folder/timer/template_timer/. $directory 
+    cp -r $mounted_folder/template/. $directory 
     chmod -R 0777 $directory 
     echo 'Creating new working directory'
   "
