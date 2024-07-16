@@ -39,7 +39,7 @@ split_combos = split_by_indices(combinations, max_con)
 base_output_directory = f'{grid_file}/output_py/TUNING/{hostname}'
 
 # Create individual output directories for each chunk
-output_directories = [f'{base_output_directory}/hprun_split_container_{i+1}_{len(split_combos)}' for i in range(len(split_combos))]
+output_directories = [f'{base_output_directory}/hprun_split_container_{i+1}_{max_con}' for i in range(len(split_combos))]
 
 for directory in output_directories:
     try:
