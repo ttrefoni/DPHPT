@@ -439,7 +439,7 @@ Sample response:
 >> v6
 ```
 
-Prompt 4: The output directory, which will be located at "/srv/samba/hp_tune_grid/RUNS/<tune_name>"
+Prompt 4: The output directory, which will be located at "/hp_tune_auto/RUNS/<tune_name>"
 ```bash
 >> Enter tune name (output directory)
 ```
@@ -465,7 +465,7 @@ This script will read the hyper-parameter grid and create a new folder for each 
 Results from each hyper-parameter set are stored in directories with the following path convention: 
 
 ```bash
-/srv/samba/hp_tune_grid/RUNS/<tune_name>/output_py/TUNING/<host_short_name>/hprun_split_container_<containerID>_<num_tunes>
+/hp_tune_auto/RUNS/<tune_name>/output_py/TUNING/<host_short_name>/hprun_split_container_<containerID>_<num_tunes>
 ```
 
 ### Part Four: Check Progress using Docker Logs 
@@ -511,7 +511,7 @@ root@lstm-pm25:/home/ubuntu# docker logs 97d50804d2e7 -t
 You can also view all of the containers' logs, provided you are in the directory containing the docker-compose.yml 
 
 ```bash
-cd /srv/samba/hp_tune_grid/RUNS/<run_name>/compose_files/<hostname>
+cd /hp_tune_auto/RUNS/<run_name>/compose_files/<hostname>
 docker compose logs -t
 ```
 
@@ -520,7 +520,7 @@ This can be somewhat difficult to read as resutls from many contianers will be p
  
 ## Part Five: Wrapping Up
 
-Once all combinations have been tested, the shell script will run [collate_metrics.py](template/collate_metrics.py) which collects all of the output metrics from each hyper-parameter combination into a single csv file. The tuning results will be stored in the shared, mounted folder, at /srv/samba/hp_tune_grid/RUNS/<tune_name>/COLLATE/<tune_name>_col.csv
+Once all combinations have been tested, the shell script will run [collate_metrics.py](template/collate_metrics.py) which collects all of the output metrics from each hyper-parameter combination into a single csv file. The tuning results will be stored in the shared, mounted folder, at /hp_tune_auto/RUNS/<tune_name>/COLLATE/<tune_name>_col.csv
 
 
 As the tuning process can take quite a long time, if the user would like to investigate overall results throughout the tuning process they can run [collate_metrics.py](template/collate_metrics.py) to combine all completed tuning results. This can be helpful to review progress. 
