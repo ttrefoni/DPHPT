@@ -6,9 +6,8 @@ The purpose of running multiple hyper-parameter (HP) tuning experiments simultan
 Utilizing Docker, Python, and shell script this process solicits user input of hyperparameters, trains a model for each combination of hyperparameters and calculates metrics and predicted values for each model. Finally, it conducts an early stopping test to determine the optimal number of epochs for the best combination of hyper-parameters. This method was originally developed to tune long short-term memory models using Tensorflow for the purpose of calibrating purple air PM2.5 stations. However, with a few tweaks a similar approach can be applied to other machine learning tasks and models. 
 
 ## Table of Contents
-1. [A Docker Approach to Parallel Hyper-Parameter Tuning](#a-docker-approach-to-parallel-hyper-parameter-tuning)
-2. [Project Background](#project-background)
-3. [Implementation Guidance](#implementation-guidance)
+1. [Project Background](#project-background)
+2. [Implementation Guidance](#implementation-guidance)
     - [Prerequisites](#1a-set-up-linux-environment)
     - [Part 1: Set Up](#part-one-set-up)
         - [A. Set Up Linux Environment](#1a-set-up-linux-environment)
@@ -25,7 +24,7 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
         - [B. Run Shell Script](#b-run-shell-script)
     - [Part 4: Check Progress Using Docker Logs](#part-four-check-progress-using-docker-logs)
     - [Part 5: Wrapping Up](#part-five-wrapping-up)
-5. [Appendix](#appendix)
+3. [Appendix](#appendix)
     - [Section A: List of Included Scripts](#section-a-list-of-included-scripts)
     - [Section D: Application of Tmux](#section-b-application-of-tmux)
     - [Section C: Sample Training Data](#section-c-sample-training-data)
