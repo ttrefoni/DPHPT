@@ -30,9 +30,9 @@ echo "Enter number (int) of tunes to run at once on each instance:"
 read num_tunes_input
 
 # Define the list of Linux instances
-INSTANCES=("user@ipaddress")
+INSTANCES=("user@ip")
 # Define pem location
-pem="/path/to/.pem"
+pem="/path/to/.pem/"
 
 # Path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
 mounted_folder="/hp_tune_auto"
@@ -86,10 +86,9 @@ echo "Collating metrics"
 for INSTANCE in "${INSTANCES[@]}"; do
     collate_metrics="$directory/collate_metrics.py"
     commands="
-      export TUNE_NAME=\"$tune_name\";
       hostname_var=\$(hostname);
-      echo \$hostname_var;
-      python3 \$collate_metrics \$TUNE_NAME \$directory \$hostname_var;
+      echo $hostname_var;
+      python3 $collate_metrics $tune_name $directory \$hostname_var;
     "
     echo "Collating metrics on ${INSTANCE}..."
     ssh -i $pem "$INSTANCE" "$commands"
@@ -159,7 +158,6 @@ check_containers() {
 
 # Main loop to run hps
 while [ $hp_aval_ct -gt 1 ]; do
-#if there are fewer potential contianers than the number of hps, split them evenly 
   for INSTANCE in "${INSTANCES[@]}"; do
     if [ $hp_count -lt $(($num_tunes_input * ${#INSTANCES[@]})) ]; then
       echo "Less hps than containers*instances: splitting evenly"
@@ -167,9 +165,8 @@ while [ $hp_aval_ct -gt 1 ]; do
       echo $num_tunes
     else
     #otherwise numtunes equals the input number of tunes 
-      $num_tunes=$num_tunes_input
+      num_tunes=$num_tunes_input
     fi
-    
 
     # Define the commands to be executed
     commands="
@@ -177,7 +174,6 @@ while [ $hp_aval_ct -gt 1 ]; do
       export num_tunes=\"$num_tunes\";
       export img_name=\"$docker_name\";
       python3 $man_grid \"$num_tunes\" \"$directory\";
-      #create  compose file with original num tunes input so that output folders match 
       python3 $gen_comp $num_tunes_input $tune_name $docker_name $directory;
     "
     echo "Prepping compose file and hp grid on $INSTANCE..."
@@ -202,7 +198,7 @@ while [ $hp_aval_ct -gt 1 ]; do
 
   hp_count=$(ssh -i $pem "${INSTANCES[0]}" "cat $directory/hps_available.csv | wc -l")
   echo "After training hp count=" $hp_count
-  echo "Completed hp tune $q of $(( hp_count / (${#INSTANCES[@]} * num_tunes_input) ))"
+  echo "Completed hp tune $q of $(( hp_count / (${#INSTANCES[@]} * num_tunes) ))"
   q=$((q + 1))
 done
 
@@ -213,10 +209,9 @@ echo "Collating metrics"
 for INSTANCE in "${INSTANCES[@]}"; do
     collate_metrics="$directory/collate_metrics.py"
     commands="
-      export TUNE_NAME=\"$tune_name\";
       hostname_var=\$(hostname);
-      echo \$hostname_var;
-      python3 \$collate_metrics \$TUNE_NAME \$directory \$hostname_var;
+      echo $hostname_var;
+      python3 $collate_metrics $tune_name $directory \$hostname_var;
     "
     echo "Collating metrics on ${INSTANCE}..."
     ssh -i $pem "$INSTANCE" "$commands"
