@@ -299,7 +299,7 @@ cd /hp_tune_shared/template
 docker login
 ```
 
-    The terminal will prompt you for your username and password, enter the Docker credentials you created in step 1.  
+The terminal will prompt you for your username and password, enter the Docker credentials you created in step 1.  
 
 4. Build the Docker image
 
