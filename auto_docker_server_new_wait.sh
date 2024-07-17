@@ -27,7 +27,7 @@ read tune_name
 
 # Solicit number of tunes to run at once 
 echo "Enter number (int) of tunes to run at once on each instance:"
-read num_tunes
+read num_tunes_input
 
 # Define the list of Linux instances
 INSTANCES=("user@ipaddress")
@@ -159,12 +159,17 @@ check_containers() {
 
 # Main loop to run hps
 while [ $hp_aval_ct -gt 1 ]; do
+#if there are fewer potential contianers than the number of hps, split them evenly 
   for INSTANCE in "${INSTANCES[@]}"; do
-    if [ $hp_count -lt $(($num_tunes * ${#INSTANCES[@]})) ]; then
+    if [ $hp_count -lt $(($num_tunes_input * ${#INSTANCES[@]})) ]; then
       echo "Less hps than containers*instances: splitting evenly"
       num_tunes=$(( ($hp_count / ${#INSTANCES[@]}) + ($hp_count % ${#INSTANCES[@]} > 0) ))
       echo $num_tunes
+    else
+    #otherwise numtunes equals the input number of tunes 
+      $num_tunes=$num_tunes_input
     fi
+    
 
     # Define the commands to be executed
     commands="
@@ -172,7 +177,8 @@ while [ $hp_aval_ct -gt 1 ]; do
       export num_tunes=\"$num_tunes\";
       export img_name=\"$docker_name\";
       python3 $man_grid \"$num_tunes\" \"$directory\";
-      python3 $gen_comp $num_tunes $tune_name $docker_name $directory;
+      #create  compose file with original num tunes input so that output folders match 
+      python3 $gen_comp $num_tunes_input $tune_name $docker_name $directory;
     "
     echo "Prepping compose file and hp grid on $INSTANCE..."
     ssh -i $pem "$INSTANCE" "$commands"
@@ -196,7 +202,7 @@ while [ $hp_aval_ct -gt 1 ]; do
 
   hp_count=$(ssh -i $pem "${INSTANCES[0]}" "cat $directory/hps_available.csv | wc -l")
   echo "After training hp count=" $hp_count
-  echo "Completed hp tune $q of $(( hp_count / (${#INSTANCES[@]} * num_tunes) ))"
+  echo "Completed hp tune $q of $(( hp_count / (${#INSTANCES[@]} * num_tunes_input) ))"
   q=$((q + 1))
 done
 
