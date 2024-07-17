@@ -32,7 +32,7 @@ read num_tunes_input
 # Define the list of Linux instances
 INSTANCES=("user@ip")
 # Define pem location
-pem="/path/to/.pem/"
+pem="/path/to/pem/file.pem"
 
 # Path to the mounted folder, if you adjusted the name of the mounted folder, change your path below
 mounted_folder="/hp_tune_auto"
@@ -95,7 +95,7 @@ for INSTANCE in "${INSTANCES[@]}"; do
 done
 echo "Collated"
 
-# Compare hps available and collated output 
+#Compare hps available and collated output 
 echo "Comparing collate with available"
 comp_col_aval="$directory/compare_col_w_aval.py"
 commands="
@@ -159,9 +159,9 @@ check_containers() {
 # Main loop to run hps
 while [ $hp_aval_ct -gt 1 ]; do
   for INSTANCE in "${INSTANCES[@]}"; do
-    if [ $hp_count -lt $(($num_tunes_input * ${#INSTANCES[@]})) ]; then
+    if [ $hp_aval_ct -lt $(($num_tunes_input * ${#INSTANCES[@]})) ]; then
       echo "Less hps than containers*instances: splitting evenly"
-      num_tunes=$(( ($hp_count / ${#INSTANCES[@]}) + ($hp_count % ${#INSTANCES[@]} > 0) ))
+      num_tunes=$(( ($hp_aval_ct / ${#INSTANCES[@]}) + ($hp_aval_ct % ${#INSTANCES[@]} > 0) ))
       echo $num_tunes
     else
     #otherwise numtunes equals the input number of tunes 
@@ -196,9 +196,9 @@ while [ $hp_aval_ct -gt 1 ]; do
   
   check_containers
 
-  hp_count=$(ssh -i $pem "${INSTANCES[0]}" "cat $directory/hps_available.csv | wc -l")
-  echo "After training hp count=" $hp_count
-  echo "Completed hp tune $q of $(( hp_count / (${#INSTANCES[@]} * num_tunes) ))"
+  hp_aval_ct=$(ssh -i $pem "${INSTANCES[0]}" "cat $directory/hps_available.csv | wc -l")
+  echo "After training hp count=" $hp_aval_ct
+  echo "Completed hp tune $q of $(( hp_aval_ct / (${#INSTANCES[@]} * num_tunes) ))"
   q=$((q + 1))
 done
 
@@ -223,13 +223,13 @@ gen_comp="$directory/gen_comp_file_ES.py"
 echo $docker_name
 commands="
   export tune_name=\"$tune_name\";
-  export docker_name=\"$docker_name\"
+  export DOCKER_NAME=\"$docker_name\"
   python3 $gen_comp $tune_name $directory $docker_name;
   echo $docker_name
   hostname_var=\$(hostname);
   cd $directory/compose_files/\$hostname_var;
   sudo docker login;
-  sudo docker pull \$docker_name; 
+  sudo docker pull \$DOCKER_NAME; 
   sudo docker compose up --remove-orphans;
 "
 echo "Running Early Stopping on ${INSTANCES[0]}"
