@@ -226,7 +226,8 @@ commands="
   export docker_name=\"$docker_name\"
   python3 $gen_comp $tune_name $directory $docker_name;
   echo $docker_name
-  cd $directory/compose_files/\$hostname;
+  hostname_var=\$(hostname);
+  cd $directory/compose_files/\$hostname_var;
   sudo docker login;
   sudo docker pull \$docker_name; 
   sudo docker compose up --remove-orphans;
