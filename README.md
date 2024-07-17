@@ -214,7 +214,7 @@ Install the required packages on each instance you are working in using the foll
 sudo apt-get update
 sudo apt-get update && sudo apt-get install -y python3-pip
 #install required packages
-pip install --no-cache-dir -r requirements_shell_script.txt
+pip install --no-cache-dir -r requirements.txt
 ```
 
 ## 1.B Set up Docker
@@ -275,10 +275,10 @@ For example:
 
 ```bash
 # Read in training data
-X_train = np.load("data/updt_seq_npy_arrays_80_20/x_train.npy")
-X_test = np.load("data/updt_seq_npy_arrays_80_20/x_test.npy")
-y_train = np.load("data/updt_seq_npy_arrays_80_20/y_train.npy")
-y_test = np.load("data/updt_seq_npy_arrays_80_20/y_test.npy")
+X_train = np.load("data/x_train_samp.npy")
+X_test = np.load("data/x_test_samp.npy")
+y_train = np.load("data/y_train_samp.npy")
+y_test = np.load("data/y_test_samp.npy")
 ```
 
 1.Log in or create a Docker account at https://hub.docker.com
@@ -397,12 +397,12 @@ pem="/path/to/.pem"
 
 ### B: Run Shell Script 
 
-1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. This should be done on a local machine or on a seperate remote machine from the large instances in which the models will be trained. 
+1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. This should be done on a local machine or on a seperate remote machine from the large instances in which the models will be trained. Update the paths below with the location of your shell script.
 ```bash
 #make script executable  
-sudo chmod +x /path/to/auto_docker_server_new_wait.sh
+sudo chmod +x /auto_docker_server_new_wait.sh
 #run the script 
-./path/to/auto_docker_server_new_wait.sh
+./auto_docker_server_new_wait.sh
 ```
 
 2. The script will prompt you for several pieces of information. The sample responses provided link to an image to run the example LSTM model. 
