@@ -385,6 +385,8 @@ Adjust these scripts to train your desired model and hyper-parameters.
 
 
 ## Part Three: Initialize and Execute
+This part be done on a local machine or on a seperate remote machine from the large instances in which the models will be trained.
+
 ### A: Set up Shell Script 
 Adjust the following lines in the included shell script [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) to reflect your .pem file to access those servers and the ip adress of your servers. 
 
@@ -397,7 +399,7 @@ pem="/path/to/.pem"
 
 ### B: Run Shell Script 
 
-1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. This should be done on a local machine or on a seperate remote machine from the large instances in which the models will be trained. Update the paths below with the location of your shell script.
+1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. Update the paths below with the location of your shell script.
 ```bash
 #make script executable  
 sudo chmod +x /auto_docker_server_new_wait.sh
