@@ -1,66 +1,64 @@
 # A Docker Approach to Parallel Hyper-Parameter Tuning 
 
-## Project Background 
+# Project Background 
 The purpose of running multiple hyper-parameter (HP) tuning experiments simultaneously is to decrease the time required to find the optimal combination of hyperparameters for a specified model and training data set. As some of these models can take hours to train and users may want to consider hundreds of combinations of hyperparameters, training multiple sets of hyperparameters simultaneously can save hundreds of hours of computation time. 
 
 Utilizing Docker, Python, and shell script this process solicits user input of hyperparameters, trains a model for each combination of hyperparameters and calculates metrics and predicted values for each model. Finally, it conducts an early stopping test to determine the optimal number of epochs for the best combination of hyper-parameters. This method was originally developed to tune long short-term memory models using Tensorflow for the purpose of calibrating purple air PM2.5 stations. However, with a few tweaks a similar approach can be applied to other machine learning tasks and models. 
 
-## Table of Contents
-1. [Project Background](#project-background)
-2. [Implementation Guidance](#implementation-guidance)
-    - [Prerequisites](#1a-set-up-linux-environment)
-    - [Part 1: Set Up](#part-one-set-up)
-        - [A. Set Up Linux Environment](#1a-set-up-linux-environment)
-            - [i. Create a shared, mounted folder across Linux instances](#1ai-create-a-shared-mounted-folder-across-linux-instances)
-            - [ii. Copy Template to the Shared Folder](#1aii-copy-template-to-the-shared-folder))
-        - [B. Set Up Docker](#1b-set-up-docker)
-            - [i. Create Docker Account](#1bi-create-docker-account)
-            - [ii. Identify or Create Docker Image](#1bii-identify-or-create-docker-image)
-                - [Option 1: Use an already existing Docker image](#option-1-use-an-already-existing-docker-image)
-                - [Option 2: Create your own Docker image](#option-2-create-your-own-docker-image)
-    - [Part 2: Set Desired Hyper-Parameters](#part-two-set-desired-hyper-parameters)
-    - [Part 3: Initialize and Execute](#Part-Three-Initialize-and-Execute)
-        - [A. Set Up Shell Script](#a-set-up-shell-script)
-        - [B. Run Shell Script](#b-run-shell-script)
-    - [Part 4: Check Progress Using Docker Logs](#part-four-check-progress-using-docker-logs)
-    - [Part 5: Wrapping Up](#part-five-wrapping-up)
-3. [Appendix](#appendix)
+# Table of Contents
+* [Project Background](#project-background)
+* [Prerequisites](#1a-set-up-linux-environment)
+* [Part 1: Set Up](#part-one-set-up)
+    - [A. Set Up Linux Environment](#1a-set-up-linux-environment)
+        - [i. Create a shared, mounted folder across Linux instances](#1ai-create-a-shared-mounted-folder-across-linux-instances)
+        - [ii. Copy Template to the Shared Folder](#1aii-copy-template-to-the-shared-folder))
+    - [B. Set Up Docker](#1b-set-up-docker)
+        - [i. Create Docker Account](#1bi-create-docker-account)
+        - [ii. Identify or Create Docker Image](#1bii-identify-or-create-docker-image)
+            - [Option 1: Use an already existing Docker image](#option-1-use-an-already-existing-docker-image)
+            - [Option 2: Create your own Docker image](#option-2-create-your-own-docker-image)
+* [Part 2: Set Desired Hyper-Parameters](#part-two-set-desired-hyper-parameters)
+* [Part 3: Initialize and Execute](#Part-Three-Initialize-and-Execute)
+    - [A. Set Up Shell Script](#a-set-up-shell-script)
+    - [B. Run Shell Script](#b-run-shell-script)
+* [Part 4: Check Progress Using Docker Logs](#part-four-check-progress-using-docker-logs)
+* [Part 5: Wrapping Up](#part-five-wrapping-up)
+* [Appendix](#appendix)
     - [Section A: List of Included Scripts](#section-a-list-of-included-scripts)
     - [Section D: Application of Tmux](#section-b-application-of-tmux)
     - [Section C: Sample Training Data](#section-c-sample-training-data)
     - [Section D: FAQs](#section-d-faqs)
     
 
-# Implementation Guidance
 
-## Prerequisites
+# Prerequisites
 
 1. One or more Linux instances that can be accessed through an SSH command using a .pem file.
 2. A local machine capable of running shell scirpt. Mac and Linux machines can natively run shell script but Windows users will need to install a Windows Subsystem for Linux. [See appendix B](#sample-training-data)
 3. A relevent training dataset designed for use with an appropriate machine learning model. This repository includes some sample training data for use with an LSTM model.
 4. Basic knowledge of how to train and test deep learning models. 
 
-## Part One: Set Up
+# Part One: Set Up
 
-### 1.A: Set Up Linux Environment 
+## 1.A: Set Up Linux Environment 
 This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. If you are using one instance, it is not stricly neccessary to carry out this step.. Howver, for the sake of consistancy we reccomend to set up the Samba service as described below regardless. If you are using one machine simply use that machine as both the server and the client for the shared folder. 
 
-#### 1.A.i: Create a shared, mounted folder across Linux instances:
+### 1.A.i: Create a shared, mounted folder across Linux instances:
 
-##### Step 1:
+#### Step 1:
 Choose an instance to act as the server. This is where the shared directory will be located. Each of the other machines will access this folder through Samba share. In order to reduce the number of machines necessary, you can use the server machine as both the server and a client.
 
-##### Step 2:
-Set up Samba on your server instance.
+#### Step 2:
+1. Set up Samba on your server instance.
 
-A. Install Samba:
+Install Samba:
 ```bash
 sudo apt update
 sudo apt install samba
 ```
 
 
-B. Create a directory for the server instance to share:
+Create a directory for the server instance to share:
 A suggested convention is to create a directory on the host machine at `/srv/samba/shared_hp_tune`. Make sure to create the directory as the user that will be acccessing the shared directory. 
 
 ```bash
@@ -68,14 +66,14 @@ sudo mkdir /srv/samba/shared_hp_tune
 ```
 
 
-C. Add the served directory as a share in the Samba configuration file:
+2. Add the served directory as a share in the Samba configuration file:
 
 ```bash
 # open the Samba configuration file 
 sudo vim /etc/samba/smb.conf
 ```
 
-Add the following lines to the bottom of the file. Adjust the parameters to your specifications. If you set `guest ok` to “no” you will need to set or create SMB users in the following step. We suggest that you name this share `[shared_hp_tune]`.
+3. Add the following lines to the bottom of the file. Adjust the parameters to your specifications. If you set `guest ok` to “no” you will need to set or create SMB users in the following step. We suggest that you name this share `[shared_hp_tune]`.
 
 ```bash
 [shared_hp_tune]
@@ -87,7 +85,7 @@ Add the following lines to the bottom of the file. Adjust the parameters to your
     guest ok = no
 ```
 
-Exit the .conf file 
+4. Exit the .conf file 
 
 ```bash
 [escape]
@@ -96,7 +94,7 @@ enter
 ```
 
 
-D. Set or add SMB passwords for system users:
+5. Set or add SMB passwords for system users:
 In order to protect system passwords, SMB users must have separate passwords from their system passwords. However, all SMB users should be system users as well. Creating and managing new system users is beyond the scope of this guide.
 
 To add the SMB password to an exisiting account execute the following. Change "username" to your Linux system username. 
@@ -112,16 +110,18 @@ sudo smbpasswd -e username
 Be sure to remember your password as you will need to enter it on each client machine to create a permanent mount.
 
 
-E. Restart the Samba service to allow the share to take effect:
+6. Restart the Samba service to allow the share to take effect:
 
 ```bash
 sudo service smbd restart
 ```
 
-##### Step 3: Mount share on client machines
-Carry out the following steps for each client machine you wish to use. Note: if you want to utilize the server machine to carry out hyper-parameter tuning, you will need to execute the following steps for that machine as well to set it up as a client to itself.
+#### Step 3: Mount share on client machines
+Carry out the following steps for each client machine you wish to use. 
 
-A. Install the cifs-utils package if it's not already installed:
+Note: if you want to utilize the server machine to carry out hyper-parameter tuning, you will need to execute the following steps for that machine as well to set it up as a client to itself.
+
+##### 1. Install the cifs-utils package if it's not already installed:
 This package is necessary for mounting SMB/CIFS shares. You can install it by running:
 
 ```bash
@@ -129,14 +129,14 @@ sudo apt update && sudo apt install cifs-utils
 ```
 
 
-B. Create a directory where you will be mounting the shared folder (mountpoint):
+##### 2. Create a directory where you will be mounting the shared folder (mountpoint):
 A suggested convention is to create the mountpoint at `/hp_tune_auto` on each client machine.
 
 ```bash
 sudo mkdir /hp_tune_auto
 ```
 
-C. Change ownership of the mountpoint to your user. (Replace "ubuntu" with your username)
+##### 3. Change ownership of the mountpoint to your user. (Replace "ubuntu" with your username)
 
 ```bash
 sudo chown ubuntu:ubuntu /hp_tune_auto
@@ -144,7 +144,7 @@ sudo chown ubuntu:ubuntu /hp_tune_auto
 This allows you to make changes in this file as your user rather than root.
 
 
-D. Mount the share using the mount command:
+##### 4. Mount the share using the mount command:
 
 You'll need to specify the Samba share's path, the mount point, and your credentials:
 
@@ -152,12 +152,12 @@ You'll need to specify the Samba share's path, the mount point, and your credent
 sudo mount -t cifs -o username=sambausername,password=sambapassword //server-ip/shared_hp_tune /hp_tune_auto
 ```
 
-Replace `sambausername` and `sambapassword` with the credentials specified in step 2.4, `server-ip` with the IP address of your Samba server, and `shared_hp_tune` with the name of your share. Note that "//server-ip/shared_hp_tune" should be the **name of the share** not the path to the served directory. 
+##### 5. Replace `sambausername` and `sambapassword` with the credentials specified in step 2.4, `server-ip` with the IP address of your Samba server, and `shared_hp_tune` with the name of your share. Note that "//server-ip/shared_hp_tune" should be the **name of the share** not the path to the served directory. 
 
 If you chose a different convention for your mountpoint, repalce "/hp_tune_auto" with the path to your mountpoint. 
 
 
-E. Create a permanent mount:
+##### 6. Create a permanent mount:
 
 To have the Samba share automatically mounted at boot, you'll edit the `/etc/fstab` file:
 
@@ -167,7 +167,7 @@ Open `/etc/fstab` in a text editor with root privileges:
 sudo vim /etc/fstab
 ```
 
-Add a line for the Samba share at the end of the file:
+##### 7. Add a line for the Samba share at the end of the file:
 
 ```bash
 //server-ip/shared_hp_tune /hp_tune_auto cifs username=sambausername,password=sambapassword,iocharset=utf8 0 0
@@ -177,15 +177,15 @@ Once you have completed these steps you should be able to access the shared fold
 
 If you chose a different share name than “hp_tune_share” in step 2.C, be sure to update it in the above line. Replace `username` and `password` with your credentials created in step 2.D, `server-ip` with the server’s IP address. If you chose a different convention for the mountepoint than `/hp_tune_auto` adjust that value to the directory you created in step 3.B.
 
-#### 1.A.ii Copy Template to the Shared Folder
+### 1.A.ii Copy Template to the Shared Folder
 
-1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. It also includes a set of sample training and testing data for the example LSTM model.
+##### 1. Download the [template](template) directory from this GitHub. This directory contains all the scripts necessary to build a Docker image, create a compose file to start Docker containers, and create and manage a hyper-parameter grid. It also includes a set of sample training and testing data for the example LSTM model.
 
 Github does not provide a native method to downloading directories. However, user [fregante](https://stackoverflow.com/users/288906/fregante) has provided a convient solution: [download directory github](https://download-directory.github.io/).
 
 You can download the template directory from [download directory github](https://download-directory.github.io/) using the following link: [download template directory](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fttrefoni%2Fpm25_docker%2Ftree%2Fmain%2Ftemplate)
 
-2. Copy template folder to working direcory.
+##### 2. Copy template folder to working direcory.
 
 Copy the template directory to the shared directory created in the previous step. Replace ip address with your server's ip address, "/path/to/template/" with the path of the downloaded folder on your local machine, and "/hp_tune_auto/template" with the path to the mounted folder created in 1.A.i. 
 
@@ -194,6 +194,8 @@ sudo su
 scp -r -i /path/to/.pem/ /path/of/local/template <user>@<ipaddress>:/hp_tune_auto
 ```
    
+##### 3. Make changes as needed 
+
 To make changes for each run, simply adjust the scripts in the template folder as desired and re-run https://github.com/ttrefoni/pm25_docker/blob/run_on_shared/auto_docker_server_new_wait.sh. 
 
 It is highly recommended that you maintain a backup version of the template directory that contains the original version of the scripts. Again, if you changed the path to your mountpoint from the suggested convention (/hp_tune_auto), adjust the following to reflect that path. 
@@ -205,7 +207,7 @@ sudo su
 cp -r /hp_tune_auto/template /hp_tune_auto/template_backup
 ```
 
-#### 1.A.iii Install required packages on each Linux instance 
+### 1.A.iii Install required packages on each Linux instance 
 Install the required packages on each instance you are working in using the following 
 
 ```bash
@@ -221,9 +223,9 @@ pip install --no-cache-dir -r requirements.txt
 In order to run the hyper-parameter tuning procecess you will need to first create a docker account, then log into Docker on each instance, and either create a custom Docker image or use the default repository provided. 
 
 ### 1.B.i Create Docker Account 
-1. Create a Docker account: https://docs.docker.com/docker-id/
-2. Install Docker in your Linux environment: https://docs.docker.com/desktop/install/linux-install/
-3. Log in to your Docker account on each instnace you intend to use. 
+##### 1. Create a Docker account: https://docs.docker.com/docker-id/
+##### 2. Install Docker in your Linux environment: https://docs.docker.com/desktop/install/linux-install/
+##### 3. Log in to your Docker account on each instnace you intend to use:  
     
 ```bash
 #first connect to your remote machine
@@ -242,7 +244,7 @@ For example, this is the Docker Hub repository for the LSTM example. If you pull
 If you are testing a different model, or would like to adjust the design of the LSTM model included in this example, you will need to build your own Docker image. 
 
 
-1. Create a Dockerfile: 
+###### 1. Create a Dockerfile: 
 A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is included in the template folder. 
 
 ```bash
@@ -280,15 +282,15 @@ y_train = np.load("data/y_train_samp.npy")
 y_test = np.load("data/y_test_samp.npy")
 ```
 
-1.Log in or create a Docker account at https://hub.docker.com
+###### 2. Log in or create a Docker account at https://hub.docker.com
 
-2. Create a repository on Docker Hub to access for each run:
+###### 3. Create a repository on Docker Hub to access for each run:
 
 Ensure that you set the repository to "public" so that you can pull it later. 
 
    <img width="921" alt="docker_repos_create" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/2d722ee7-9c43-4d47-92b1-e5411d19424b">
 
-2. Log in to Docker on a Linux instance as sudo then navigate to the tempplate directory in the shared folder.
+###### 4. Log in to Docker on a Linux instance as sudo then navigate to the tempplate directory in the shared folder.
 
 ```bash
 #first connect to your remote machine
@@ -300,7 +302,7 @@ docker login
 
 The terminal will prompt you for your username and password, enter the Docker credentials you created in step 1.  
 
-4. Build the Docker image
+###### 5. Build the Docker image
 
 ```bash
 docker build -t my-image-name .
@@ -308,7 +310,7 @@ docker build -t my-image-name .
 
 This command builds the Docker image on whichever instance you are wokring in. Replace "my-image-name" with resonable image name of your choice. 
 
-5. Tag your Docker image with your repository name and the version number.
+###### 6. Tag your Docker image with your repository name and the version number.
 
 ```bash
 docker tag my-image-name username/repository_name:version_number
@@ -316,7 +318,7 @@ docker tag my-image-name username/repository_name:version_number
 
 replace "my-image-name" with the image name you specified in step 4, "username" with your docker username, "repository_name" with the repository name you created in step 2, and "version_number" with a resonable version naming convention. 
 
-6. Push your image to the repository
+###### 7. Push your image to the repository
 
 ```bash
 docker push your-dockerhub-username/my-python-app:latest
@@ -398,7 +400,7 @@ pem="/path/to/.pem"
 
 ### B: Run Shell Script 
 
-1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. Update the paths below with the location of your shell script.
+##### 1. Initialize the hyper-parameter tuning process with the `auto_docker_server_new_wait.sh` script. Update the paths below with the location of your shell script.
 ```bash
 #make script executable  
 sudo chmod +x /auto_docker_server_new_wait.sh
@@ -406,7 +408,7 @@ sudo chmod +x /auto_docker_server_new_wait.sh
 ./auto_docker_server_new_wait.sh
 ```
 
-2. The script will prompt you for several pieces of information. The sample responses provided link to an image to run the example LSTM model. 
+##### 2. The script will prompt you for several pieces of information. The sample responses provided link to an image to run the example LSTM model. 
 
 Prompt 1: The publisher name, this is equivalent to your Docker username or the Docker username of the owner of the repository you wish to use. 
 ```bash
@@ -470,9 +472,9 @@ Results from each hyper-parameter set are stored in directories with the followi
 ### Part Four: Check Progress using Docker Logs 
 To check the progress of your tuning process, you can use the Docker logs command. 
 
-First connect to the Linux instance or instances in which the containers are hosted. 
+##### 1. First connect to the Linux instance or instances in which the containers are hosted. 
 
-Then check which docker containers are currently running:
+##### 2. Then check which docker containers are currently running:
 ```bash
 sudo su
 docker ps
@@ -489,7 +491,7 @@ bc6b8232fec6   ttrefogmu/pm25_pub:v6   "python3 /LSTM_model…"   26 hours ago  
 9d445259985d   ttrefogmu/pm25_pub:v6   "python3 /LSTM_model…"   26 hours ago   Up 26 hours   0.0.0.0:90->8787/tcp, :::90->8787/tcp     lstm_py-lstm-pm25_v5_try_container10-1
 ```
 
-Finally, check the logs of a container to monitor its progress. 
+##### 3. check the logs of a container to monitor its progress. 
 ```bash
 docker logs <container id> -t
 ```
@@ -528,28 +530,28 @@ As the tuning process can take quite a long time, if the user would like to inve
 # Appendix 
 ## Section A, list of included scripts
 
-1. [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) 
+##### 1. [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) 
 This script is used to initialize the overall hyper-parameter tuning process. It accepts user input over the Docker Image to use, the output location, and the number of tunes to run simultaneously. Next it runs the tuning process, monitors progress, and collects the output metrics. 
     
-2. [create_hps_grid.py](template/create_hps_grid.py)
+##### 2. [create_hps_grid.py](template/create_hps_grid.py)
 This script creates the original hps grid for grid search. By updating the hps set in this script you can adjust the overall hps which will be tested. 
 
-3. [man_hp_grid.py](template/man_hp_grid.py)
+##### 3. [man_hp_grid.py](template/man_hp_grid.py)
 This script is used to track which hyper-parameters have already been tested in order to ensure that a combination of hyper-parameters is not tested more than once. [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) will call this script throughout the tuning process to manage the .csv files which track which hyperparameters have already been tested and which are still available. 
     
-4. [compare_col_w_aval.py](template/compare_col_w_aval.py)
+##### 4. [compare_col_w_aval.py](template/compare_col_w_aval.py)
 This script is used in [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh) to check the hps_tested against those that are output in from [collate_metrics.py](template/collate_metrics.py). This helps to resolve issues that would come up if the tuning process gets interrupted. This script compares the potential hyperparameter combinations with those that have already been completed.
 
-5. [gen_comp_file_py_auto.py](template/gen_comp_file_py_auto.py)
+##### 5. [gen_comp_file_py_auto.py](template/gen_comp_file_py_auto.py)
 This script creates the compose file (a .yml) which details the parameters for each Docker container. This includes the hyper-parameters, which port to be run, and the machine learning script to be run. It also creates the directories in which each container's output is stored and mounts the output of the Docker containers to those locations. As the tuning process is run by [auto_docker_server_new_wait.sh](auto_docker_server_new_wait.sh), this script is run once for each set of combinations.
     
-6. [gen_comp_file_ES.py](template/gen_comp_file_ES.py)
+##### 6. [gen_comp_file_ES.py](template/gen_comp_file_ES.py)
 This script fulfills the same role as [gen_comp_file_py_auto.py](template/gen_comp_file_py_auto.py), but is designed to set up the .yml compose file for the early stopping portion of training.
 
-7. [LSTM_current.py](template/LSTM_current.py)
+##### 7. [LSTM_current.py](template/LSTM_current.py)
 This script is run in a Docker Container, it ingests the given hyper-parameter combination, then trains an LSTM model using three fold cross validation, records the metrics (RMSE and RSquared) and training history and saves them to a .csv file in the mounted folder. 
 
-8. [LSTM_current_ES.py](template/LSTM_current_ES.py)
+##### 8. [LSTM_current_ES.py](template/LSTM_current_ES.py)
 This script trains the LSTM with the best combination of hyper-parameters (by RSquared) using an early stopping method to determine the optimal number of epochs. 
     
 ## Section B, Application of Tmux
@@ -565,7 +567,7 @@ Included on this repo is a folder with sample training data for the base LSTM mo
 This training data is intended to calibrate Purple Air sensors to regulatory performance. The covariates include Purple Air readings, relative humidty,and temperature. For the LSTM they are organized into numpy arrays with the shape [n,24,3] for input data and [n] for predicted data, where 3 is the number of covariates and 24 is the number of hours included in each sequence. No further pre-processing is needed to use this data for hyper-parameter tuning. 
 
 ## Section D, FAQs
-1. Is it possible to run this proces in Windows or Mac computing enviornments?
+##### 1. Is it possible to run this proces in Windows or Mac computing enviornments?
    
 This process was designed to be run on networked linux machines. You may need to adjust certain aspects of the process such as mounting a shared folder using Samba to run tuning on Windows or Mac. It is possible to run the included shell script which manages the training process on Windows or Mac. On a Windows machine you will likely need to isntall a [Windows Subsystem for Linux (WSL)](https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://learn.microsoft.com/en-us/windows/wsl/install&ved=2ahUKEwjBh8CF4IiHAxUpGVkFHQgZCSYQFnoECBgQAQ&usg=AOvVaw3NDNYJVUKnKqnP9DjgAR3M) to successfully run shell scripts. 
 
