@@ -244,7 +244,7 @@ For example, this is the Docker Hub repository for the LSTM example. If you pull
 If you are testing a different model, or would like to adjust the design of the LSTM model included in this example, you will need to build your own Docker image. 
 
 
-###### 1. Create a Dockerfile: 
+##### 1. Create a Dockerfile: 
 A Dockerfile contains the instructions for how to build a Docker image, which is then accessed from each machine and used to train the ML model. The Dockerfile for the LSTM is included in the template folder. 
 
 ```bash
@@ -282,15 +282,15 @@ y_train = np.load("data/y_train_samp.npy")
 y_test = np.load("data/y_test_samp.npy")
 ```
 
-###### 2. Log in or create a Docker account at https://hub.docker.com
+##### 2. Log in or create a Docker account at https://hub.docker.com
 
-###### 3. Create a repository on Docker Hub to access for each run:
+##### 3. Create a repository on Docker Hub to access for each run:
 
 Ensure that you set the repository to "public" so that you can pull it later. 
 
    <img width="921" alt="docker_repos_create" src="https://github.com/ttrefoni/pm25_docker/assets/162225698/2d722ee7-9c43-4d47-92b1-e5411d19424b">
 
-###### 4. Log in to Docker on a Linux instance as sudo then navigate to the tempplate directory in the shared folder.
+##### 4. Log in to Docker on a Linux instance as sudo then navigate to the tempplate directory in the shared folder.
 
 ```bash
 #first connect to your remote machine
@@ -302,7 +302,7 @@ docker login
 
 The terminal will prompt you for your username and password, enter the Docker credentials you created in step 1.  
 
-###### 5. Build the Docker image
+##### 5. Build the Docker image
 
 ```bash
 docker build -t my-image-name .
@@ -310,7 +310,7 @@ docker build -t my-image-name .
 
 This command builds the Docker image on whichever instance you are wokring in. Replace "my-image-name" with resonable image name of your choice. 
 
-###### 6. Tag your Docker image with your repository name and the version number.
+##### 6. Tag your Docker image with your repository name and the version number.
 
 ```bash
 docker tag my-image-name username/repository_name:version_number
@@ -318,7 +318,7 @@ docker tag my-image-name username/repository_name:version_number
 
 replace "my-image-name" with the image name you specified in step 4, "username" with your docker username, "repository_name" with the repository name you created in step 2, and "version_number" with a resonable version naming convention. 
 
-###### 7. Push your image to the repository
+##### 7. Push your image to the repository
 
 ```bash
 docker push your-dockerhub-username/my-python-app:latest
