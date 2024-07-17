@@ -20,14 +20,16 @@ col_met=pd.read_csv(hps_dir)
 col_met=col_met.sort_values(by=['r2'],ascending=False)
 print(col_met)
 
-batchsize = col_met['batch_size'][0] if 'batch_size' in col_met else None
-units1 = col_met['units1'][0] if 'units1' in col_met else None
-units2 = col_met['units2'][0] if 'units2' in col_met else None
-units3 = col_met['units3'][0] if 'units3' in col_met else None
-lrate = col_met['lrate'][0] if 'lrate' in col_met else None
-layers = col_met['layers'][0] if 'layers' in col_met else None
-epoch=1000
-print(units2)
+# Extract hyperparameters, handling NaN values and missing columns
+batchsize = col_met['batch_size'].iloc[0] if 'batch_size' in col_met and pd.notna(col_met['batch_size'].iloc[0]) else None
+units1 = col_met['units1'].iloc[0] if 'units1' in col_met and pd.notna(col_met['units1'].iloc[0]) else None
+units2 = col_met['units2'].iloc[0] if 'units2' in col_met and pd.notna(col_met['units2'].iloc[0]) else None
+units3 = col_met['units3'].iloc[0] if 'units3' in col_met and pd.notna(col_met['units3'].iloc[0]) else None
+lrate = col_met['lrate'].iloc[0] if 'lrate' in col_met and pd.notna(col_met['lrate'].iloc[0]) else None
+layers = col_met['layers'].iloc[0] if 'layers' in col_met and pd.notna(col_met['layers'].iloc[0]) else None
+epoch = 1000
+
+# Ensure we handle None values properly
 combinations = [
     int(epoch) if epoch is not None else -1,
     int(batchsize) if batchsize is not None else -1,
