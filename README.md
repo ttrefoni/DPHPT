@@ -43,7 +43,7 @@ Utilizing Docker, Python, and shell script this process solicits user input of h
 ## Part One: Set Up
 
 ### 1.A: Set Up Linux Environment 
-This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. If you are using one instance, it is not stricly neccessary to carry out this step.. Howver, for the sake of consistancy we reccomend to set up the sammba service as described below regardless. If you are using one machine simply use that machine as both the server and the client for the shared folder. 
+This process is intended to leverage multiple large Linux instances to run dozens of computationally expensive tunes simultaneously. If you are using one instance, it is not stricly neccessary to carry out this step.. Howver, for the sake of consistancy we reccomend to set up the Samba service as described below regardless. If you are using one machine simply use that machine as both the server and the client for the shared folder. 
 
 #### 1.A.i: Create a shared, mounted folder across Linux instances:
 
