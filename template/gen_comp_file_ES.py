@@ -10,6 +10,8 @@ hostname = subprocess.check_output(["hostname"]).decode("utf-8").strip()
 # Read in tune name from system argument
 tune_name=str(sys.argv[1])
 grid_file=str(sys.argv[2])
+image_name=str(sys.argv[3])
+
 #create file paths 
 hps_dir=f"{grid_file}/output_py/COLLATE/{tune_name}_col.csv"
 print(hps_dir)
@@ -40,7 +42,6 @@ combinations = [
     int(layers) if layers is not None else -1
 ]
 print(combinations)
-image_name=sys.argv[3]
 # Create a base output directory
 base_output_directory =  f"{grid_file}/output_py/{tune_name}/EARLY_STOP/"
 print(base_output_directory)
@@ -56,7 +57,8 @@ os.makedirs(output_directories[0], exist_ok=True)
 dynamic_starting_port = 110
 
 compose_dir=f'{grid_file}/compose_files/{hostname}/'
-
+print("saving ES compose file to ")
+print(compose_dir)
 # create docker file for es 
 with open(f'{compose_dir}docker-compose.yml', 'w') as compose_file:
     compose_file.write('version: \'3\'\n\nservices:\n')
@@ -85,5 +87,4 @@ with open(f'{compose_dir}docker-compose.yml', 'w') as compose_file:
     compose_file.write(f'    command: python3 /LSTM_model_fit_ES.py\n\n')
 
 print("Docker Compose file generated successfully.")
-
 
